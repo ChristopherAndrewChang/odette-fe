@@ -6,7 +6,7 @@ import type { TMethodRequest } from "@/types/api"
 import { onLogout } from "./auth";
 
 type TApi = {
-    data: any;
+    data?: any;
     urlKey: string;
     method: TMethodRequest;
     additionalHeaders?: Record<any, any>;
@@ -14,10 +14,11 @@ type TApi = {
     responseType?: ResponseType;
     queryParams?: Record<any, any>;
     paramsSerializer?: ParamsSerializerOptions | CustomParamsSerializer | undefined;
+    usingLocalApi?: boolean;
 }
 
 const getToken = () => {
-    if (window) {
+    if (!!window) {
         return localStorage.getItem("token");
     }
 
@@ -32,9 +33,10 @@ export const api = async ({
     withAuthorization = true,
     responseType = "json",
     paramsSerializer,
-    queryParams
+    queryParams,
+    usingLocalApi
 }: TApi) => {
-    const token = getToken();
+    const token = !!withAuthorization ? getToken() : "";
 
     const headers = {
         ...(withAuthorization && { Authorization: `Bearer ${token}` }),
@@ -43,7 +45,7 @@ export const api = async ({
     }
 
     const axiosInstance = axios.create({
-        baseURL: AppConfig.apiUrl,
+        baseURL: !!usingLocalApi ? "" : AppConfig.apiUrl,
         data: data,
         method: method,
         headers: headers,
