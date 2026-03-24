@@ -64,7 +64,7 @@ function HomePage() {
 
                 {/* card mini games - Green Theme */}
                 <CardMenu
-                    href=""
+                    href="/user/games"
                     icon={<LuDices className="text-5xl text-emerald-300 mb-6 drop-shadow-[0_0_12px_rgba(110,231,183,0.4)]" />}
                     textHeading="Mini"
                     textSubtitle="Games"
