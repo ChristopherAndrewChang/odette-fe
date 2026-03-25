@@ -14,7 +14,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"]
+        poppins: ["Poppins", "sans-serif"],
+        outfit: ["Outfit", "sans-serif"],
+        charon: ["Iosevka Charon", "sans-serif"]
       },
       keyframes: {
         glow: {

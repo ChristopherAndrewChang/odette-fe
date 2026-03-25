@@ -132,7 +132,7 @@ function CoinGames() {
     return (
         <>
             <div className="mb-4">
-                <UserBackButton href="/user/home" />
+                <UserBackButton href="/user/games" />
             </div>
 
             {/* main card */}
@@ -142,10 +142,10 @@ function CoinGames() {
             }}>
                 {/* header */}
                 <header className="mb-8">
-                    <p className="text-4xl font-semibold font-poppins text-center mb-2" style={{
+                    <p className="text-4xl font-semibold font-charon text-center mb-2" style={{
                         color: GOLD
                     }}>FLIP IT</p>
-                    <p className="font-poppins text-center text-sm" style={{
+                    <p className="font-charon text-center text-sm" style={{
                         color: GRAY
                     }}>By Odette</p>
                 </header>
@@ -188,7 +188,7 @@ function CoinGames() {
                 {/* bet */}
                 <section className="grid grid-cols-2 gap-4 mb-8">
                     <div className="col-span-2">
-                        <p className="font-poppins text-gray-500">Place your bet</p>
+                        <p className="font-charon text-gray-500">Place your bet</p>
                     </div>
 
                     {OPTIONS_BET?.map(opt => (
@@ -239,7 +239,7 @@ function CoinGames() {
                             backgroundImage: (!!bet && (phase === "idle")) ? `linear-gradient(to right, ${OLD_GOLD}, ${GOLD}, ${GOLD}, ${GOLD}, ${OLD_GOLD})` : DARKBG
                         }}
                     >
-                        <p className={classNames("font-poppins text-center font-semibold", {
+                        <p className={classNames("font-charon text-center font-semibold", {
                             "text-black": !!bet && (phase === "idle"),
                             "text-gray-600": !bet,
                             "text-2xl": !showWarningNoBet,

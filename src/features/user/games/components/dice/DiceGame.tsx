@@ -138,7 +138,7 @@ function DiceGame() {
     return (
         <>
             <div className="mb-6">
-                <UserBackButton href="/user/home" />
+                <UserBackButton href="/user/games" />
             </div>
             <div className="flex items-center justify-between mb-4">
                 <Lantern className="lantern" />
