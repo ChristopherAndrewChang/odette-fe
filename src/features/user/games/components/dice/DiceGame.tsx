@@ -9,13 +9,15 @@ import type { TPhase } from "./Character";
 import Character from "./Character";
 import { Dice } from "./Dice";
 import ResultBanner from "./ResultBanner";
+import Lantern from "./Lantern";
+import { useColor } from "@/hooks/color";
 
-type TOptionData = { label: string; startValue: number; endValue: number; color: string; }
+type TOptionData = { zh: string; label: string; startValue: number; endValue: number; color: string; }
 
 const OPTION_DATA: TOptionData[] = [
-    { label: "Kecil", startValue: 1, endValue: 6, color: "#006400" },
-    { label: "Sedang", startValue: 7, endValue: 7, color: "#C9A000" },
-    { label: "Besar", startValue: 8, endValue: 12, color: "#8B0000" }
+    { zh: "小", label: "XIAO", startValue: 1, endValue: 6, color: "#006400" },
+    { zh: '中', label: "ZHONG", startValue: 7, endValue: 7, color: "#C9A000" },
+    { zh: '大', label: "DA", startValue: 8, endValue: 12, color: "#8B0000" }
 ];
 
 const getColorBySumValue = (sumValue: number) => {
@@ -50,6 +52,8 @@ function DiceGame() {
     const [showShouldBetMsg, setShouldBetMsg] = useState(false);
 
     const rollAudio = useRef<HTMLAudioElement | null>(null);
+
+    const { OLD_GOLD, DARKBG, GRAY, GOLD, DARKRED, RED } = useColor();
 
     const onReset = () => {
         setValue([0, 0]);
@@ -127,101 +131,123 @@ function DiceGame() {
         }
     }, [bet]);
 
+    useEffect(() => {
+        console.log("bet-value", bet);
+    }, [bet]);
+
     return (
-        <div>
-            <audio ref={rollAudio} src="/sounds/dice-roll.mp3" preload="auto" />
-            <UserBackButton href="/user/home" />
-            <p className="font-poppins text-center text-4xl font-semibold text-white mb-8">Dice Game</p>
+        <>
+            <div className="mb-6">
+                <UserBackButton href="/user/home" />
+            </div>
+            <div className="flex items-center justify-between mb-4">
+                <Lantern className="lantern" />
+                <Lantern className="lantern2" />
+            </div>
+            <div className="my-1 shadow-[0_0_20px_rgba(255,215,0,0.5)] p-4 rounded-xl animate-glow-shadow">
+                <audio ref={rollAudio} src="/sounds/dice-roll.mp3" preload="auto" />
+                <p className="font-poppins text-center text-6xl font-semibold" style={{
+                    color: GOLD
+                }}>大小</p>
+                <p className="font-poppins text-center text-3xl font-semibold text-white mb-8" style={{
+                    color: OLD_GOLD
+                }}>DA XIAO</p>
 
-            <section className="bg-[#28153D] rounded-xl border border-purple-950 flex items-end justify-center pb-4 relative">
-                <Character phase={phase} />
+                <section className={`rounded-xl border border-gray-800 flex items-end justify-center pb-4 relative`} style={{
+                    backgroundImage: `linear-gradient(to bottom, ${DARKBG}, ${DARKBG}, ${DARKBG}, ${DARKBG}, ${DARKBG}, ${OLD_GOLD})`
+                }}>
+                    <Character phase={phase} />
 
-                {(phase === "release" || phase === "celebrate") ? (
-                    <ResultBanner
-                        result={sumValues}
-                        category={getCategoryBySumValue(sumValues)}
-                        color={getColorBySumValue(sumValues)}
-                        bet={bet?.label || ""}
-                    />
-                ) : null}
-                <div className="flex flex-col gap-1">
-                    <Dice
-                        size={DICE_SIZE}
-                        value={getDiceShow(0)}
-                        mode={phase === "shake" ? "shake" : "normal"}
-                    />
+                    {(phase === "release" || phase === "celebrate") ? (
+                        <ResultBanner
+                            result={sumValues}
+                            category={getCategoryBySumValue(sumValues)}
+                            color={getColorBySumValue(sumValues)}
+                            bet={bet?.label || ""}
+                        />
+                    ) : null}
+                    <div className="flex flex-col gap-1">
+                        <Dice
+                            size={DICE_SIZE}
+                            value={getDiceShow(0)}
+                            mode={phase === "shake" ? "shake" : "normal"}
+                        />
 
-                    <Dice
-                        size={DICE_SIZE}
-                        value={getDiceShow(1)}
-                        mode={phase === "shake" ? "shake" : "normal"}
-                    />
-                </div>
-            </section>
-
-            <section className="my-8 grid grid-cols-3 gap-2">
-                <div className="col-span-3">
-                    <p className="font-poppins text-white">Pilih Salah Satu</p>
-                </div>
-                {OPTION_DATA.map((opt, i) => (
-                    <div
-                        onClick={() => {
-                            if (phase !== "idle") return;
-
-                            if (bet?.label === opt.label) {
-                                setBet(null);
-                            } else {
-                                setBet(opt);
-                            }
-                        }}
-                        key={i}
-                        className={classNames("p-4 rounded-xl border")}
-                        style={{
-                            color: opt.color,
-                            borderColor: opt.color,
-                            backgroundColor: (bet?.label === opt.label) ? `${opt.color}50` : ""
-                        }}>
-                        <p className="font-semibold">{opt.label}</p>
-                        <p className="text-gray-200 text-sm">Range: {opt.startValue} - {opt.endValue}</p>
+                        <Dice
+                            size={DICE_SIZE}
+                            value={getDiceShow(1)}
+                            mode={phase === "shake" ? "shake" : "normal"}
+                        />
                     </div>
-                ))}
-            </section>
+                </section>
 
-            <section>
-                <div
-                    onClick={((phase === "idle" || phase === "celebrate")) ? onShake : () => { }}
-                    className={classNames(
-                        "bg-gray-900 p-4 rounded-xl border mb-4 text-white font-medium text-xl font-poppins text-center",
+                <section className="my-8 grid grid-cols-3 gap-2">
+                    <div className="col-span-3">
+                        <p className="font-poppins text-gray-500">Place your bet</p>
+                    </div>
+                    {OPTION_DATA.map((opt, i) => (
+                        <div
+                            onClick={() => {
+                                if (phase !== "idle") return;
 
-                        // 👇 efek tombol
-                        "cursor-pointer select-none transition-all duration-150",
+                                if (bet?.label === opt.label) {
+                                    setBet(null);
+                                } else {
+                                    setBet(opt);
+                                }
+                            }}
+                            key={i}
+                            className={classNames("p-4 rounded-xl border flex flex-col gap-2")}
+                            style={{
+                                color: (bet?.label === opt.label) ? opt.color : GRAY,
+                                borderColor: (bet?.label === opt.label) ? opt.color : `${GRAY}50`,
+                                backgroundColor: (bet?.label === opt.label) ? `${opt.color}50` : ""
+                            }}
+                        >
+                            <p className="text-center text-4xl font-semibold">{opt.zh}</p>
+                            <p className="font-semibold text-center">{opt.label}</p>
+                            <p className="text-gray-200 text-sm text-center">{(opt.startValue === opt.endValue) ? opt.startValue : (`${opt.startValue} - ${opt.endValue}`)}</p>
+                        </div>
+                    ))}
+                </section>
 
-                        // 👇 default (naik)
-                        "shadow-[0_6px_0_#030712]",
+                <section>
+                    <div
+                        key={bet?.zh}
+                        onClick={((phase === "idle" || phase === "celebrate")) ? onShake : () => { }}
+                        className={classNames(
+                            "p-4 rounded-xl border mb-4 text-white font-medium text-xl font-poppins text-center flex justify-center gap-4",
 
-                        // 👇 saat hover
-                        "hover:translate-y-[2px] hover:shadow-[0_4px_0_#030712]",
+                            // 👇 efek tombol
+                            "cursor-pointer select-none transition-all duration-150",
 
-                        // 👇 saat klik (press)
-                        "active:translate-y-[6px] active:shadow-[0_0px_0_#030712]",
+                            // 👇 default (naik)
+                            "shadow-[0_6px_0_#030712]",
 
-                        {
-                            "!translate-y-[6px] !shadow-[0_0px_0_#030712]": (phase !== "idle" || !bet)
-                        }
-                    )}
-                >
-                    {showShouldBetMsg ? "Pilih tebakan terlebih dahulu" : "Dice!"}
-                </div>
+                            // 👇 saat hover
+                            "hover:translate-y-[2px] hover:shadow-[0_4px_0_#030712]",
 
-                <div
-                    onClick={onReset}
-                    className="bg-gray-800 p-4 rounded-xl border" style={{
-                        boxShadow: "10px 10px #030712"
-                    }}>
-                    <p className="text-white font-medium text-xl font-poppins text-center">Reset</p>
-                </div>
-            </section>
-        </div>
+                            // 👇 saat klik (press)
+                            "active:translate-y-[6px] active:shadow-[0_0px_0_#030712]",
+                        )}
+                        style={{
+                            backgroundImage: ((phase === "idle" || phase === "celebrate") && !!bet) ? `linear-gradient(to right, ${DARKRED}, ${RED})` : DARKBG,
+                            color: (!!bet) ? "white" : GRAY,
+                        }}
+                    >
+                        {showShouldBetMsg ? "Pilih tebakan terlebih dahulu" : "摇 ROLL 摇"}
+                    </div>
+
+                    <div
+                        onClick={onReset}
+                        className="bg-gray-800 p-4 rounded-xl border" style={{
+                            boxShadow: "10px 10px #030712"
+                        }}>
+                        <p className="text-white font-medium text-xl font-poppins text-center">Reset</p>
+                    </div>
+                </section>
+            </div>
+        </>
     )
 }
 

@@ -1,16 +1,21 @@
 'use client';
 
 import UserContainer from "../shared/components/UserContainer";
-import DiceGame from "./components/dice/DiceGame";
+import CoinGames from "./components/coin";
+
+// import DiceGame from "./components/dice/DiceGame";
 
 // import DaXiaoGame from "./components/example/da-xiao-dice";
 
 function UserGames() {
     return (
         <UserContainer>
-            <DiceGame />
+            {/* <DiceGame /> */}
             {/* <DaXiaoGame /> */}
 
+            {/* <CoinFlipGame /> */}
+            <CoinGames />
+            {/* <CoinGames /> */}
         </UserContainer>
     )
 }
