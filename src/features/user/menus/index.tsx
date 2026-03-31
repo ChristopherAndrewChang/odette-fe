@@ -13,9 +13,11 @@ import UserBackButton from "../shared/components/UserBackButton";
 import CustomTextField from "@/@core/components/mui/TextField";
 import MenuImage from "@/assets/menus/menu-1.jpg";
 import MenuDetailDialog from "./components/MenuDetailDialog";
+import { useColor } from "@/hooks/color";
 
 function MenuPage() {
     const [open, setOpen] = useState(false);
+    const { OLD_GOLD, DARKBG } = useColor();
 
     return (
         <>
@@ -46,7 +48,9 @@ function MenuPage() {
                 />
 
                 {/* category */}
-                <section className="flex overflow-x-auto gap-2 scrollbar-hide mb-6 sticky -top-6 bg-[#110232] py-4 px-2 border">
+                <section className="flex overflow-x-auto gap-2 scrollbar-hide mb-6 sticky -top-6 py-4 px-2 border" style={{
+                    backgroundColor: DARKBG
+                }}>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
                         <Link href={`#salad-${i}`} key={i} className="block bg-gray-900 px-4 py-2 rounded-xl border border-gray-700 flex-shrink-0">
                             <p className="text-white">Salad {i}</p>
@@ -64,7 +68,11 @@ function MenuPage() {
                                     setOpen(true);
                                 }}
                                 key={i}
-                                className="rounded-xl border bg-[#1b034b] border-[#250369] overflow-hidden"
+                                className="rounded-xl border overflow-hidden"
+                                style={{
+                                    // backgroundColor: `${GOLD}15`,
+                                    borderColor: OLD_GOLD
+                                }}
                             >
                                 <Image src={MenuImage.src} alt="Menu Image" width={250} height={250} className="w-full h-32 object-cover" />
                                 <div className="p-4">

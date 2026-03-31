@@ -1,8 +1,9 @@
 // Next Imports
 import type { Metadata } from 'next'
 
+import Login from '@/features/auth/login'
+
 // Component Imports
-import Login from '@/views/login/Login'
 
 export const metadata: Metadata = {
   title: 'Login',

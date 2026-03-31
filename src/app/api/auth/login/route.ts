@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     try {
         const res = await api({
             method: "POST",
-            urlKey: "/token/",
+            urlKey: "/auth/login/",
             data: body,
             withAuthorization: false
         });

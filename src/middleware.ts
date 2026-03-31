@@ -1,17 +1,29 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { STORAGE_KEY } from "./data/internal/storage";
+import { getRoleFromJWT } from "./utils/auth";
+import { APP_URL } from "./data/internal/app-route";
+
 export const middleware = (request: NextRequest) => {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname.startsWith("/login");
 
-    if (!isLoginPage && !request.cookies.get("access_token")) {
+    if (!isLoginPage && !request.cookies.get(STORAGE_KEY.TOKEN)) {
         const loginUrl = new URL("/login", request.url);
 
         // Opsional: Simpan halaman asal agar setelah login bisa kembali ke sini
         loginUrl.searchParams.set("from", pathname);
 
         return NextResponse.redirect(loginUrl);
+    } else if (isLoginPage && !!request?.cookies?.get(STORAGE_KEY.TOKEN)) {
+        const token = request.cookies.get(STORAGE_KEY.TOKEN);
+
+        if (getRoleFromJWT(token?.value || "") === "superuser") {
+            return NextResponse.redirect(new URL(APP_URL.SUPERUSER_HOME.INDEX, request.url));
+        } else {
+            return NextResponse.redirect(new URL("/home", request.url));
+        }
     }
 
     return NextResponse.next();
@@ -20,6 +32,6 @@ export const middleware = (request: NextRequest) => {
 export const config = {
     matcher: [
         // Lindungi semua halaman kecuali folder public, api, dan static files
-        '/((?!api|_next/static|_next/image|favicon.ico|login).*)',
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
     ],
 };

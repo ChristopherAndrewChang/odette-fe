@@ -1,8 +1,10 @@
 import React from 'react'
 
+import SuperuserHome from '@/features/superuser/home'
+
 function page() {
     return (
-        <div>Superuser Dashboard</div>
+        <SuperuserHome />
     )
 }
 

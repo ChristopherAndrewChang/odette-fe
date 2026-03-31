@@ -3,10 +3,22 @@ export const APP_URL = {
     GUEST_LOGIN: {
         INDEX: "/login"
     },
+
+    USER_HOME: {
+        INDEX: "/user/home"
+    },
+
     ADMIN_HOME: {
-        INDEX: "/home"
+        INDEX: "/admin/home"
     },
     ADMIN_TABLE: {
-        INDEX: "/table"
+        INDEX: "/admin/table"
     },
+
+    SUPERUSER_HOME: {
+        INDEX: "/su/home"
+    },
+    SUPERUSER_TABLE: {
+        INDEX: "/su/tables"
+    }
 }

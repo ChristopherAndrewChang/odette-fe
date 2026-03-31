@@ -20,7 +20,9 @@ import StyledVerticalNavExpandIcon from '@menu/styles/vertical/StyledVerticalNav
 import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
 import { GenerateVerticalMenu } from '@/components/GenerateMenu'
-import { MenuData } from '@/data/navigation/menu-data'
+import { MenuData, MenuDataSuperuser } from '@/data/navigation/menu-data'
+import { getRoleFromJWT } from '@/utils/auth'
+import { STORAGE_KEY } from '@/data/internal/storage'
 
 type RenderExpandIconProps = {
   open?: boolean
@@ -36,6 +38,18 @@ const RenderExpandIcon = ({ open, transitionDuration }: RenderExpandIconProps) =
     <i className='tabler-chevron-right' />
   </StyledVerticalNavExpandIcon>
 )
+
+const MENU_DATA_DICTONARY: Record<string, any[]> = {
+  superuser: MenuDataSuperuser,
+  admin: MenuData
+}
+
+const getMenuData = () => {
+  // const token = localStorage.getItem(STORAGE_KEY.TOKEN);
+  // const role = getRoleFromJWT(token || "");
+
+  return MENU_DATA_DICTONARY["superuser"];
+}
 
 const VerticalMenu = ({ scrollMenu }: Props) => {
   // Hooks
@@ -84,7 +98,7 @@ const VerticalMenu = ({ scrollMenu }: Props) => {
         renderExpandedMenuItemIcon={{ icon: <i className='tabler-circle text-xs' /> }}
         menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
       >
-        <GenerateVerticalMenu menuData={MenuData} />
+        <GenerateVerticalMenu menuData={getMenuData()} />
       </Menu>
     </ScrollWrapper>
   )

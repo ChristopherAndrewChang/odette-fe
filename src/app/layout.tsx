@@ -11,6 +11,9 @@ import '@/app/globals.css'
 import '@assets/iconify-icons/generated-icons.css'
 import { AppConfig } from '@/configs/appConfig'
 
+import PvProviderContainer from '@/components/PvProviderContainer'
+
+
 export const metadata = {
   title: `${AppConfig.appName}`,
 }
@@ -23,7 +26,9 @@ const RootLayout = ({ children }: ChildrenType) => {
     <html id='__next' lang='en' dir={direction}>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         {/* <AuthProvider> */}
-        {children}
+        <PvProviderContainer>
+          {children}
+        </PvProviderContainer>
         {/* </AuthProvider> */}
       </body>
     </html>

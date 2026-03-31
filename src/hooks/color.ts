@@ -7,7 +7,8 @@ export const useColor = () => {
         FELT: "#0a1f0a",
         OLD_GOLD: "#382B11",
         GRAY: "#838280",
-        DARKGRAY: "#141118"
+        DARKGRAY: "#141118",
+        DARKBLUE: "#171723"
     };
 
     return colors;

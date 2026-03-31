@@ -46,7 +46,7 @@ function HomePage() {
 
                 {/* card screen takeover - Blue Theme */}
                 <CardMenu
-                    href=""
+                    href="/user/screen-takeover"
                     icon={<LuMonitor className="text-5xl text-blue-300 mb-6 drop-shadow-[0_0_12px_rgba(147,197,253,0.4)]" />}
                     textHeading="Screen"
                     textSubtitle="Takeover"

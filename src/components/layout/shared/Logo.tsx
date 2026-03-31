@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 import styled from '@emotion/styled'
 
-import LogoImage from "@/assets/logo/planviu.png";
+import LogoImage from "@/assets/logo/odette-logo.png";
 
 // Type Imports
 import type { VerticalNavContextProps } from '@menu/contexts/verticalNavContext'
@@ -47,7 +47,9 @@ const LogoText = styled.span<LogoTextProps>`
       : 'opacity: 1; margin-inline-start: 12px;'}
 `
 
-const Logo = ({ color }: { color?: CSSProperties['color'] }) => {
+const Logo = ({ color, noText }: { color?: CSSProperties['color'] } & {
+  noText?: boolean;
+}) => {
   // Refs
   const logoTextRef = useRef<HTMLSpanElement>(null)
 
@@ -75,18 +77,21 @@ const Logo = ({ color }: { color?: CSSProperties['color'] }) => {
 
   return (
     <div className='flex items-center'>
-      <Image src={LogoImage} alt='App Logo' className='w-8 h-8' />
+      <Image src={LogoImage} alt='App Logo' className='w-16 h-16' />
       {/* <VuexyLogo className='text-2xl text-primary' /> */}
-      <LogoText
-        color={color}
-        ref={logoTextRef}
-        isHovered={isHovered}
-        isCollapsed={layout === 'collapsed'}
-        transitionDuration={transitionDuration}
-        isBreakpointReached={isBreakpointReached}
-      >
-        {themeConfig.templateName}
-      </LogoText>
+
+      {!noText ? (
+        <LogoText
+          color={color}
+          ref={logoTextRef}
+          isHovered={isHovered}
+          isCollapsed={layout === 'collapsed'}
+          transitionDuration={transitionDuration}
+          isBreakpointReached={isBreakpointReached}
+        >
+          {themeConfig.templateName}
+        </LogoText>
+      ) : null}
     </div>
   )
 }

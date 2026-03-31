@@ -17,7 +17,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <Providers direction={direction}>
-      <BlankLayout systemMode={systemMode} bodyColor='bg-[#110232]'>
+      <BlankLayout systemMode={systemMode} bodyColor={`bg-[#0f0a04]`}>
         {children}
       </BlankLayout>
     </Providers>

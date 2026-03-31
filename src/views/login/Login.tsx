@@ -2,17 +2,15 @@
 
 import { useState } from "react";
 
-import { useRouter } from "next/navigation";
-
 import { Button, Card, CardContent, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
 
 import InputCustomized from "@/@pv/components/form/InputCustomized";
+import { api } from "@/utils/api";
 
 // import { regEmail, regNoBlankspace } from "@/@pv/utils/validation";
 // import { AuthConfig } from "@/configs/authConfig";
 // import { APP_URL } from "@/data/internal/app-route";
-import { api } from "@/utils/api";
 
 type TRequest = {
   email: string;
@@ -20,8 +18,6 @@ type TRequest = {
 }
 
 function Login() {
-  const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const { control, handleSubmit } = useForm<TRequest>({
@@ -31,37 +27,15 @@ function Login() {
     }
   });
 
-  // const onSubmit = (value: TRequest) => {
-  //   localStorage.setItem(AuthConfig.tokenKey, "123");
-  //   localStorage.setItem(AuthConfig.refreshKey, "123");
-  //   localStorage.setItem(AuthConfig.roles.admin, "1");
-  //   router.push(APP_URL.ADMIN_HOME.INDEX);
-  //   console.log(value);
-  // }
-
-  // temp
-  const [loading, setLoading] = useState(false);
-
-  const onLogin = async () => {
-    setLoading(true);
-
-    try {
-      await api({
-        method: "POST",
-        urlKey: "/api/auth/login",
-        data: {
-          email: "superuser@aryacakra.id",
-          password: "qwe123asd"
-        },
-        usingLocalApi: true,
-      });
-
-      setLoading(false);
-      router.push("/user/home");
-    } catch (err) {
-      setLoading(false);
-      console.log("Something Went Wrong");
-    }
+  const onLogin = () => {
+    api({
+      method: "POST",
+      urlKey: "/auth/login/",
+      data: {
+        username: "superuser",
+        password: "qwe123asd"
+      }
+    });
   }
 
   return (
@@ -100,8 +74,10 @@ function Login() {
               />
 
               <div className="flex items-center gap-2">
-                <Button fullWidth variant="contained" type="submit">
-                  {loading ? "Loading..." : "Login"}
+                <Button fullWidth variant="contained" type="submit" onClick={() => {
+                  onLogin();
+                }}>
+                  Login
                 </Button>
               </div>
             </form>

@@ -1,4 +1,4 @@
 export const AppConfig = {
-    appName: "Planviu FE",
+    appName: "Odette App",
     apiUrl: process.env.NEXT_PUBLIC_API_URL
 };
