@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 
-import { Button, Typography } from "@mui/material";
+import { Button, Tooltip, Typography } from "@mui/material";
 import { PvTable } from "@ozanplanviu/planviu-core";
+
+import type { GridPaginationModel } from "@mui/x-data-grid";
 
 import { useTablesQuery } from "./hooks/tables";
 import { TablesMapper } from "./mapper";
@@ -11,6 +13,8 @@ import { columns } from "./columns";
 import CloseNightDialog from "./components/CloseNightDialog";
 import OpenNightDialog from "./components/OpenNightDialog";
 import CreateTableDialog from "./components/create/CreateTableDialog";
+import GenerateSingleQRDialog from "./components/GenerateSingleQRDialog";
+import { useDebounce } from "@/@pv/hooks/use-debounce";
 
 function TablesManagement() {
     const [openCloseNightDialog, setOpenCloseNightDialog] = useState(false);
@@ -19,10 +23,29 @@ function TablesManagement() {
     const [tableModifyDialog, setTableModifyDialog] = useState<{ cond: boolean; id: number; }>({
         cond: false,
         id: 0
-    })
+    });
 
-    const { data, isFetching } = useTablesQuery();
-    const TablesData = data?.data || [];
+    const [search, setSearch] = useState("");
+    const searchDebounced = useDebounce(search, 500);
+
+    const [pagination, setPagination] = useState<GridPaginationModel>({
+        page: 0,
+        pageSize: 10
+    });
+
+    const [qrTable, setQrTable] = useState<{ cond: boolean; id: number; table: number; }>({
+        cond: false,
+        id: 0,
+        table: 0
+    });
+
+    const { data, isFetching } = useTablesQuery({
+        page: pagination.page + 1,
+        pageSize: pagination.pageSize,
+        search: searchDebounced
+    });
+
+    const TablesData = data?.data?.results || [];
 
     return (
         <>
@@ -39,6 +62,20 @@ function TablesManagement() {
                     setOpenOpenNightDialog(false);
                 }}
             />
+            <GenerateSingleQRDialog
+                onClose={() => {
+                    setQrTable({
+                        cond: false,
+                        id: 0,
+                        table: 0
+                    });
+                }}
+                open={qrTable.cond}
+                data={{
+                    id: qrTable.id,
+                    tableNumber: qrTable.table
+                }}
+            />
             <CreateTableDialog
                 open={tableModifyDialog.cond}
                 onClose={() => {
@@ -53,11 +90,16 @@ function TablesManagement() {
                 <PvTable
                     loading={isFetching}
                     columns={columns || []}
-                    rowCount={TablesData?.length || 0}
+                    rowCount={data?.data?.count || 0}
                     rows={TablesMapper(TablesData)}
                     containerProps={{
                         variant: "outlined"
                     }}
+                    pagination={{
+                        paginationModel: pagination,
+                        paginationControl: (model) => setPagination(model)
+                    }}
+                    onSearch={value => setSearch(value)}
                     showProps={{
                         hide: true
                     }}
@@ -68,6 +110,29 @@ function TablesManagement() {
                                 id: 0
                             });
                         }
+                    }}
+                    actionsSlots={(id, row) => {
+                        const rowData = row as ReturnType<typeof TablesMapper>[number];
+
+                        return [
+                            {
+                                renderAction: (
+                                    <Tooltip title="Generate QR" enterDelay={200}>
+                                        <div
+                                            onClick={() => {
+                                                setQrTable({
+                                                    cond: true,
+                                                    id: Number(id),
+                                                    table: Number(rowData?.number)
+                                                });
+                                            }}
+                                            className="w-6 h-6 bg-green-500 rounded-lg flex items-center justify-center cursor-pointer">
+                                            <i className="tabler-qrcode text-base text-white"></i>
+                                        </div>
+                                    </Tooltip>
+                                )
+                            }
+                        ]
                     }}
                     additionalMenu={[
                         {

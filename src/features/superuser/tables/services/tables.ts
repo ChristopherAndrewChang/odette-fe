@@ -1,9 +1,11 @@
+import type { TPaginationResponseType } from "@ozanplanviu/planviu-core";
+
 import { API_URL } from "@/data/internal/api-route";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
 import type { TTables } from "../types/tables";
 
-export const getAllTables = (params?: Record<any, any>): Promise<ResponseWrapper<TTables[]>> => {
+export const getAllTables = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TTables[]>>> => {
     return api({
         method: "GET",
         urlKey: API_URL.TABLES.INDEX,

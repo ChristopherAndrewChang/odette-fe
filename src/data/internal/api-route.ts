@@ -7,6 +7,7 @@ export const API_URL = {
         INDEX: "/tables/",
         CLOSE_NIGHT: "/tables/close-night/",
         OPEN_NIGHT: "/tables/open-night/",
-        BULK: "/tables/bulk/"
+        BULK: "/tables/bulk/",
+        SINGLE_GENERATE_QR: "/tables/:id/generate-qr/"
     },
 }
