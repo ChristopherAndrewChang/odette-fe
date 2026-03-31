@@ -8,6 +8,7 @@ export const API_URL = {
         CLOSE_NIGHT: "/tables/close-night/",
         OPEN_NIGHT: "/tables/open-night/",
         BULK: "/tables/bulk/",
-        SINGLE_GENERATE_QR: "/tables/:id/generate-qr/"
+        SINGLE_GENERATE_QR: "/tables/:id/generate-qr/",
+        BULK_GENERATE_QR: "/tables/bulk-qr/"
     },
 }

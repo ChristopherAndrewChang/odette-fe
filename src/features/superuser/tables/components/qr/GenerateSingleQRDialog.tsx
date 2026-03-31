@@ -5,7 +5,8 @@ import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Typograph
 import { getErrorMessage } from "@ozanplanviu/planviu-core";
 import toast from "react-hot-toast";
 
-import { useGenerateTableQRMutation } from "../hooks/qr";
+import { useGenerateTableQRMutation } from "../../hooks/qr";
+import { handleFileResponse } from "@/utils/file";
 
 type TGenerateSingleQRDialog = {
     open: boolean;
@@ -20,17 +21,7 @@ function GenerateSingleQRDialog({ onClose, open, data }: TGenerateSingleQRDialog
     const { mutate, isPending } = useGenerateTableQRMutation({
         onSuccess: (res) => {
             // TODO: make function untuk handle download/view file/gambar => taruh di planviu-core aja
-
-            const blob = new Blob([res.data], { type: "application/pdf" });
-            const url = window.URL.createObjectURL(blob);
-
-            const link = document.createElement('a');
-
-            link.href = url;
-            link.target = "_blank";
-
-            link.click();
-            link.remove();
+            handleFileResponse(res.data);
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));

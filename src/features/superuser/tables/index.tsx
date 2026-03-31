@@ -13,12 +13,15 @@ import { columns } from "./columns";
 import CloseNightDialog from "./components/CloseNightDialog";
 import OpenNightDialog from "./components/OpenNightDialog";
 import CreateTableDialog from "./components/create/CreateTableDialog";
-import GenerateSingleQRDialog from "./components/GenerateSingleQRDialog";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
+import GenerateSingleQRDialog from "./components/qr/GenerateSingleQRDialog";
+import GenerateBulkQRDialog from "./components/qr/GenerateBulkQRDialog";
 
 function TablesManagement() {
     const [openCloseNightDialog, setOpenCloseNightDialog] = useState(false);
     const [openOpenNightDialog, setOpenOpenNightDialog] = useState(false);
+
+    const [openBulkGenerateTableQR, setOpenBulkGenerateTableQR] = useState(false);
 
     const [tableModifyDialog, setTableModifyDialog] = useState<{ cond: boolean; id: number; }>({
         cond: false,
@@ -76,6 +79,14 @@ function TablesManagement() {
                     tableNumber: qrTable.table
                 }}
             />
+
+            <GenerateBulkQRDialog
+                open={openBulkGenerateTableQR}
+                onClose={() => {
+                    setOpenBulkGenerateTableQR(false);
+                }}
+            />
+
             <CreateTableDialog
                 open={tableModifyDialog.cond}
                 onClose={() => {
@@ -138,13 +149,24 @@ function TablesManagement() {
                         {
                             renderMenu: (
                                 <Button
+                                    variant="outlined"
+                                    startIcon={<i className="tabler-qrcode"></i>}
+                                    onClick={() => {
+                                        setOpenBulkGenerateTableQR(true);
+                                    }}
+                                >Generate QR (Bulk)</Button>
+                            )
+                        },
+                        {
+                            renderMenu: (
+                                <Button
                                     onClick={() => {
                                         setOpenOpenNightDialog(true);
                                     }}
                                     variant="outlined"
                                     startIcon={<i className="tabler-lock-open"></i>}
                                 >Open Night</Button>
-                            )
+                            ),
                         },
                         {
                             renderMenu: (

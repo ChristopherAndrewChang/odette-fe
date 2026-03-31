@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 
 import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
@@ -11,6 +11,21 @@ export const useTablesQuery = (params?: Record<any, any>) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TTables[]>>>({
         queryKey: [QUERY_KEY.TABLES.INDEX, params],
         queryFn: () => getAllTables(params),
+        retry: false,
+        refetchOnWindowFocus: false,
+        placeholderData: data => data
+    });
+}
+
+export const useTablesInfiniteQuery = (params?: Record<any, any>) => {
+    return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TTables[]>>>({
+        getNextPageParam: (lastPage, allPages) => !!lastPage?.data?.next ? allPages.length + 1 : undefined,
+        initialPageParam: 1,
+        queryKey: [QUERY_KEY.TABLES.INDEX, params],
+        queryFn: ({ pageParam }) => getAllTables({
+            ...params,
+            page: pageParam
+        }),
         retry: false,
         refetchOnWindowFocus: false,
         placeholderData: data => data

@@ -9,3 +9,12 @@ export const generateSingleTableQR = (id: string): Promise<ResponseWrapper<any>>
         responseType: "blob",
     });
 }
+
+export const generateBulkTableQR = (data?: Record<any, any>): Promise<ResponseWrapper<any>> => {
+    return api({
+        method: "POST",
+        urlKey: API_URL.TABLES.BULK_GENERATE_QR,
+        data: data,
+        responseType: "blob"
+    });
+}
