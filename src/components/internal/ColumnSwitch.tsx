@@ -12,7 +12,7 @@ import { useSetAtom } from 'jotai';
 
 import toast from 'react-hot-toast'
 
-import type { MutationFunctionType, ErrorType, MutateParamsType } from '@ozanplanviu/planviu-core'
+import { type MutationFunctionType, type ErrorType, type MutateParamsType, getErrorMessage } from '@ozanplanviu/planviu-core'
 
 import SwitchConfirmationDialog from './SwitchConfirmationDialog'
 import { ColumnStatus } from './ColumnStatus'
@@ -53,8 +53,8 @@ function ColumnSwitch({ params, mutation, readonly, queryKey }: TColumnSwitch) {
                     setDisableFetchIndicatorAtom(false)
                 })
         },
-        onError: () => {
-            toast.error('Failed')
+        onError: (err) => {
+            toast.error(getErrorMessage(err));
         }
     })
 

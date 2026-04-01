@@ -3,6 +3,10 @@ export const API_URL = {
     LOGIN: {
         INDEX: "/auth/login/"
     },
+    USERS: {
+        INDEX: "/users/admins/",
+        DETAILS: "/users/admins/:id/"
+    },
     TABLES: {
         INDEX: "/tables/",
         CLOSE_NIGHT: "/tables/close-night/",

@@ -23,6 +23,13 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         href: APP_URL.SUPERUSER_HOME.INDEX,
     },
     {
+        label: "User",
+        icon: "tabler-users",
+        href: APP_URL.SUPERUSER_USERS.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_USERS.INDEX
+    },
+    {
         label: "Table Management",
         icon: "tabler-brand-airtable",
         href: APP_URL.SUPERUSER_TABLE.INDEX,

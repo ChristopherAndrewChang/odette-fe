@@ -6,6 +6,9 @@ export const QUERY_KEY = {
     MENUS: {
         INDEX: "menus",
         PROMOS: "promos"
+    },
+    USERS: {
+        INDEX: "users"
     }
 }
 

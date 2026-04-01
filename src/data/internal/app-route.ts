@@ -18,6 +18,9 @@ export const APP_URL = {
     SUPERUSER_HOME: {
         INDEX: "/su/home"
     },
+    SUPERUSER_USERS: {
+        INDEX: "/su/users"
+    },
     SUPERUSER_TABLE: {
         INDEX: "/su/tables"
     },
