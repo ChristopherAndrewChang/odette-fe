@@ -1,8 +1,10 @@
 "use client";
 
-import clsx from "clsx";
+import type { HTMLAttributes, ReactNode } from "react";
+
 import Link from "next/link";
-import { HTMLAttributes, ReactNode } from "react";
+
+import clsx from "clsx";
 
 type TCardMenu = {
     href: string;

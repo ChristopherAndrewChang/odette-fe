@@ -1,12 +1,81 @@
 // import type { CustomParamsSerializer, ParamsSerializerOptions, ResponseType } from "axios";
 // import axios from "axios"
 
-import { RequestConfig } from "@ozanplanviu/planviu-core";
-
+// TODO: make it into planviu-core
 import toast from "react-hot-toast";
+
+import type { CustomParamsSerializer, ParamsSerializerOptions, ResponseType } from "axios";
+import axios from "axios";
+
+import cookieStore from "js-cookie";
 
 import { AppConfig } from "@/configs/appConfig";
 import { STORAGE_KEY } from "@/data/internal/storage";
+
+export type T_PV_REQUEST_METHOD = "GET" | "POST" | "PATCH" | "DELETE" | "PUT";
+
+export type TRequestService = {
+    method: T_PV_REQUEST_METHOD;
+    urlKey?: string;
+    data?: Record<string, any>;
+    queryParams?: Record<any, any>;
+    noAuth?: boolean;
+    headers?: Record<string, any>;
+    responseType?: ResponseType;
+    paramsSerializer?: ParamsSerializerOptions | CustomParamsSerializer | undefined;
+}
+
+export type TRequestConfig = {
+    baseUrl: string;
+    getToken?: () => string | null;
+    onForceLogout?: () => void;
+}
+
+export const RequestConfig = ({
+    baseUrl,
+    onForceLogout,
+    getToken
+}: TRequestConfig) => {
+    const instance = axios.create({
+        baseURL: baseUrl,
+        withCredentials: true,
+    });
+
+    instance.interceptors.response.use(
+        (response) => response,
+        (error) => {
+            if (error?.response?.status === 401) {
+                onForceLogout ? onForceLogout() : (() => { })
+            }
+
+            return Promise.reject(error);
+        }
+    );
+
+    const requestService = async<T>(params: TRequestService): Promise<T> => {
+        const token = getToken ? getToken() : "";
+
+        const DEFAULT_HEADER = ({
+            "Content-Type": "application/json",
+            ...(params.noAuth ? {} : { Authorization: `Bearer ${token}` })
+        })
+
+        return await instance.request({
+            url: params.urlKey,
+            data: params.data,
+            method: params.method,
+            params: params.queryParams,
+            paramsSerializer: params.paramsSerializer,
+            headers: ({
+                ...DEFAULT_HEADER,
+                ...params.headers
+            }),
+            responseType: params.responseType,
+        });
+    }
+
+    return requestService;
+};
 
 export const api = RequestConfig({
     baseUrl: AppConfig.apiUrl || "",
@@ -20,7 +89,7 @@ export const api = RequestConfig({
 
         toast.error("Your session is expired, Please Login Again");
         localStorage.removeItem(STORAGE_KEY.TOKEN);
-        cookieStore.delete(STORAGE_KEY.TOKEN);
+        cookieStore.remove(STORAGE_KEY.TOKEN);
 
         location.replace("/login");
     }

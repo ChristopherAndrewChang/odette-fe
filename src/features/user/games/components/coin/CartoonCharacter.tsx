@@ -10,7 +10,7 @@ type TCartoonCharacter = {
     result?: "tail" | "heads";
 }
 
-function CartoonCharacter({ phase, showCoinInHand, result }: TCartoonCharacter) {
+function CartoonCharacter({ phase, showCoinInHand }: TCartoonCharacter) {
     // Body parts animate based on phase
     const isWindup = phase === 'windup'
     const isThrow = phase === 'throw'

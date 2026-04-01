@@ -42,7 +42,6 @@ export default function CoinFlipGame() {
     const animate = now => {
       const elapsed = now - startTimeRef.current
       const t = Math.min(elapsed / duration, 1)
-      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
 
       // Quadratic bezier arc
       const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * peakX + t * t * endX
@@ -105,7 +104,6 @@ export default function CoinFlipGame() {
   }
 
   const isAnimating = phase !== 'idle'
-  const isWindup = phase === 'windup' || phase === 'throw'
   const showCoinInHand = phase === 'idle' || phase === 'windup' || phase === 'throw'
   const showCoinFlying = phase === 'flying' || phase === 'land' || phase === 'result'
 
@@ -249,12 +247,10 @@ export default function CoinFlipGame() {
 }
 
 /* ─── Cartoon Character ─────────────────────────────────────────── */
-function CartoonCharacter({ phase, showCoinInHand, result }) {
+function CartoonCharacter({ phase, showCoinInHand }) {
   // Body parts animate based on phase
   const isWindup = phase === 'windup'
   const isThrow = phase === 'throw'
-  const isLand = phase === 'land'
-  const isIdle = phase === 'idle'
 
   // Arm angles for throw
   // idle: arm down relaxed
@@ -501,9 +497,6 @@ function CartoonCharacter({ phase, showCoinInHand, result }) {
 
 /* ─── Indonesian 500 Rupiah Coin SVG ───────────────────────────── */
 function CoinSVG({ size, face }) {
-  const r = size / 2
-  const s = size / 80 // scale factor based on 80px base
-
   return (
     <svg width={size} height={size} viewBox='0 0 80 80' style={{ display: 'block' }}>
       <defs>

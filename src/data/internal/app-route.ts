@@ -20,5 +20,8 @@ export const APP_URL = {
     },
     SUPERUSER_TABLE: {
         INDEX: "/su/tables"
+    },
+    SUPERUSER_MENU: {
+        INDEX: "/su/menu"
     }
 }

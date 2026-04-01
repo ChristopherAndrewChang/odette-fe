@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { Button, Card, CardContent, Typography } from "@mui/material"
 import { useForm } from "react-hook-form"
+import Cookies from "js-cookie";
 
 import toast from "react-hot-toast";
 
@@ -57,7 +58,7 @@ function Login() {
             toast.success("Login Success");
             const role = getRoleFromJWT(res?.data?.access || "");
 
-            cookieStore.set(STORAGE_KEY.TOKEN, res?.data?.access)
+            Cookies.set(STORAGE_KEY.TOKEN, res?.data?.access);
             localStorage.setItem(STORAGE_KEY.TOKEN, res.data?.access);
 
             redirectToHome(role);

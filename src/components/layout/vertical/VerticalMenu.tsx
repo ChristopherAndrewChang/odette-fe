@@ -21,8 +21,6 @@ import menuItemStyles from '@core/styles/vertical/menuItemStyles'
 import menuSectionStyles from '@core/styles/vertical/menuSectionStyles'
 import { GenerateVerticalMenu } from '@/components/GenerateMenu'
 import { MenuData, MenuDataSuperuser } from '@/data/navigation/menu-data'
-import { getRoleFromJWT } from '@/utils/auth'
-import { STORAGE_KEY } from '@/data/internal/storage'
 
 type RenderExpandIconProps = {
   open?: boolean

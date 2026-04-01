@@ -28,5 +28,12 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         href: APP_URL.SUPERUSER_TABLE.INDEX,
         exactMatch: false,
         activeUrl: APP_URL.SUPERUSER_TABLE.INDEX
+    },
+    {
+        label: "Menu",
+        icon: "tabler-soup",
+        href: APP_URL.SUPERUSER_MENU.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_MENU.INDEX
     }
 ]

@@ -35,7 +35,7 @@ const GAMES_DATA: { label: string; key: string; logo: ReactNode; color1: string;
 
 function UserGames() {
     const { updateParams, getParam } = useQueryParams();
-    const { OLD_GOLD, GOLD, DARKBG } = useColor();
+    const { GOLD } = useColor();
 
     if (getParam("game")) {
         return (

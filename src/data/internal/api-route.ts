@@ -11,4 +11,9 @@ export const API_URL = {
         SINGLE_GENERATE_QR: "/tables/:id/generate-qr/",
         BULK_GENERATE_QR: "/tables/bulk-qr/"
     },
+    MENU: {
+        INDEX: "/menu/pdf/:type/",
+        UPLOAD: "/menu/pdf/upload/",
+        TOGGLE: "/menu/pdf/:id/toggle/"
+    }
 }

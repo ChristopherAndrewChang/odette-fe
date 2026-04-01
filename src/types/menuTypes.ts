@@ -15,7 +15,6 @@ import type {
   MenuItemProps as HorizontalMenuItemProps
 } from '@menu/horizontal-menu'
 import type { MenuItemExactMatchUrlProps } from '@menu/types'
-import type { AuthConfig } from '@/configs/authConfig'
 
 // Vertical Menu Data
 export type VerticalMenuItemDataType = Omit<
@@ -40,7 +39,9 @@ export type VerticalSectionDataType = Omit<VerticalMenuSectionProps, 'children'>
   children: VerticalMenuDataType[]
 }
 export type VerticalMenuDataType = (VerticalMenuItemDataType | VerticalSubMenuDataType | VerticalSectionDataType) & {
-  acceptedRoles?: Array<keyof typeof AuthConfig.permisson>
+
+  // acceptedRoles?: Array<keyof typeof AuthConfig.permisson>
+  acceptedRoles?: Array<any>
 }
 
 // Horizontal Menu Data
