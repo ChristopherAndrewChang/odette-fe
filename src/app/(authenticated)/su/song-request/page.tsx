@@ -1,8 +1,10 @@
 import React from 'react'
 
+import MusicRequestManagement from '@/features/superuser/music-request'
+
 function page() {
     return (
-        <div>page</div>
+        <MusicRequestManagement />
     )
 }
 

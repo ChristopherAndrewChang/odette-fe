@@ -9,7 +9,7 @@ import type { ResponseWrapper } from "@/types/api";
 
 export const useMySongRequestQuery = (params?: Record<any, any>) => {
     return useQuery<ResponseWrapper<TMySongReq[]>>({
-        queryKey: [QUERY_KEY.MY_SONG_REQUEST, params],
+        queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX, params],
         queryFn: () => getMySongRequest(params),
         retry: false,
         refetchOnWindowFocus: false,
