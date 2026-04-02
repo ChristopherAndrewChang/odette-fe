@@ -25,6 +25,9 @@ export const API_URL = {
         TOGGLE: "/menu/pdf/:id/toggle/"
     },
     SCREEN_TAKEOVER: {
-        INDEX: "screen/"
+        INDEX: "/screen/"
+    },
+    SONG_REQUEST: {
+        INDEX: "/songs/"
     }
 }

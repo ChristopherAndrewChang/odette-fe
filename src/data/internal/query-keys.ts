@@ -1,5 +1,8 @@
 export const QUERY_KEY = {
     SHARED: {},
+    MY_SONG_REQUEST: {
+        INDEX: "my-song-request"
+    },
     TABLES: {
         INDEX: "tables"
     },

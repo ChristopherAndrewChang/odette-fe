@@ -97,6 +97,9 @@ export const api = RequestConfig({
         localStorage.removeItem(STORAGE_KEY.USER_SESSION);
         cookieStore.remove(STORAGE_KEY.USER_SESSION);
 
+        localStorage.removeItem(STORAGE_KEY.USER_NAME);
+        localStorage.removeItem(STORAGE_KEY.USER_TABLE);
+
         if (isFromUser) {
             location.replace(APP_URL.USER_SCAN.INDEX);
         } else {

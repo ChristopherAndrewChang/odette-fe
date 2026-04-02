@@ -56,7 +56,7 @@ function HomePage() {
 
                 {/* card request a song - Red Theme */}
                 <CardMenu
-                    href=""
+                    href="/user/song-request"
                     icon={<PiMusicNotesPlus className="text-5xl text-red-300 mb-6 drop-shadow-[0_0_12px_rgba(252,165,165,0.4)]" />}
                     textHeading="Request"
                     textSubtitle="A Song"
