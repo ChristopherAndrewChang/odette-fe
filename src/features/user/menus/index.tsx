@@ -15,8 +15,8 @@ function MenuPage() {
     const [open, setOpen] = useState(false);
     const { DARKBLUE, GOLD, DARKGRAY } = useColor();
 
-    const { data: menus, isFetching: fetchingMenus } = useMenusQuery();
-    const { data: promos, isFetching: fetchingPromos } = usePromosQuery();
+    const { data: menus, isFetching: fetchingMenus } = useMenusQuery({}, true);
+    const { data: promos, isFetching: fetchingPromos } = usePromosQuery({}, true);
 
     return (
         <>

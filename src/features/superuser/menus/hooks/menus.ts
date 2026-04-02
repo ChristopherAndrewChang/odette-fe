@@ -7,10 +7,10 @@ import { deleteMenuUpload, getAllMenus, patchMenuUpload, postMenuUpload } from "
 import type { ResponseWrapper } from "@/types/api";
 import type { TMenus } from "../types/menus";
 
-export const useMenusQuery = (params?: Record<any, any>) => {
+export const useMenusQuery = (params?: Record<any, any>, noAuth?: boolean) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TMenus[]>>>({
         queryKey: [QUERY_KEY.MENUS.INDEX, params],
-        queryFn: () => getAllMenus(params),
+        queryFn: () => getAllMenus(params, noAuth),
         retry: false,
         placeholderData: data => data,
         refetchOnWindowFocus: false

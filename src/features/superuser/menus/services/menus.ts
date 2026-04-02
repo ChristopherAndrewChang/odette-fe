@@ -1,14 +1,16 @@
+import type { TPaginationResponseType } from "@ozanplanviu/planviu-core";
+
 import { API_URL } from "@/data/internal/api-route";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
 import type { TMenus } from "../types/menus";
-import { TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
-export const getAllMenus = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TMenus[]>>> => {
+export const getAllMenus = (params?: Record<any, any>, noAuth?: boolean): Promise<ResponseWrapper<TPaginationResponseType<TMenus[]>>> => {
     return api({
         method: "GET",
         urlKey: API_URL.MENU.INDEX.replace(":type", "menu"),
         queryParams: params,
+        noAuth: noAuth
     });
 }
 

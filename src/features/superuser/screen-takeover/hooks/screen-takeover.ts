@@ -1,9 +1,9 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
-import type { TPaginationResponseType } from "@ozanplanviu/planviu-core";
+import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import { getAllScreenTakeover } from "../services/screen-takeover";
+import { getAllScreenTakeover, patchApprovalScreenTakeover } from "../services/screen-takeover";
 import type { ResponseWrapper } from "@/types/api";
 
 export const useScreenTakeoverQuery = (params?: Record<any, any>) => {
@@ -13,5 +13,17 @@ export const useScreenTakeoverQuery = (params?: Record<any, any>) => {
         retry: false,
         refetchOnWindowFocus: false,
         placeholderData: data => data
+    });
+}
+
+export const useScreenTakeoverApprovalMutation = ({ onSuccess, onError }: MutationFunctionType<unknown>) => {
+    return useMutation({
+        mutationFn: ({ id, type }: MutateParamsType & { type: "approved" | "rejected" }) => {
+            return patchApprovalScreenTakeover(id || "", {
+                status: type
+            })
+        },
+        onSuccess: onSuccess,
+        onError: onError
     });
 }

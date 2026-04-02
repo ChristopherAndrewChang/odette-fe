@@ -11,3 +11,11 @@ export const getAllScreenTakeover = (params?: Record<any, any>): Promise<Respons
         queryParams: params
     });
 }
+
+export const patchApprovalScreenTakeover = (id: string, data?: Record<any, any>) => {
+    return api({
+        method: "PATCH",
+        data: data,
+        urlKey: API_URL.SCREEN_TAKEOVER.APPROVAL.replace(":id", id)
+    });
+}
