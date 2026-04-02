@@ -42,5 +42,19 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         href: APP_URL.SUPERUSER_MENU.INDEX,
         exactMatch: false,
         activeUrl: APP_URL.SUPERUSER_MENU.INDEX
+    },
+    {
+        label: "Song Request",
+        icon: "tabler-music-share",
+        href: APP_URL.SUPERUSER_SONG_REQUEST.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_SONG_REQUEST.INDEX
+    },
+    {
+        label: "Screen Takeover",
+        icon: "tabler-screen-share",
+        href: APP_URL.SUPERUSER_SCREEN_TAKEOVER.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_SCREEN_TAKEOVER.INDEX
     }
 ]

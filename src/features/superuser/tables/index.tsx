@@ -3,11 +3,13 @@
 import { useState } from "react";
 
 import { Button, Tooltip, Typography } from "@mui/material";
-import { PvTable } from "@ozanplanviu/planviu-core";
+import { getErrorMessage, PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
-import { useTablesQuery } from "./hooks/tables";
+import toast from "react-hot-toast";
+
+import { useTablesMutation, useTablesQuery } from "./hooks/tables";
 import { TablesMapper } from "./mapper";
 import { columns } from "./columns";
 import CloseNightDialog from "./components/CloseNightDialog";
@@ -16,6 +18,8 @@ import CreateTableDialog from "./components/create/CreateTableDialog";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 import GenerateSingleQRDialog from "./components/qr/GenerateSingleQRDialog";
 import GenerateBulkQRDialog from "./components/qr/GenerateBulkQRDialog";
+import EditTableDialog from "./components/edit/EditTableDialog";
+import type { TTables } from "./types/tables";
 
 function TablesManagement() {
     const [openCloseNightDialog, setOpenCloseNightDialog] = useState(false);
@@ -26,6 +30,12 @@ function TablesManagement() {
     const [tableModifyDialog, setTableModifyDialog] = useState<{ cond: boolean; id: number; }>({
         cond: false,
         id: 0
+    });
+
+    const [editDialogState, setEditDialogState] = useState<{ defaultValue: TTables | null, id: string, cond: boolean }>({
+        cond: false,
+        defaultValue: null,
+        id: ""
     });
 
     const [search, setSearch] = useState("");
@@ -42,10 +52,15 @@ function TablesManagement() {
         table: 0
     });
 
-    const { data, isFetching } = useTablesQuery({
+    const { data, isFetching, refetch } = useTablesQuery({
         page: pagination.page + 1,
         pageSize: pagination.pageSize,
         search: searchDebounced
+    });
+
+    const { mutateAsync, isPending } = useTablesMutation({
+        onSuccess: () => { },
+        onError: () => { }
     });
 
     const TablesData = data?.data?.results || [];
@@ -96,6 +111,19 @@ function TablesManagement() {
                     });
                 }}
             />
+
+            <EditTableDialog
+                open={editDialogState.cond}
+                defaultValue={editDialogState.defaultValue}
+                onClose={() => {
+                    setEditDialogState({
+                        cond: false,
+                        defaultValue: null,
+                        id: ""
+                    })
+                }}
+            />
+
             <div className='bg-white p-6 rounded-lg border'>
                 <Typography className="text-xl mb-6 font-poppins text-black">Table Management</Typography>
                 <PvTable
@@ -114,11 +142,48 @@ function TablesManagement() {
                     showProps={{
                         hide: true
                     }}
+                    deleteProps={{
+                        isPending: isPending,
+                        hiddenCondition: (_, row) => {
+                            const rowsData = row as ReturnType<typeof TablesMapper>[number];
+
+                            return !rowsData?.is_active;
+                        },
+                        onDelete: async (id, onClose) => {
+                            try {
+                                await mutateAsync({
+                                    method: "DELETE",
+                                    type: "single",
+                                    id: id?.toString()
+                                });
+
+                                onClose && onClose();
+                                refetch();
+                                toast.success("Succees");
+                            } catch (err) {
+                                toast.error(getErrorMessage(err));
+                            }
+                        }
+                    }}
                     addProps={{
                         onAdd: () => {
                             setTableModifyDialog({
                                 cond: true,
                                 id: 0
+                            });
+                        }
+                    }}
+                    editProps={{
+                        onEdit: (id, rows) => {
+                            const rowsData = rows as ReturnType<typeof TablesMapper>[number];
+
+                            setEditDialogState({
+                                cond: true,
+                                defaultValue: ({
+                                    ...rowsData,
+                                    active_sessions: Number(rowsData.active_sessions)
+                                }),
+                                id: id
                             });
                         }
                     }}

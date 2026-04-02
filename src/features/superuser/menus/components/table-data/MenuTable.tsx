@@ -22,7 +22,10 @@ function MenuTable({ onAdd }: TMenuTable) {
         pageSize: 10
     });
 
-    const { data, isFetching, refetch } = useMenusQuery();
+    const { data, isFetching, refetch } = useMenusQuery({
+        page: pagination.page + 1,
+        pageSize: pagination.pageSize
+    });
 
     const { mutateAsync, isPending } = useMenuMutation({
         onSuccess: () => { },
@@ -32,8 +35,8 @@ function MenuTable({ onAdd }: TMenuTable) {
     return (
         <PvTable
             columns={columns({ type: "menu" })}
-            rowCount={data?.data?.length || 0}
-            rows={MenuMapper(data?.data || []) || []}
+            rowCount={data?.data?.count || 0}
+            rows={MenuMapper(data?.data?.results || []) || []}
             loading={isFetching}
             pagination={{
                 paginationModel: pagination,

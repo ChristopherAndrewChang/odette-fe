@@ -24,6 +24,21 @@ export const createTable = (data?: Record<any, any>) => {
     });
 }
 
+export const updateTable = (id: string, data?: Record<any, any>) => {
+    return api({
+        method: "PATCH",
+        data: data,
+        urlKey: API_URL.TABLES.DETAIL.replace(":id", id),
+    });
+}
+
+export const deleteTable = (id: string) => {
+    return api({
+        method: "DELETE",
+        urlKey: API_URL.TABLES.DETAIL.replace(":id", id)
+    });
+}
+
 export const createTableBulk = (data?: Record<any, any>) => {
     return api({
         method: "POST",

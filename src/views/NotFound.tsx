@@ -1,12 +1,8 @@
 'use client'
 
-// Next Imports
-import Link from 'next/link'
-
 // MUI Imports
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled, useTheme } from '@mui/material/styles'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
 // Third-party Imports
@@ -48,14 +44,16 @@ const NotFound = ({ mode }: { mode: SystemMode }) => {
           <Typography variant='h4'>Page Not Found ⚠️</Typography>
           <Typography>we couldn&#39;t find the page you are looking for.</Typography>
         </div>
-        <Button href='/' component={Link} variant='contained'>
+        {/*
+          <Button href='/' component={Link} variant='contained'>
           Back To Home
         </Button>
-        <img
+        */}
+        {/* <img
           alt='error-404-illustration'
           src='/images/illustrations/characters/1.png'
           className='object-cover bs-[400px] md:bs-[450px] lg:bs-[500px] mbs-10 md:mbs-14 lg:mbs-20'
-        />
+        /> */}
       </div>
       {!hidden && (
         <MaskImg

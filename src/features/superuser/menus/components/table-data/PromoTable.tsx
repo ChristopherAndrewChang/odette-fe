@@ -8,13 +8,23 @@ import { usePromosQuery } from "../../hooks/promos";
 import { columns } from "../../columns";
 import { MenuMapper } from "../../mapper";
 import { useMenuMutation } from "../../hooks/menus";
+import { useState } from "react";
+import { GridPaginationModel } from "@mui/x-data-grid";
 
 type TPromoTable = {
     onAdd: () => void;
 }
 
 function PromoTable({ onAdd }: TPromoTable) {
-    const { data, isFetching, refetch } = usePromosQuery();
+    const [pagination, setPagination] = useState<GridPaginationModel>({
+        page: 0,
+        pageSize: 10
+    });
+
+    const { data, isFetching, refetch } = usePromosQuery({
+        page: pagination.page + 1,
+        pageSize: pagination.pageSize
+    });
 
     const { mutateAsync, isPending } = useMenuMutation({
         onSuccess: () => { },
@@ -24,9 +34,13 @@ function PromoTable({ onAdd }: TPromoTable) {
     return (
         <PvTable
             columns={columns({ type: "promo" })}
-            rowCount={data?.data?.length || 0}
-            rows={MenuMapper(data?.data || [])}
+            rowCount={data?.data?.count || 0}
+            rows={MenuMapper(data?.data?.results || [])}
             loading={isFetching}
+            pagination={{
+                paginationModel: pagination,
+                paginationControl: model => setPagination(model)
+            }}
             addProps={{
                 onAdd: onAdd
             }}

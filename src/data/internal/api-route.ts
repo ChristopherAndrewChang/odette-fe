@@ -7,8 +7,12 @@ export const API_URL = {
         INDEX: "/users/admins/",
         DETAILS: "/users/admins/:id/"
     },
+    USER_SCAN: {
+        INDEX: "/tables/scan/"
+    },
     TABLES: {
         INDEX: "/tables/",
+        DETAIL: "/tables/:id/",
         CLOSE_NIGHT: "/tables/close-night/",
         OPEN_NIGHT: "/tables/open-night/",
         BULK: "/tables/bulk/",
@@ -19,5 +23,8 @@ export const API_URL = {
         INDEX: "/menu/pdf/:type/",
         UPLOAD: "/menu/pdf/upload/",
         TOGGLE: "/menu/pdf/:id/toggle/"
+    },
+    SCREEN_TAKEOVER: {
+        INDEX: "screen/"
     }
 }

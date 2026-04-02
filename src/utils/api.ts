@@ -11,6 +11,7 @@ import cookieStore from "js-cookie";
 
 import { AppConfig } from "@/configs/appConfig";
 import { STORAGE_KEY } from "@/data/internal/storage";
+import { APP_URL } from "@/data/internal/app-route";
 
 export type T_PV_REQUEST_METHOD = "GET" | "POST" | "PATCH" | "DELETE" | "PUT";
 
@@ -83,6 +84,8 @@ export const api = RequestConfig({
         return localStorage.getItem(STORAGE_KEY.TOKEN || "");
     },
     onForceLogout: () => {
+        const isFromUser = location.pathname.startsWith("/user");
+
         if (location.pathname.startsWith("/login")) {
             return;
         }
@@ -91,7 +94,14 @@ export const api = RequestConfig({
         localStorage.removeItem(STORAGE_KEY.TOKEN);
         cookieStore.remove(STORAGE_KEY.TOKEN);
 
-        location.replace("/login");
+        localStorage.removeItem(STORAGE_KEY.USER_SESSION);
+        cookieStore.remove(STORAGE_KEY.USER_SESSION);
+
+        if (isFromUser) {
+            location.replace(APP_URL.USER_SCAN.INDEX);
+        } else {
+            location.replace("/login");
+        }
     }
 });
 

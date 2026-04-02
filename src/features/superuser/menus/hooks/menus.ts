@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import type { MutateParamsType, MutationFunctionType } from "@ozanplanviu/planviu-core";
+import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { deleteMenuUpload, getAllMenus, patchMenuUpload, postMenuUpload } from "../services/menus";
@@ -8,7 +8,7 @@ import type { ResponseWrapper } from "@/types/api";
 import type { TMenus } from "../types/menus";
 
 export const useMenusQuery = (params?: Record<any, any>) => {
-    return useQuery<ResponseWrapper<TMenus[]>>({
+    return useQuery<ResponseWrapper<TPaginationResponseType<TMenus[]>>>({
         queryKey: [QUERY_KEY.MENUS.INDEX, params],
         queryFn: () => getAllMenus(params),
         retry: false,

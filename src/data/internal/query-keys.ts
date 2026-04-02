@@ -9,6 +9,9 @@ export const QUERY_KEY = {
     },
     USERS: {
         INDEX: "users"
+    },
+    SCREEN_TAKEOVER: {
+        INDEX: "screen-takeover"
     }
 }
 

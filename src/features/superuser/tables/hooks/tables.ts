@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import { createTable, createTableBulk, getAllTables } from "../services/tables";
+import { createTable, createTableBulk, deleteTable, getAllTables, updateTable } from "../services/tables";
 import type { ResponseWrapper } from "@/types/api";
 import type { TTables } from "../types/tables";
 
@@ -34,12 +34,14 @@ export const useTablesInfiniteQuery = (params?: Record<any, any>) => {
 
 export const useTablesMutation = ({ onError, onSuccess }: MutationFunctionType<unknown>) => {
     return useMutation({
-        mutationFn: ({ method, data, type }: MutateParamsType & { type: "single" | "bulk" }) => {
+        mutationFn: ({ method, data, type, id }: MutateParamsType & { type: "single" | "bulk" }) => {
             if (method === "POST") {
                 if (type === "bulk") return createTableBulk(data);
                 else return createTable(data);
             } else {
-                return createTable(data)
+                if (method === "DELETE") return deleteTable(id || "");
+
+                return updateTable(id || "", data)
             }
         },
         onSuccess: onSuccess,

@@ -7,6 +7,9 @@ export const APP_URL = {
     USER_HOME: {
         INDEX: "/user/home"
     },
+    USER_SCAN: {
+        INDEX: "/user/scan"
+    },
 
     ADMIN_HOME: {
         INDEX: "/admin/home"
@@ -26,5 +29,11 @@ export const APP_URL = {
     },
     SUPERUSER_MENU: {
         INDEX: "/su/menu"
+    },
+    SUPERUSER_SONG_REQUEST: {
+        INDEX: "/su/song-request"
+    },
+    SUPERUSER_SCREEN_TAKEOVER: {
+        INDEX: "/su/screen-takeover"
     }
 }

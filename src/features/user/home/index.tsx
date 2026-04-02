@@ -9,6 +9,7 @@ import { PiMusicNotesPlus } from "react-icons/pi";
 import LottieMusicWaves from "./components/LottieMusicWaves";
 import CardMenu from "./components/CardMenu";
 import UserContainer from "../shared/components/UserContainer";
+import { STORAGE_KEY } from "@/data/internal/storage";
 
 function HomePage() {
     return (
@@ -26,11 +27,11 @@ function HomePage() {
             {/* welcome */}
             <section className="flex flex-col gap-2 mb-8">
                 <p className="text-gray-500 text-lg font-poppins">Welcome Back,</p>
-                <p className="text-5xl text-white font-bold font-poppins mb-4">Mr. Andrew</p>
+                <p className="text-5xl text-white font-bold font-poppins mb-4">Mr/Ms. {localStorage.getItem(STORAGE_KEY.USER_NAME)}</p>
 
                 {/* table badge */}
                 <div className="px-4 py-1 rounded-full border border-yellow-600/50 w-fit bg-[#281F27] shadow-[0_0_15px_rgba(202,138,4,0.15)]">
-                    <p className="text-yellow-500 font-medium font-poppins">Table 07 - VIP</p>
+                    <p className="text-yellow-500 font-medium font-poppins">Table {localStorage.getItem(STORAGE_KEY.USER_TABLE)} - VIP</p>
                 </div>
             </section>
 

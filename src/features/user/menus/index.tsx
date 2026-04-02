@@ -2,22 +2,21 @@
 
 import { useState } from "react";
 
-import Image from "next/image";
-
-import Link from "next/link";
-
-import { InputAdornment } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 import UserContainer from "../shared/components/UserContainer";
 import UserBackButton from "../shared/components/UserBackButton";
-import CustomTextField from "@/@core/components/mui/TextField";
-import MenuImage from "@/assets/menus/menu-1.jpg";
 import MenuDetailDialog from "./components/MenuDetailDialog";
 import { useColor } from "@/hooks/color";
+import { useMenusQuery } from "@/features/superuser/menus/hooks/menus";
+import { usePromosQuery } from "@/features/superuser/menus/hooks/promos";
 
 function MenuPage() {
     const [open, setOpen] = useState(false);
-    const { OLD_GOLD, DARKBG } = useColor();
+    const { DARKBLUE, GOLD, DARKGRAY } = useColor();
+
+    const { data: menus, isFetching: fetchingMenus } = useMenusQuery();
+    const { data: promos, isFetching: fetchingPromos } = usePromosQuery();
 
     return (
         <>
@@ -28,13 +27,60 @@ function MenuPage() {
                 }}
             />
             <UserContainer>
-                <header className="flex flex-col gap-2 mb-8">
+                <header className="flex flex-col gap-2 mb-16">
                     <UserBackButton href="/user/home" />
                     <p className="font-poppins text-4xl text-gray-300">Select our <span className="font-semibold text-white">best menu</span>, and <span className="font-semibold text-white">enjoy your night</span></p>
                 </header>
 
+                {(!!promos?.data?.results?.length) ? (
+                    <section className="flex flex-col gap-4 mb-8">
+                        <div>
+                            <p className="text-2xl font-semibold text-white">Promo</p>
+                            <p className="text-xs" style={{ color: GOLD }}>Click the promo list to show the promo</p>
+                        </div>
+
+                        {fetchingPromos ? (
+                            <CircularProgress size={18} className="text-white" />
+                        ) : (
+                            <>
+                                {promos?.data?.results?.map((promo, i) => (
+                                    <a href={promo.file_url} target="_blank" key={promo.id} className="block border rounded-xl cursor-pointer" style={{
+                                        backgroundColor: DARKBLUE,
+                                        borderColor: DARKGRAY
+                                    }}>
+                                        <p className="font-poppins text-white py-2 px-4">Promo {i + 1}</p>
+                                    </a>
+                                ))}
+                            </>
+                        )}
+                    </section>
+                ) : null}
+
+                <section className="flex flex-col gap-4">
+                    <div>
+                        <p className="text-2xl font-semibold text-white">Menu</p>
+                        <p className="text-xs" style={{ color: GOLD }}>Click the menu list to show the menu</p>
+                    </div>
+
+                    {fetchingMenus ? (
+                        <CircularProgress size={18} className="text-white" />
+                    ) : (
+                        <>
+                            {menus?.data?.results?.map((menu, i) => (
+                                <a href={menu.file_url} target="_blank" key={menu.id} className="block border rounded-xl cursor-pointer" style={{
+                                    backgroundColor: DARKBLUE,
+                                    borderColor: DARKGRAY
+                                }}>
+                                    <p className="font-poppins text-white py-2 px-4">Menu {i + 1}</p>
+                                </a>
+                            ))}
+                        </>
+                    )}
+
+                </section>
+
                 {/* custom search for user */}
-                <CustomTextField
+                {/* <CustomTextField
                     size="medium"
                     className="text-white bg-gray-300 rounded-lg w-full mb-6"
                     placeholder="Search your favourite menu"
@@ -45,10 +91,10 @@ function MenuPage() {
                             </InputAdornment>
                         )
                     }}
-                />
+                /> */}
 
                 {/* category */}
-                <section className="flex overflow-x-auto gap-2 scrollbar-hide mb-6 sticky -top-6 py-4 px-2 border" style={{
+                {/* <section className="flex overflow-x-auto gap-2 scrollbar-hide mb-6 sticky -top-6 py-4 px-2 border" style={{
                     backgroundColor: DARKBG
                 }}>
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
@@ -56,10 +102,10 @@ function MenuPage() {
                             <p className="text-white">Salad {i}</p>
                         </Link>
                     ))}
-                </section>
+                </section> */}
 
                 {/* menu */}
-                {[1, 2, 3].map(j => (
+                {/* {[1, 2, 3].map(j => (
                     <section key={j} className="grid grid-cols-2 gap-4 mb-8" id={`salad-${j}`}>
                         <p className="col-span-2 font-poppins text-white text-xl">Salad {j}</p>
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
@@ -82,7 +128,7 @@ function MenuPage() {
                             </div>
                         ))}
                     </section>
-                ))}
+                ))} */}
             </UserContainer>
         </>
     )

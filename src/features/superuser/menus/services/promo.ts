@@ -2,8 +2,9 @@ import { API_URL } from "@/data/internal/api-route";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
 import type { TMenus } from "../types/menus";
+import { TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
-export const getAllPromos = (params?: Record<any, any>): Promise<ResponseWrapper<TMenus[]>> => {
+export const getAllPromos = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TMenus[]>>> => {
     return api({
         method: "GET",
         queryParams: params,

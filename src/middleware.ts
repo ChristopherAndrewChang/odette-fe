@@ -8,6 +8,20 @@ import { APP_URL } from "./data/internal/app-route";
 export const middleware = (request: NextRequest) => {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname.startsWith("/login");
+    const isUserPage = pathname.startsWith("/user");
+    const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
+
+    if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
+        return NextResponse.redirect(new URL("/user/home", request.url));
+    } else if (isUserPage && !request.cookies.get(STORAGE_KEY.USER_SESSION)) {
+        if (pathname === "/user/404" || isUserScanPath) {
+            return NextResponse.next();
+        }
+
+        return NextResponse.redirect(new URL("/user/404", request.url));
+    } else if (isUserPage && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
+        return NextResponse.next();
+    }
 
     if (!isLoginPage && !request.cookies.get(STORAGE_KEY.TOKEN)) {
         const loginUrl = new URL("/login", request.url);
