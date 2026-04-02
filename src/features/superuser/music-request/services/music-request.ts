@@ -20,3 +20,11 @@ export const getAllMusicRequest = (params?: Record<any, any>): Promise<ResponseW
         queryParams: params
     });
 }
+
+export const reviewRequest = (id: string, data?: Record<any, any>) => {
+    return api({
+        method: "PATCH",
+        data: data,
+        urlKey: API_URL.SONG_REQUEST.APPROVAL.replace(":id", id),
+    });
+}

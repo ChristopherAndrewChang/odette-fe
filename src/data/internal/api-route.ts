@@ -28,6 +28,7 @@ export const API_URL = {
         INDEX: "/screen/"
     },
     SONG_REQUEST: {
-        INDEX: "/songs/"
+        INDEX: "/songs/",
+        APPROVAL: "/songs/:id/review/"
     }
 }
