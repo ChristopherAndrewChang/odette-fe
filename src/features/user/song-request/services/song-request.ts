@@ -1,10 +1,12 @@
+import type { TPaginationResponseType } from "@ozanplanviu/planviu-core";
+
 import { API_URL } from "@/data/internal/api-route";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
 import type { TMySongReq } from "../types/song-request";
 
-export const getMySongRequest = (params?: Record<any, any>): Promise<ResponseWrapper<TMySongReq[]>> => {
+export const getMySongRequest = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>> => {
     return api({
         method: "GET",
         queryParams: params,

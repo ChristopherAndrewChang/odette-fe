@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 
-import type { MutateParamsType, MutationFunctionType } from "@ozanplanviu/planviu-core";
+import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { getMySongRequest, submitRequest } from "../services/song-request";
@@ -8,7 +8,19 @@ import type { TMySongReq } from "../types/song-request";
 import type { ResponseWrapper } from "@/types/api";
 
 export const useMySongRequestQuery = (params?: Record<any, any>) => {
-    return useQuery<ResponseWrapper<TMySongReq[]>>({
+    return useQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
+        queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX, params],
+        queryFn: () => getMySongRequest(params),
+        retry: false,
+        refetchOnWindowFocus: false,
+        placeholderData: data => data
+    });
+}
+
+export const useMySongRequestInfiniteQuery = (params?: Record<any, any>) => {
+    return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) => lastPage?.data?.next ? allPages?.length + 1 : undefined,
         queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX, params],
         queryFn: () => getMySongRequest(params),
         retry: false,

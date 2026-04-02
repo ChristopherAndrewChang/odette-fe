@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSongRequestMutation } from "../hooks/song-request";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { regNumber } from "@/@pv/utils/validation";
+import { useColor } from "@/hooks/color";
 
 type TSubmitRequestDialog = {
     open: boolean;
@@ -24,6 +25,7 @@ type TRequest = {
 
 function SubmitRequestDialog({ onClose, open }: TSubmitRequestDialog) {
     const queryClient = useQueryClient();
+    const { DARKBLUE } = useColor();
 
     const { control, handleSubmit, reset } = useForm<TRequest>({
         defaultValues: {
@@ -66,6 +68,10 @@ function SubmitRequestDialog({ onClose, open }: TSubmitRequestDialog) {
         <Dialog open={open} onClose={_onClose} fullWidth>
             <DialogTitle>Request A Song</DialogTitle>
             <DialogContent>
+                <div className="p-4 border rounded-xl mb-4" style={{ backgroundColor: DARKBLUE }}>
+                    <p className="text-white font-poppins text-sm">You can only make a maximum of 5 song requests per session</p>
+                </div>
+
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
                     <PvInput
                         control={control}
@@ -83,15 +89,19 @@ function SubmitRequestDialog({ onClose, open }: TSubmitRequestDialog) {
                             required: { value: true, message: "This field is required" },
                         }}
                     />
-                    <PvInput
-                        control={control}
-                        name="donation_amount"
-                        label="Donation Amount"
-                        rules={{
-                            required: { value: true, message: "This field is required" },
-                            pattern: { value: regNumber, message: "Invalid Number" }
-                        }}
-                    />
+
+                    <div>
+                        <PvInput
+                            control={control}
+                            name="donation_amount"
+                            label="Donation Amount (Rp)"
+                            rules={{
+                                required: { value: true, message: "This field is required" },
+                                pattern: { value: regNumber, message: "Invalid Number" }
+                            }}
+                        />
+                        <p className="text-xs mt-1 italic">*minimum donation is Rp10.000</p>
+                    </div>
                     <PvButtonForm
                         variant="modal"
                         isPending={isPending}
