@@ -1,10 +1,10 @@
 import React from 'react'
 
-import UsersPage from '@/features/superuser/users'
+import DjMusicRequest from '@/features/dj/music-request'
 
 function page() {
     return (
-        <UsersPage />
+        <DjMusicRequest />
     )
 }
 

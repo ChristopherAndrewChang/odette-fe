@@ -1,15 +1,17 @@
 "use client";
 
+import { useState } from "react";
+
 import { getErrorMessage, PvTable } from "@ozanplanviu/planviu-core";
 
 import toast from "react-hot-toast";
+
+import type { GridPaginationModel } from "@mui/x-data-grid";
 
 import { usePromosQuery } from "../../hooks/promos";
 import { columns } from "../../columns";
 import { MenuMapper } from "../../mapper";
 import { useMenuMutation } from "../../hooks/menus";
-import { useState } from "react";
-import { GridPaginationModel } from "@mui/x-data-grid";
 
 type TPromoTable = {
     onAdd: () => void;

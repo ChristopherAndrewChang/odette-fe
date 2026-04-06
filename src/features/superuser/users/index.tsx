@@ -1,15 +1,22 @@
 "use client";
 
-import AppLayout from "@/components/internal/AppLayout";
+import { useState } from "react";
+
 import { PvTable } from "@ozanplanviu/planviu-core";
+
+import type { GridPaginationModel } from "@mui/x-data-grid";
+
+import AppLayout from "@/components/internal/AppLayout";
 import { columns } from "./columns";
 import { useUsersQuery } from "./hooks/users";
-import { useState } from "react";
-import { GridPaginationModel } from "@mui/x-data-grid";
+
+
+
 import CreateUserDialog from "./components/CreateUserDialog";
 
 function UsersPage() {
     const [openCreateUser, setOpenCreateUser] = useState(false);
+
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
         page: 0,
         pageSize: 10

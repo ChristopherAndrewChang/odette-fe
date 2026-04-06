@@ -42,7 +42,7 @@ function MusicRequestManagement() {
         ...filterParams
     });
 
-    // [CRITICAL]-TODO: ketika status terapplied, date filter tidak jalan
+
     return (
         <>
             <DateFilter
@@ -83,7 +83,7 @@ function MusicRequestManagement() {
                                 options: [
                                     { label: "Pending", value: "pending" },
                                     { label: "Approved", value: "approved" },
-                                    { label: "Rejected", value: "rejected" }
+                                    { label: "Rejected", value: "rejected" },
                                 ]
                             },
                             {

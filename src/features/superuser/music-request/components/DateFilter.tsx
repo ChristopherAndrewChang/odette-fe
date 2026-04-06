@@ -23,14 +23,11 @@ function DateFilter({ onClose, open }: TDateFilter) {
                     selected={getParam("date") ? dayjs(getParam("date")).toDate() : null}
                     inline
                     onChange={(value: any) => {
-                        console.log("trigger ga?");
-
                         updateParams({
                             add: {
                                 date: dayjs(value).format("YYYY-MM-DD")
                             }
                         });
-                        onClose();
                     }}
                 />
 
@@ -38,7 +35,6 @@ function DateFilter({ onClose, open }: TDateFilter) {
                     variant="outlined"
                     onClick={() => {
                         removeParam("date");
-                        onClose();
                     }}
                 >Clear</Button>
             </DialogContent>

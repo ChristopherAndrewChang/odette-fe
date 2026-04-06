@@ -1,9 +1,13 @@
-import { QUERY_KEY } from "@/data/internal/query-keys";
 import { useMutation, useQuery } from "@tanstack/react-query"
+
+import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
+
+import { QUERY_KEY } from "@/data/internal/query-keys";
 import { getAllUsers, patchUsers, postAddUser } from "../services/users";
-import { ResponseWrapper } from "@/types/api";
-import { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
-import { TUsers } from "../types/users";
+import type { ResponseWrapper } from "@/types/api";
+
+
+import type { TUsers } from "../types/users";
 
 export const useUsersQuery = (params?: Record<any, any>) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TUsers[]>>>({

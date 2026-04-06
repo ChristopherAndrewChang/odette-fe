@@ -1,10 +1,10 @@
 import React from 'react'
 
-import UsersPage from '@/features/superuser/users'
+import DjHomePage from '@/features/dj/home'
 
 function page() {
     return (
-        <UsersPage />
+        <DjHomePage />
     )
 }
 

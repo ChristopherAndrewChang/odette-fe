@@ -1,5 +1,6 @@
+import type { GridColDef } from "@mui/x-data-grid";
+
 import ColumnSwitch from "@/components/internal/ColumnSwitch";
-import { GridColDef } from "@mui/x-data-grid";
 import { useUsersMutation } from "./hooks/users";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 

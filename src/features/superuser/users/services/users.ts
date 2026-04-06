@@ -1,8 +1,9 @@
+import type { TPaginationResponseType } from "@ozanplanviu/planviu-core";
+
 import { API_URL } from "@/data/internal/api-route";
-import { ResponseWrapper } from "@/types/api";
+import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
-import { TPaginationResponseType } from "@ozanplanviu/planviu-core";
-import { TUsers } from "../types/users";
+import type { TUsers } from "../types/users";
 
 export const getAllUsers = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TUsers[]>>> => {
     return api({
