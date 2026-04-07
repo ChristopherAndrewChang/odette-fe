@@ -6,7 +6,7 @@ import { PvTable, useQueryParams } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
-import { Tooltip, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 import classNames from "classnames";
 
@@ -60,7 +60,8 @@ function MusicRequestManagement() {
                     });
                 }}
                 open={openApproval.cond}
-                type={openApproval.type}
+
+                // type={openApproval.type}
                 id={openApproval.id}
             />
             <AppLayout title="Song Request">
@@ -73,6 +74,13 @@ function MusicRequestManagement() {
                     containerProps={{
                         variant: "outlined"
                     }}
+                    onRowClick={(params) => {
+                        setOpenApproval({
+                            cond: true,
+                            id: params?.id?.toString(),
+                            type: "approved"
+                        });
+                    }}
                     filterProps={{
                         appliedCount: filterAppliedCount,
                         filterItems: [
@@ -82,8 +90,10 @@ function MusicRequestManagement() {
                                 valueKey: "status",
                                 options: [
                                     { label: "Pending", value: "pending" },
-                                    { label: "Approved", value: "approved" },
-                                    { label: "Rejected", value: "rejected" },
+                                    { label: "Admin Approved", value: "admin_approved" },
+                                    { label: "Admin Rejected", value: "admin_rejected" },
+                                    { label: "DJ Approved", value: "dj_approved" },
+                                    { label: "DJ Rejected", value: "dj_rejected" },
                                 ]
                             },
                             {
@@ -122,42 +132,43 @@ function MusicRequestManagement() {
                     showProps={{
                         hide: true
                     }}
-                    actionsSlots={(id) => [
-                        {
-                            renderAction: (
-                                <Tooltip title="Approve" enterDelay={250}>
-                                    <div
-                                        onClick={() => {
-                                            setOpenApproval({
-                                                cond: true,
-                                                id: id?.toString(),
-                                                type: "approved"
-                                            });
-                                        }}
-                                        className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-green-500">
-                                        <i className="tabler-check text-lg text-white"></i>
-                                    </div>
-                                </Tooltip>
-                            )
-                        },
-                        {
-                            renderAction: (
-                                <Tooltip title="Rejected" enterDelay={250}>
-                                    <div
-                                        onClick={() => {
-                                            setOpenApproval({
-                                                cond: true,
-                                                id: id?.toString(),
-                                                type: "rejected"
-                                            });
-                                        }}
-                                        className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-red-500">
-                                        <i className="tabler-x text-lg text-white"></i>
-                                    </div>
-                                </Tooltip>
-                            )
-                        }
-                    ]}
+
+                // actionsSlots={(id) => [
+                //     {
+                //         renderAction: (
+                //             <Tooltip title="Approve" enterDelay={250}>
+                //                 <div
+                //                     onClick={() => {
+                //                         setOpenApproval({
+                //                             cond: true,
+                //                             id: id?.toString(),
+                //                             type: "approved"
+                //                         });
+                //                     }}
+                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-green-500">
+                //                     <i className="tabler-check text-lg text-white"></i>
+                //                 </div>
+                //             </Tooltip>
+                //         )
+                //     },
+                //     {
+                //         renderAction: (
+                //             <Tooltip title="Rejected" enterDelay={250}>
+                //                 <div
+                //                     onClick={() => {
+                //                         setOpenApproval({
+                //                             cond: true,
+                //                             id: id?.toString(),
+                //                             type: "rejected"
+                //                         });
+                //                     }}
+                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-red-500">
+                //                     <i className="tabler-x text-lg text-white"></i>
+                //                 </div>
+                //             </Tooltip>
+                //         )
+                //     }
+                // ]}
                 />
             </AppLayout>
         </>

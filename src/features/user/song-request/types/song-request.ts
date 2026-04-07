@@ -8,4 +8,6 @@ export type TMySongReq = {
     table_number: number;
     reviewed_at: null;
     created_at: string;
+    admin_reviewed_at: string | null;
+    dj_reviewed_at: string | null;
 }

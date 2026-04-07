@@ -39,8 +39,8 @@ importers:
         specifier: ^8.10.0
         version: 8.28.1(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@mui/material@5.16.4(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@5.18.0(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ozanplanviu/planviu-core':
-        specifier: 1.8.7
-        version: 1.8.7(0f7e620abc34c27453f0b58d017fad2b)
+        specifier: 1.9.2
+        version: 1.9.2(0f7e620abc34c27453f0b58d017fad2b)
       '@tanstack/react-query':
         specifier: ^5.95.2
         version: 5.96.0(react@18.3.1)
@@ -805,8 +805,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@ozanplanviu/planviu-core@1.8.7':
-    resolution: {integrity: sha512-nyy0xIJchKOs50o8Ae4Arp/hXf3+fVEswirCV9rRT57smBPSKL5WT+Eqoi6I+k9S71DurZw+O2dwbrR2ollmmw==, tarball: https://npm.pkg.github.com/download/@ozanplanviu/planviu-core/1.8.7/a644f37b8e1b8c4d5f029acce7e0e0ee48436b7c}
+  '@ozanplanviu/planviu-core@1.9.2':
+    resolution: {integrity: sha512-rs/OnReCxQlnshMCEKlVLGuxeFknTeBTOGG83qiQzvuA1Qnm1agtTh41uTd4lJMiXmWZE2SfgXP3YttGVNf8IA==, tarball: https://npm.pkg.github.com/download/@ozanplanviu/planviu-core/1.9.2/a091a66eedccc7cd058621f6af87f04b7eb4c027}
     peerDependencies:
       '@emotion/react': 11.13.0
       '@emotion/styled': 11.13.0
@@ -3679,7 +3679,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.1
 
-  '@ozanplanviu/planviu-core@1.8.7(0f7e620abc34c27453f0b58d017fad2b)':
+  '@ozanplanviu/planviu-core@1.9.2(0f7e620abc34c27453f0b58d017fad2b)':
     dependencies:
       '@emotion/react': 11.13.0(@types/react@18.3.28)(react@18.3.1)
       '@emotion/styled': 11.13.0(@emotion/react@11.13.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1)

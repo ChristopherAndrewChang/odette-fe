@@ -30,6 +30,6 @@ export const API_URL = {
     },
     SONG_REQUEST: {
         INDEX: "/songs/",
-        APPROVAL: "/songs/:id/review/"
+        APPROVAL: "/songs/:id/admin-review/"
     }
 }
