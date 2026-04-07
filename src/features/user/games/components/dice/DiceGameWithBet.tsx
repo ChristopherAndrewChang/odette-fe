@@ -8,9 +8,9 @@ import UserBackButton from "@/features/user/shared/components/UserBackButton";
 import type { TPhase } from "./Character";
 import Character from "./Character";
 import { Dice } from "./Dice";
+import ResultBanner from "./ResultBanner";
 import Lantern from "./Lantern";
 import { useColor } from "@/hooks/color";
-import ResultBannerNoBet from "./ResultBannerNoBet";
 
 type TOptionData = { zh: string; label: string; startValue: number; endValue: number; color: string; }
 
@@ -44,14 +44,22 @@ const getCategoryBySumValue = (sumValue: number) => {
     return category;
 }
 
-function DiceGame() {
+function DiceGameWithBet() {
     const [phase, setPhase] = useState<TPhase>("idle");
     const [showingValueDice, setShowingValueDice] = useState(1);
     const [value, setValue] = useState<number[]>([0, 0]);
+    const [bet, setBet] = useState<TOptionData | null>(null);
+    const [showShouldBetMsg, setShouldBetMsg] = useState(false);
 
     const rollAudio = useRef<HTMLAudioElement | null>(null);
 
-    const { OLD_GOLD, DARKBG, GOLD, DARKRED, RED } = useColor();
+    const { OLD_GOLD, DARKBG, GRAY, GOLD, DARKRED, RED } = useColor();
+
+    const onReset = () => {
+        setValue([0, 0]);
+        setPhase("idle");
+        setShowingValueDice(1);
+    }
 
     const sumValues = value[0] + value[1];
 
@@ -72,8 +80,15 @@ function DiceGame() {
     const getRandomDice2 = Math.floor(Math.random() * 6) + 1;
 
     const onShake = () => {
+        if (!bet) {
+            setShouldBetMsg(true);
+
+            return;
+        }
+
         rollAudio?.current?.play()?.catch(() => { });
 
+        setShouldBetMsg(false);
         setValue([0, 0]);
         setPhase("shake");
         setShowingValueDice(2);
@@ -110,6 +125,16 @@ function DiceGame() {
         }
     }, [phase]);
 
+    useEffect(() => {
+        if (!!bet) {
+            setShouldBetMsg(false);
+        }
+    }, [bet]);
+
+    useEffect(() => {
+        console.log("bet-value", bet);
+    }, [bet]);
+
     return (
         <>
             <div className="mb-6">
@@ -134,10 +159,11 @@ function DiceGame() {
                     <Character phase={phase} />
 
                     {(phase === "release" || phase === "celebrate") ? (
-                        <ResultBannerNoBet
+                        <ResultBanner
                             result={sumValues}
                             category={getCategoryBySumValue(sumValues)}
                             color={getColorBySumValue(sumValues)}
+                            bet={bet?.label || ""}
                         />
                     ) : null}
                     <div className="flex flex-col gap-1">
@@ -157,15 +183,26 @@ function DiceGame() {
 
                 <section className="my-8 grid grid-cols-3 gap-2">
                     <div className="col-span-3">
-                        <p className="font-poppins text-gray-500">The Options</p>
+                        <p className="font-poppins text-gray-500">Place your bet</p>
                     </div>
                     {OPTION_DATA.map((opt, i) => (
                         <div
                             onClick={() => {
                                 if (phase !== "idle") return;
+
+                                if (bet?.label === opt.label) {
+                                    setBet(null);
+                                } else {
+                                    setBet(opt);
+                                }
                             }}
                             key={i}
-                            className={classNames("p-4 rounded-xl border flex flex-col gap-2 border-gray-900")}
+                            className={classNames("p-4 rounded-xl border flex flex-col gap-2")}
+                            style={{
+                                color: (bet?.label === opt.label) ? opt.color : GRAY,
+                                borderColor: (bet?.label === opt.label) ? opt.color : `${GRAY}50`,
+                                backgroundColor: (bet?.label === opt.label) ? `${opt.color}50` : ""
+                            }}
                         >
                             <p className="text-center text-4xl font-semibold">{opt.zh}</p>
                             <p className="font-semibold text-center">{opt.label}</p>
@@ -176,6 +213,7 @@ function DiceGame() {
 
                 <section>
                     <div
+                        key={bet?.zh}
                         onClick={((phase === "idle" || phase === "celebrate")) ? onShake : () => { }}
                         className={classNames(
                             "p-4 rounded-xl border mb-4 text-white font-medium text-xl font-poppins text-center flex justify-center gap-4",
@@ -193,10 +231,19 @@ function DiceGame() {
                             "active:translate-y-[6px] active:shadow-[0_0px_0_#030712]",
                         )}
                         style={{
-                            backgroundImage: ((phase === "idle" || phase === "celebrate")) ? `linear-gradient(to right, ${DARKRED}, ${RED})` : DARKBG,
+                            backgroundImage: ((phase === "idle" || phase === "celebrate") && !!bet) ? `linear-gradient(to right, ${DARKRED}, ${RED})` : DARKBG,
+                            color: (!!bet) ? "white" : GRAY,
                         }}
                     >
-                        摇 ROLL 摇
+                        {showShouldBetMsg ? "Pilih tebakan terlebih dahulu" : "摇 ROLL 摇"}
+                    </div>
+
+                    <div
+                        onClick={onReset}
+                        className="bg-gray-800 p-4 rounded-xl border" style={{
+                            boxShadow: "10px 10px #030712"
+                        }}>
+                        <p className="text-white font-medium text-xl font-poppins text-center">Reset</p>
                     </div>
                 </section>
             </div>
@@ -204,4 +251,4 @@ function DiceGame() {
     )
 }
 
-export default DiceGame
+export default DiceGameWithBet;

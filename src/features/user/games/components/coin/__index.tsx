@@ -8,14 +8,14 @@ import { useColor } from "@/hooks/color";
 import CoinSVG from "./Coin";
 import CartoonCharacter from "./CartoonCharacter";
 import UserBackButton from "@/features/user/shared/components/UserBackButton";
-import ResultLabelNoBet from "./ResultLabelNoBet";
+import ResultLabel from "./ResultLabel";
 
 const OPTIONS_BET: { label: string; key: "heads" | "tails" }[] = [
     { label: "Head", key: "heads" },
     { label: "Tail", key: "tails" }
 ]
 
-function CoinGames() {
+function CoinGamesWithBet() {
     const [phase, setPhase] = useState<"idle" | "windup" | "throw" | "flying" | "land" | "result">("idle");
 
     const [coinPos, setCoinPos] = useState({ x: 180, y: 100 });
@@ -25,14 +25,31 @@ function CoinGames() {
     const rafRef = useRef<number>(0);
     const startTimeRef = useRef<number>(0);
 
+    const [bet, setBet] = useState<"heads" | "tails" | null>(null);
+    const [showWarningNoBet, setShowWarningNoBet] = useState(false);
+
     const { OLD_GOLD, GOLD, GRAY, DARKGRAY, DARKBG } = useColor();
 
     const onClickFlip = () => {
         if (phase !== "idle") return;
 
+        if (!bet) {
+            setShowWarningNoBet(true);
+
+            return;
+        }
+
         setResult(null);
         setPhase("windup");
     }
+
+    useEffect(() => {
+        if (!!bet) {
+            setShowWarningNoBet(false);
+        }
+
+
+    }, [bet]);
 
     useEffect(() => {
         if (phase === "windup") {
@@ -143,8 +160,9 @@ function CoinGames() {
                         showCoinInHand={phase === "idle" || phase === "windup"}
                     />
 
-                    {(!!result && (phase === "result")) ? (
-                        <ResultLabelNoBet
+                    {(!!bet && !!result && (phase === "result")) ? (
+                        <ResultLabel
+                            bet={bet}
                             result={result}
                             showResult={!!result}
                         />
@@ -176,20 +194,20 @@ function CoinGames() {
                     {OPTIONS_BET?.map(opt => (
                         <div
                             key={opt.key}
+                            onClick={() => {
+                                if (phase !== "idle") return;
 
-                            // onClick={() => {
-                            //     if (phase !== "idle") return;
-
-                            //     if (bet === opt.key) {
-                            //         setBet(null);
-                            //     } else {
-                            //         setBet(opt.key);
-                            //     }
-                            // }}
+                                if (bet === opt.key) {
+                                    setBet(null);
+                                } else {
+                                    setBet(opt.key);
+                                }
+                            }}
                             className="p-4 rounded-xl"
                             style={{
-                                borderWidth: 0.1,
-                                borderColor: GRAY
+                                backgroundColor: (bet === opt.key) ? OLD_GOLD : DARKBG,
+                                borderColor: (bet === opt.key) ? GOLD : GRAY,
+                                borderWidth: 0.1
                             }}
                         >
                             <p className="font-poppins text-xl text-center text-white">{opt.label}</p>
@@ -198,8 +216,9 @@ function CoinGames() {
                 </section>
 
                 {/* button flip section */}
-                <section key={phase}>
+                <section>
                     <div
+                        key={`${bet}-${phase}`}
                         onClick={onClickFlip}
                         className={classNames(
                             "px-4 py-4 rounded-xl",
@@ -217,13 +236,16 @@ function CoinGames() {
                             "active:translate-y-[6px] active:shadow-[0_0px_0_#030712]",
                         )}
                         style={{
-                            backgroundImage: ((phase === "idle")) ? `linear-gradient(to right, ${OLD_GOLD}, ${GOLD}, ${GOLD}, ${GOLD}, ${OLD_GOLD})` : DARKBG
+                            backgroundImage: (!!bet && (phase === "idle")) ? `linear-gradient(to right, ${OLD_GOLD}, ${GOLD}, ${GOLD}, ${GOLD}, ${OLD_GOLD})` : DARKBG
                         }}
                     >
                         <p className={classNames("font-charon text-center font-semibold", {
-                            "text-black": (phase === "idle"),
+                            "text-black": !!bet && (phase === "idle"),
+                            "text-gray-600": !bet,
+                            "text-2xl": !showWarningNoBet,
+                            "text-lg !text-gray-600": showWarningNoBet
                         })}>
-                            FLIP COIN
+                            {!showWarningNoBet ? "FLIP COIN!" : "Yuk, pilih tebakanmu dulu"}
                         </p>
                     </div>
                 </section>
@@ -232,4 +254,4 @@ function CoinGames() {
     )
 }
 
-export default CoinGames;
+export default CoinGamesWithBet;
