@@ -52,7 +52,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
     const { mutate, isPending } = useGenerateTableQRMutation({
         onSuccess: (res) => {
             toast.success("Success");
-            handleFileResponse(res.data);
+            handleFileResponse(res.data, "image/png");
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));
