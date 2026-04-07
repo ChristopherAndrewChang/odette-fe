@@ -1,6 +1,4 @@
-import type { TMySongReq } from "./types/song-request";
-
-export const dummyMySongReq: TMySongReq[] = [
+export const dummyMySongReq: any[] = [
     {
         id: 1,
         song_title: "Perfect",

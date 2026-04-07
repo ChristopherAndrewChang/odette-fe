@@ -6,7 +6,6 @@ import { getErrorMessage } from "@ozanplanviu/planviu-core";
 import toast from "react-hot-toast";
 
 import { useGenerateTableQRMutation } from "../../hooks/qr";
-import { handleFileResponse } from "@/utils/file";
 
 type TGenerateSingleQRDialog = {
     open: boolean;
@@ -19,9 +18,9 @@ type TGenerateSingleQRDialog = {
 
 function GenerateSingleQRDialog({ onClose, open, data }: TGenerateSingleQRDialog) {
     const { mutate, isPending } = useGenerateTableQRMutation({
-        onSuccess: (res) => {
+        onSuccess: () => {
             // TODO: make function untuk handle download/view file/gambar => taruh di planviu-core aja
-            handleFileResponse(res.data);
+            // handleFileResponse(res.data, );
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));
