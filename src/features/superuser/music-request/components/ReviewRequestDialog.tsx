@@ -46,27 +46,31 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth>
-            <DialogTitle>Confirmation</DialogTitle>
+            <DialogTitle>Approval</DialogTitle>
             <DialogContent>
+
+                <p className="font-poppins text-gray-600 mb-4">Select your action below, either APPROVE or REJECT</p>
 
                 <div className="flex gap-2">
                     <Button
                         onClick={() => {
                             onSubmit("admin_rejected");
                         }}
+                        disabled={isPending}
                         color="error"
                         variant="contained" startIcon={<i className="tabler-x"></i>}>
-                        {isPending ? <CircularProgress size={16} className="text-white" /> : "Reject"}
+                        {isPending ? <CircularProgress size={20} className="text-white" /> : "Reject"}
                     </Button>
                     <Button
                         onClick={() => {
                             onSubmit("admin_approved");
                         }}
+                        disabled={isPending}
                         color="success"
                         variant="contained"
                         startIcon={<i className="tabler-check"></i>}
                     >
-                        {isPending ? <CircularProgress size={16} className="text-white" /> : "Approve"}
+                        {isPending ? <CircularProgress size={20} className="text-white" /> : "Approve"}
                     </Button>
                 </div>
                 {/* <Typography>Are you sure to {(type === "approved") ? "approve" : "reject"} this request?</Typography>
