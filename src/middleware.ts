@@ -11,9 +11,10 @@ export const middleware = (request: NextRequest) => {
     const isUserPage = pathname.startsWith("/user");
     const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
 
-    if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
-        return NextResponse.redirect(new URL("/user/home", request.url));
-    } else if (isUserPage && !request.cookies.get(STORAGE_KEY.USER_SESSION)) {
+    // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
+    //     return NextResponse.redirect(new URL("/user/home", request.url));
+    // } else 
+    if (isUserPage && !request.cookies.get(STORAGE_KEY.USER_SESSION)) {
         if (pathname === "/user/404" || isUserScanPath) {
             return NextResponse.next();
         }

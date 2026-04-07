@@ -16,6 +16,14 @@ function ListMyScreenTakeover() {
         )
     }
 
+    if (data?.data?.count === 0) {
+        return (
+            <div className="w-full h-16 flex items-center justify-center bg-gray-800 rounded-lg border border-gray-600">
+                <p className="text-gray-400">Data not found</p>
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-col gap-4">
             {data?.data?.results?.map((screen) => (

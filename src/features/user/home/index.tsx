@@ -1,27 +1,31 @@
 "use client";
 
-import { HiSparkles } from "react-icons/hi";
-
-import { LuDices, LuMonitor, LuUtensilsCrossed, LuMusic } from "react-icons/lu";
+import { LuDices, LuMonitor, LuUtensilsCrossed } from "react-icons/lu";
 
 import { PiMusicNotesPlus } from "react-icons/pi";
 
-import LottieMusicWaves from "./components/LottieMusicWaves";
 import CardMenu from "./components/CardMenu";
 import UserContainer from "../shared/components/UserContainer";
 import { STORAGE_KEY } from "@/data/internal/storage";
+import Logo from "@/components/layout/shared/Logo";
 
 function HomePage() {
     return (
         <UserContainer>
             {/* velvet header */}
-            <div className="flex items-center gap-2 mb-8">
+            {/* <div className="flex items-center gap-2 mb-8">
                 <HiSparkles className="text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
                 <p
                     className="text-yellow-400 text-lg font-bold font-poppins drop-shadow-[0_0_5px_rgba(250,204,21,0.3)]"
                     style={{ letterSpacing: 8 }}
-                >VELVET</p>
+                >ODETTE</p>
                 <HiSparkles className="text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]" />
+            </div> */}
+
+            <div className="mb-8 flex justify-center">
+                <Logo
+                    noText
+                />
             </div>
 
             {/* welcome */}
@@ -31,7 +35,7 @@ function HomePage() {
 
                 {/* table badge */}
                 <div className="px-4 py-1 rounded-full border border-yellow-600/50 w-fit bg-[#281F27] shadow-[0_0_15px_rgba(202,138,4,0.15)]">
-                    <p className="text-yellow-500 font-medium font-poppins">Table {localStorage.getItem(STORAGE_KEY.USER_TABLE)} - VIP</p>
+                    <p className="text-yellow-500 font-medium font-poppins">Table {localStorage.getItem(STORAGE_KEY.USER_TABLE)}</p>
                 </div>
             </section>
 
@@ -73,14 +77,14 @@ function HomePage() {
                 />
 
                 {/* card now playing */}
-                <div className="flex flex-col gap-1 bg-gradient-to-r from-[#171723] to-[#161723] p-4 rounded-2xl border border-gray-800 col-span-2 shadow-lg shadow-black/50">
+                {/* <div className="flex flex-col gap-1 bg-gradient-to-r from-[#171723] to-[#161723] p-4 rounded-2xl border border-gray-800 col-span-2 shadow-lg shadow-black/50">
                     <div className="flex items-center gap-2 mb-1">
                         <LuMusic className="text-gray-400 animate-pulse" />
                         <p className="text-gray-500 cursor-pointer font-poppins text-sm uppercase tracking-wider">Now Playing</p>
                     </div>
                     <p className="text-lg font-poppins font-semibold text-white">The Beatles - Hey Jude</p>
                     <LottieMusicWaves />
-                </div>
+                </div> */}
             </section>
         </UserContainer>
     )

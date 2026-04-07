@@ -35,7 +35,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
 
         if (isTableSelected(tableId)) {
             setTableIdsSelected(0);
-        } else if (!tableIdsSelected) {
+        } else {
             setTableIdsSelected(tableId);
         }
 
@@ -93,7 +93,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
 
     return (
         <Dialog open={open} onClose={_onClose} fullWidth>
-            <DialogTitle>Generate QR Tables (Bulk)</DialogTitle>
+            <DialogTitle>Generate QR Table</DialogTitle>
             <DialogContent>
                 {/* all table selection */}
                 <div className="p-4 mb-4 border rounded-lg flex items-center gap-2">
@@ -113,7 +113,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
                                     }
                                 }}
                                 className={classNames("p-4 border border-blue-100 flex items-center justify-center rounded-lg cursor-pointer hover:border-blue-300 transition-all", {
-                                    "!bg-gray-200 !border-gray-200 !cursor-not-allowed": !tableData?.is_active || !!isAllTables || (!!tableIdsSelected && (!isTableSelected(tableData.id))),
+                                    "!bg-gray-200 !border-gray-200 !cursor-not-allowed": !tableData?.is_active || !!isAllTables,
                                     "!bg-blue-100": isTableSelected(tableData.id)
                                 })}
                             >
