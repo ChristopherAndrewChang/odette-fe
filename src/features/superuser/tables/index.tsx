@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Button, Tooltip, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { getErrorMessage, PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
@@ -19,6 +19,7 @@ import { useDebounce } from "@/@pv/hooks/use-debounce";
 import GenerateSingleQRDialog from "./components/qr/GenerateSingleQRDialog";
 import GenerateBulkQRDialog from "./components/qr/GenerateBulkQRDialog";
 import EditTableDialog from "./components/edit/EditTableDialog";
+import AppLayout from "@/components/internal/AppLayout";
 import type { TTables } from "./types/tables";
 
 function TablesManagement() {
@@ -124,8 +125,7 @@ function TablesManagement() {
                 }}
             />
 
-            <div className='bg-white p-6 rounded-lg border'>
-                <Typography className="text-xl mb-6 font-poppins text-black">Table Management</Typography>
+            <AppLayout title="Table Management">
                 <PvTable
                     loading={isFetching}
                     columns={columns || []}
@@ -187,29 +187,30 @@ function TablesManagement() {
                             });
                         }
                     }}
-                    actionsSlots={(id, row) => {
-                        const rowData = row as ReturnType<typeof TablesMapper>[number];
 
-                        return [
-                            {
-                                renderAction: (
-                                    <Tooltip title="Generate QR" enterDelay={200}>
-                                        <div
-                                            onClick={() => {
-                                                setQrTable({
-                                                    cond: true,
-                                                    id: Number(id),
-                                                    table: Number(rowData?.number)
-                                                });
-                                            }}
-                                            className="w-6 h-6 bg-green-500 rounded-lg flex items-center justify-center cursor-pointer">
-                                            <i className="tabler-qrcode text-base text-white"></i>
-                                        </div>
-                                    </Tooltip>
-                                )
-                            }
-                        ]
-                    }}
+                    // actionsSlots={(id, row) => {
+                    //     const rowData = row as ReturnType<typeof TablesMapper>[number];
+
+                    //     return [
+                    //         {
+                    //             renderAction: (
+                    //                 <Tooltip title="Generate QR" enterDelay={200}>
+                    //                     <div
+                    //                         onClick={() => {
+                    //                             setQrTable({
+                    //                                 cond: true,
+                    //                                 id: Number(id),
+                    //                                 table: Number(rowData?.number)
+                    //                             });
+                    //                         }}
+                    //                         className="w-6 h-6 bg-green-500 rounded-lg flex items-center justify-center cursor-pointer">
+                    //                         <i className="tabler-qrcode text-base text-white"></i>
+                    //                     </div>
+                    //                 </Tooltip>
+                    //             )
+                    //         }
+                    //     ]
+                    // }}
                     additionalMenu={[
                         {
                             renderMenu: (
@@ -219,7 +220,7 @@ function TablesManagement() {
                                     onClick={() => {
                                         setOpenBulkGenerateTableQR(true);
                                     }}
-                                >Generate QR (Bulk)</Button>
+                                >Generate QR Table</Button>
                             )
                         },
                         {
@@ -246,7 +247,7 @@ function TablesManagement() {
                         }
                     ]}
                 />
-            </div>
+            </AppLayout>
         </>
     )
 }
