@@ -6,6 +6,7 @@ import UserBackButton from "../shared/components/UserBackButton";
 import UserContainer from "../shared/components/UserContainer";
 import DrawerScreenTakeover from "./components/DrawerScreenTakeover";
 import ScreenTakeoverForm from "./components/ScreenTakeoverForm";
+import HistoryButton from "../shared/components/HistoryButton";
 
 function ScreenTakeover() {
     // const [tabValue, setTabValue] = useState("list");
@@ -31,15 +32,11 @@ function ScreenTakeover() {
                         <UserBackButton href="/user/home" />
 
                         {/* history button */}
-                        <div
+                        <HistoryButton
                             onClick={() => {
                                 setOpenDrawer(true);
                             }}
-                            className="border border-gray-500 py-1 px-4 rounded-lg flex items-center gap-2 mb-4"
-                        >
-                            <i className="tabler-history text-gray-300 text-lg"></i>
-                            <p className="text-gray-300 font-poppins">History</p>
-                        </div>
+                        />
                     </div>
                     <p className="text-white font-poppins font-semibold text-center text-3xl">Screen Takeover</p>
                 </header>
