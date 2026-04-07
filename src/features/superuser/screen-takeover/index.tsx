@@ -13,10 +13,13 @@ import { columns } from "./columns";
 
 import { useFilter } from "@/@pv/hooks/use-filter";
 
-
 import ReviewRequestDialog from "./components/ReviewRequestDialog";
+import DateFilter from "../shared/components/DateFilter";
+import DateFilterButton from "../shared/components/DateFilterButton";
 
 function ScreenTakeoverPage() {
+    const [dateOpen, setDateOpen] = useState(false);
+
     const [pagination, setPagination] = useState<GridPaginationModel>({
         page: 0,
         pageSize: 10
@@ -28,7 +31,7 @@ function ScreenTakeoverPage() {
         type: "approved"
     });
 
-    const { filterAppliedCount, filterParams } = useFilter(["status"]);
+    const { filterAppliedCount, filterParams } = useFilter(["status", "date"]);
 
     const { data, isFetching } = useScreenTakeoverQuery({
         page: pagination?.page + 1,
@@ -37,6 +40,12 @@ function ScreenTakeoverPage() {
 
     return (
         <>
+            <DateFilter
+                open={dateOpen}
+                onClose={() => {
+                    setDateOpen(false);
+                }}
+            />
             <ReviewRequestDialog
                 id={openApproval?.id}
                 open={openApproval?.cond}
@@ -72,6 +81,18 @@ function ScreenTakeoverPage() {
                                     { label: "Approved", value: "approved" },
                                     { label: "Rejected", value: "rejected" },
                                 ]
+                            },
+                            {
+                                label: "Date",
+                                type: "custom",
+                                valueKey: "date",
+                                renderFilter: (
+                                    <DateFilterButton
+                                        onClick={() => {
+                                            setDateOpen(true);
+                                        }}
+                                    />
+                                )
                             }
                         ]
                     }}
