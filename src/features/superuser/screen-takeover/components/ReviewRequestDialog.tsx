@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle } from "@mui/material";
 
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,11 +13,12 @@ import { useScreenTakeoverApprovalMutation } from "../hooks/screen-takeover";
 type TReviewRequestDialog = {
     open: boolean;
     onClose: () => void;
-    type: "approved" | "rejected";
+
+    // type: "approved" | "rejected";
     id: string;
 }
 
-function ReviewRequestDialog({ onClose, open, type, id }: TReviewRequestDialog) {
+function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useScreenTakeoverApprovalMutation({
@@ -33,7 +34,7 @@ function ReviewRequestDialog({ onClose, open, type, id }: TReviewRequestDialog) 
         }
     });
 
-    const onSubmit = () => {
+    const onSubmit = (type: "approved" | "rejected") => {
         mutate({
             method: "PATCH",
             id: id,
@@ -43,15 +44,35 @@ function ReviewRequestDialog({ onClose, open, type, id }: TReviewRequestDialog) 
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth>
-            <DialogTitle>Confirmation</DialogTitle>
+            <DialogTitle>Approval</DialogTitle>
             <DialogContent>
-                <Typography>Are you sure to {(type === "approved") ? "approve" : "reject"} this request?</Typography>
+                <p className="font-poppins mb-4 text-gray-600">Select your action below, either APPROVE or REJECT</p>
+                <div className="flex gap-2">
+                    <Button
+                        onClick={() => onSubmit("rejected")}
+                        variant="contained"
+                        color="error"
+                        disabled={isPending}
+                    >
+                        {isPending ? <CircularProgress size={20} className="text-white" /> : "Reject"}
+                    </Button>
+                    <Button
+                        disabled={isPending}
+                        onClick={() => onSubmit("approved")}
+                        variant="contained"
+                        color="success"
+                    >
+                        {isPending ? <CircularProgress size={20} className="text-white" /> : "Approve"}
+                    </Button>
+                </div>
+
+                {/* <Typography>Are you sure to {(type === "approved") ? "approve" : "reject"} this request?</Typography>
                 <div className="mt-4 flex gap-2">
                     <Button variant="outlined" onClick={onClose}>Cancel</Button>
                     <Button variant="contained" onClick={onSubmit}>
                         {isPending ? <CircularProgress size={16} className="text-white" /> : "Confirm"}
                     </Button>
-                </div>
+                </div> */}
             </DialogContent>
         </Dialog>
     )

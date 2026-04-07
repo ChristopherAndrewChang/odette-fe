@@ -6,8 +6,6 @@ import { PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
-import { Tooltip } from "@mui/material";
-
 import AppLayout from "@/components/internal/AppLayout";
 import { useScreenTakeoverQuery } from "./hooks/screen-takeover";
 import { ScreenTakeoverMapper } from "./mapper";
@@ -42,7 +40,6 @@ function ScreenTakeoverPage() {
             <ReviewRequestDialog
                 id={openApproval?.id}
                 open={openApproval?.cond}
-                type={openApproval?.type}
                 onClose={() => {
                     setOpenApproval({
                         cond: false,
@@ -82,45 +79,53 @@ function ScreenTakeoverPage() {
                     addProps={{
                         hide: true
                     }}
+                    onRowClick={(params) => {
+                        setOpenApproval({
+                            cond: true,
+                            id: params?.id?.toString(),
+                            type: "approved"
+                        });
+                    }}
                     showProps={{ hide: true }}
                     deleteProps={{ hide: true }}
                     editProps={{ hide: true }}
-                    actionsSlots={(id) => [
-                        {
-                            renderAction: (
-                                <Tooltip title="Approve" enterDelay={250}>
-                                    <div
-                                        onClick={() => {
-                                            setOpenApproval({
-                                                cond: true,
-                                                id: id?.toString(),
-                                                type: "approved"
-                                            });
-                                        }}
-                                        className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-green-500">
-                                        <i className="tabler-check text-lg text-white"></i>
-                                    </div>
-                                </Tooltip>
-                            )
-                        },
-                        {
-                            renderAction: (
-                                <Tooltip title="Reject" enterDelay={250}>
-                                    <div
-                                        onClick={() => {
-                                            setOpenApproval({
-                                                cond: true,
-                                                id: id?.toString(),
-                                                type: "rejected"
-                                            });
-                                        }}
-                                        className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-red-500">
-                                        <i className="tabler-x text-lg text-white"></i>
-                                    </div>
-                                </Tooltip>
-                            )
-                        }
-                    ]}
+
+                // actionsSlots={(id) => [
+                //     {
+                //         renderAction: (
+                //             <Tooltip title="Approve" enterDelay={250}>
+                //                 <div
+                //                     onClick={() => {
+                //                         setOpenApproval({
+                //                             cond: true,
+                //                             id: id?.toString(),
+                //                             type: "approved"
+                //                         });
+                //                     }}
+                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-green-500">
+                //                     <i className="tabler-check text-lg text-white"></i>
+                //                 </div>
+                //             </Tooltip>
+                //         )
+                //     },
+                //     {
+                //         renderAction: (
+                //             <Tooltip title="Reject" enterDelay={250}>
+                //                 <div
+                //                     onClick={() => {
+                //                         setOpenApproval({
+                //                             cond: true,
+                //                             id: id?.toString(),
+                //                             type: "rejected"
+                //                         });
+                //                     }}
+                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-red-500">
+                //                     <i className="tabler-x text-lg text-white"></i>
+                //                 </div>
+                //             </Tooltip>
+                //         )
+                //     }
+                // ]}
                 />
             </AppLayout>
         </>

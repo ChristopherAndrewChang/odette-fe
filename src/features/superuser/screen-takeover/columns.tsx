@@ -1,4 +1,5 @@
 import type { GridColDef } from "@mui/x-data-grid";
+import { ColumnStatus } from "@ozanplanviu/planviu-core";
 
 export const columns: GridColDef[] = [
     {
@@ -29,7 +30,15 @@ export const columns: GridColDef[] = [
         field: "status",
         headerName: "Status",
         minWidth: 250,
-        flex: 1
+        flex: 1,
+        renderCell: ({ value }) => (
+            <ColumnStatus
+                status={value}
+                color={(value === "approved" ? "success" : (
+                    value === "rejected" ? "error" : "secondary"
+                ))}
+            />
+        )
     },
     {
         field: "customer_name",
