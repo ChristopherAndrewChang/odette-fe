@@ -18,7 +18,7 @@ export const useAllSongRequestsQuery = (params?: Record<any, any>) => {
     });
 }
 
-export const useAllSongRequestsInfiniteQuery = (params?: Record<any, any>) => {
+export const useAllSongRequestsInfiniteQuery = (params?: Record<any, any>, refetchInterval?: number) => {
     return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
         getNextPageParam: (lastPage, allPages) => lastPage?.data?.next ? (allPages.length + 1) : undefined,
         initialPageParam: 1,
@@ -31,6 +31,7 @@ export const useAllSongRequestsInfiniteQuery = (params?: Record<any, any>) => {
         },
         retry: false,
         refetchOnWindowFocus: false,
+        refetchInterval: refetchInterval
     });
 }
 

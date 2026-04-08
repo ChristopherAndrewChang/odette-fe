@@ -68,7 +68,7 @@ function UserScan() {
 
     const renderNoToken = (
         <div>
-            <Typography>No Token found</Typography>
+            <Typography>Session Has Ended</Typography>
         </div>
     );
 
