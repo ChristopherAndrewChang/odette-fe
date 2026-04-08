@@ -1,6 +1,6 @@
 // TODO: add handleFileResponse to planviu-core
 
-export const handleFileResponse = (data: BlobPart, type: string, mode?: "download" | "view" = "view") => {
+export const handleFileResponse = (data: BlobPart, type: string, mode?: "download" | "view") => {
     const blob = new Blob([data], { type: type });
     const url = window.URL.createObjectURL(blob);
 
