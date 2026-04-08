@@ -2,17 +2,25 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { CircularProgress, Divider } from "@mui/material";
 
 import dayjs from "dayjs";
+
+import { useTopLoader } from "nextjs-toploader";
 
 import UserContainer from "@/features/user/shared/components/UserContainer";
 import { useColor } from "@/hooks/color";
 import { useAllSongRequestsInfiniteQuery } from "@/features/superuser/music-request/hooks/song-request";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ApprovalDialog from "./components/ApprovalDialog";
+import { onLogout } from "@/utils/logout";
+import { API_URL } from "@/data/internal/api-route";
 
 function DjMusicRequest() {
+    const loader = useTopLoader();
+    const router = useRouter();
     const { GOLD } = useColor();
 
     const [approvalState, setApprovalState] = useState<{ cond: boolean; id: string }>({
@@ -52,7 +60,11 @@ function DjMusicRequest() {
             />
             <UserContainer isDj>
                 {/* action */}
-                <div onClick={() => { }} className="py-1 px-4 border border-red-800 w-fit rounded-lg mb-6">
+                <div onClick={() => {
+                    onLogout();
+                    loader.start();
+                    router.push(API_URL.USER_SCAN.INDEX);
+                }} className="py-1 px-4 border border-red-800 w-fit rounded-lg mb-6 cursor-pointer">
                     <p className="text-error">Logout</p>
                 </div>
                 {/* end of logout action */}
