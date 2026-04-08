@@ -6,7 +6,7 @@ import { PvTable, useQueryParams } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 import classNames from "classnames";
 
@@ -41,11 +41,15 @@ function MusicRequestManagement() {
 
     const { filterAppliedCount, filterParams } = useFilter(["date", "status"]);
 
-    const { data, isFetching } = useAllSongRequestsQuery({
+    const { data, isFetching, refetch } = useAllSongRequestsQuery({
         ...(!!getParam("date") ? {} : { all: true }),
         page: pagination.page + 1,
         ...filterParams
     });
+
+    const onReload = () => {
+        refetch();
+    }
 
     useEffect(() => {
         loader.done();
@@ -99,6 +103,13 @@ function MusicRequestManagement() {
                             type: "approved"
                         });
                     }}
+                    additionalMenu={[
+                        {
+                            renderMenu: (
+                                <Button onClick={onReload} variant="outlined" startIcon={<i className="tabler-reload"></i>}>Reload</Button>
+                            )
+                        }
+                    ]}
                     filterProps={{
                         appliedCount: filterAppliedCount,
                         filterItems: [

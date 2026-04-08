@@ -10,6 +10,8 @@ import dayjs from "dayjs";
 
 import { useTopLoader } from "nextjs-toploader";
 
+import { Button } from "@mui/material";
+
 import AppLayout from "@/components/internal/AppLayout";
 import { useScreenTakeoverQuery } from "./hooks/screen-takeover";
 import { ScreenTakeoverMapper } from "./mapper";
@@ -40,10 +42,14 @@ function ScreenTakeoverPage() {
 
     const { filterAppliedCount, filterParams } = useFilter(["status", "date"]);
 
-    const { data, isFetching } = useScreenTakeoverQuery({
+    const { data, isFetching, refetch } = useScreenTakeoverQuery({
         page: pagination?.page + 1,
         ...filterParams
     });
+
+    const onReload = () => {
+        refetch();
+    }
 
     useEffect(() => {
         loader.done();
@@ -91,6 +97,13 @@ function ScreenTakeoverPage() {
                         paginationModel: pagination,
                         paginationControl: model => setPagination(model)
                     }}
+                    additionalMenu={[
+                        {
+                            renderMenu: (
+                                <Button onClick={onReload} variant="outlined" startIcon={<i className="tabler-reload"></i>}>Reload</Button>
+                            )
+                        }
+                    ]}
                     filterProps={{
                         appliedCount: filterAppliedCount,
                         filterItems: [
