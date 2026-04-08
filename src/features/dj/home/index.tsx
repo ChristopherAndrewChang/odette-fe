@@ -49,8 +49,8 @@ function DjMusicRequest() {
             />
             <UserContainer isDj>
                 {/* action */}
-                <div className="py-1 px-4 bg-red-950 border border-red-800">
-                    <p>Logout</p>
+                <div onClick={() => { }} className="py-1 px-4 border border-red-800 w-fit rounded-lg mb-6">
+                    <p className="text-error">Logout</p>
                 </div>
                 {/* end of logout action */}
 

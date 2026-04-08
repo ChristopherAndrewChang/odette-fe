@@ -9,7 +9,7 @@ export const handleFileResponse = (data: BlobPart, type: string, mode?: "downloa
     link.href = url;
 
     if (mode === "download") {
-        link.download = "Document";
+        link.download = "odette";
         link.click();
     } else {
         link.target = "_blank";
