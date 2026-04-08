@@ -48,7 +48,8 @@ function MenuPage() {
                                         backgroundColor: DARKBLUE,
                                         borderColor: DARKGRAY
                                     }}>
-                                        <p className="font-poppins text-white py-2 px-4">Promo {i + 1}</p>
+                                        <p className="font-poppins text-white py-2 px-4">Promo {i + 1}<span className="text-xs italic">{" "}(click for full preview)</span></p>
+                                        <iframe src={promo?.file_url} frameBorder="0" className="w-full"></iframe>
                                     </a>
                                 ))}
                             </>
@@ -71,7 +72,8 @@ function MenuPage() {
                                     backgroundColor: DARKBLUE,
                                     borderColor: DARKGRAY
                                 }}>
-                                    <p className="font-poppins text-white py-2 px-4">Menu {i + 1}</p>
+                                    <p className="font-poppins text-white py-2 px-4">Menu {i + 1} <span className="text-xs italic">(click for full preview)</span></p>
+                                    <iframe src={menu?.file_url} frameBorder="0" className="w-full"></iframe>
                                 </a>
                             ))}
                         </>
