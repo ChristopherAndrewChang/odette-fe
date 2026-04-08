@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { PvTable, useQueryParams } from "@ozanplanviu/planviu-core";
 
@@ -9,6 +9,10 @@ import type { GridPaginationModel } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
 
 import classNames from "classnames";
+
+import dayjs from "dayjs";
+
+import { useTopLoader } from "nextjs-toploader";
 
 import AppLayout from "@/components/internal/AppLayout";
 import { useAllSongRequestsQuery } from "./hooks/song-request";
@@ -19,7 +23,8 @@ import ReviewRequestDialog from "./components/ReviewRequestDialog";
 import DateFilter from "../shared/components/DateFilter";
 
 function MusicRequestManagement() {
-    const { getParam } = useQueryParams();
+    const loader = useTopLoader();
+    const { getParam, updateParams } = useQueryParams();
 
     const [pagination, setPagination] = useState<GridPaginationModel>({
         page: 0,
@@ -42,6 +47,15 @@ function MusicRequestManagement() {
         ...filterParams
     });
 
+    useEffect(() => {
+        loader.done();
+        updateParams({
+            remove: ["date"],
+            add: {
+                date: dayjs(new Date()).format("YYYY-MM-DD")
+            }
+        });
+    }, []);
 
     return (
         <>
@@ -66,6 +80,10 @@ function MusicRequestManagement() {
             />
             <AppLayout title="Song Request">
                 {/* TODO: Add date filter to planviu-core */}
+                {!!getParam("date") ? (
+                    <p className="mb-4">Date:{" "}{dayjs(getParam("date")).format("DD MMMM YYYY")} </p>
+                ) : null}
+
                 <PvTable
                     columns={columns}
                     rowCount={data?.data?.count || 0}

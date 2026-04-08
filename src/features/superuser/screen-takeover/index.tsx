@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { PvTable } from "@ozanplanviu/planviu-core";
+import { PvTable, useQueryParams } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
+
+import dayjs from "dayjs";
+
+import { useTopLoader } from "nextjs-toploader";
 
 import AppLayout from "@/components/internal/AppLayout";
 import { useScreenTakeoverQuery } from "./hooks/screen-takeover";
@@ -18,6 +22,9 @@ import DateFilter from "../shared/components/DateFilter";
 import DateFilterButton from "../shared/components/DateFilterButton";
 
 function ScreenTakeoverPage() {
+    const loader = useTopLoader();
+    const { updateParams, getParam } = useQueryParams();
+
     const [dateOpen, setDateOpen] = useState(false);
 
     const [pagination, setPagination] = useState<GridPaginationModel>({
@@ -37,6 +44,17 @@ function ScreenTakeoverPage() {
         page: pagination?.page + 1,
         ...filterParams
     });
+
+    useEffect(() => {
+        loader.done();
+
+        updateParams({
+            remove: ["date"],
+            add: {
+                date: dayjs(new Date()).format("YYYY-MM-DD")
+            }
+        });
+    }, []);
 
     return (
         <>
@@ -58,6 +76,10 @@ function ScreenTakeoverPage() {
                 }}
             />
             <AppLayout title="Screen Takeover">
+                {!!getParam("date") ? (
+                    <p className="mb-4">Date: {dayjs(getParam("date")).format("DD MMMM YYYY")}</p>
+                ) : null}
+
                 <PvTable
                     columns={columns}
                     rowCount={data?.data?.count || 0}

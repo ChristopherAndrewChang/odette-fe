@@ -41,7 +41,8 @@ export type VerticalSectionDataType = Omit<VerticalMenuSectionProps, 'children'>
 export type VerticalMenuDataType = (VerticalMenuItemDataType | VerticalSubMenuDataType | VerticalSectionDataType) & {
 
   // acceptedRoles?: Array<keyof typeof AuthConfig.permisson>
-  acceptedRoles?: Array<any>
+  acceptedRoles?: Array<any>,
+  onlyForSu?: boolean;
 }
 
 // Horizontal Menu Data

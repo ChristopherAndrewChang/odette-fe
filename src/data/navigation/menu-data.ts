@@ -27,7 +27,8 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         icon: "tabler-users",
         href: APP_URL.SUPERUSER_USERS.INDEX,
         exactMatch: false,
-        activeUrl: APP_URL.SUPERUSER_USERS.INDEX
+        activeUrl: APP_URL.SUPERUSER_USERS.INDEX,
+        onlyForSu: true
     },
     {
         label: "Table Management",
