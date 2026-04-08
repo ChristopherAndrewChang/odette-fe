@@ -33,19 +33,21 @@ type TRequest = {
 }
 
 function ScreenTakeoverForm() {
+    const defaultValue = {
+        content_type: "text",
+        message: "",
+        donation_amount: "",
+        donation: ""
+    };
+
     const queryClient = useQueryClient();
     const { GOLD, DARKBG, GRAY, OLD_GOLD, DARKBLUE } = useColor();
 
     const [file, setFile] = useState<File | null>(null);
     const fileRef = useRef<HTMLInputElement | null>(null);
 
-    const { control, setValue, watch, handleSubmit } = useForm<TRequest>({
-        defaultValues: {
-            content_type: "text",
-            message: "",
-            donation_amount: "",
-            donation: ""
-        }
+    const { control, setValue, watch, handleSubmit, reset } = useForm<TRequest>({
+        defaultValues: defaultValue
     });
 
     const { mutate, isPending } = useReqScreenTakeoverMutation({
@@ -54,6 +56,7 @@ function ScreenTakeoverForm() {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX]
             });
+            reset(defaultValue);
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));

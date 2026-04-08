@@ -31,18 +31,20 @@ type TRequest = {
 };
 
 function SongRequest() {
+    const defaultValue: TRequest = ({
+        artist: "",
+        donation_amount: "",
+        song_title: "",
+        donation: ""
+    });
+
     const queryClient = useQueryClient();
 
     const { DARKBLUE, GOLD, GRAY, PURPLE } = useColor();
 
-    const { control, setValue, watch, handleSubmit } = useForm<TRequest>({
-        defaultValues: {
-            artist: "",
-            donation_amount: "",
-            song_title: "",
-            donation: ""
-        }
-    });
+    const { control, setValue, watch, handleSubmit, reset } = useForm<TRequest>({
+        defaultValues: defaultValue
+    })
 
     const { mutate, isPending } = useSongRequestMutation({
         onSuccess: () => {
@@ -50,6 +52,7 @@ function SongRequest() {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX]
             });
+            reset(defaultValue);
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));

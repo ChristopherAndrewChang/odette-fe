@@ -1,6 +1,8 @@
 import type { GridColDef } from "@mui/x-data-grid";
 import { ColumnStatus } from "@ozanplanviu/planviu-core";
 
+import ColumnFile from "@/components/internal/ColumnFile";
+
 export const columns: GridColDef[] = [
     {
         field: "table_number",
@@ -13,6 +15,17 @@ export const columns: GridColDef[] = [
         headerName: "Request Type",
         minWidth: 250,
         flex: 1
+    },
+    {
+        field: "media_file",
+        headerName: "Media File",
+        minWidth: 250,
+        flex: 1,
+        renderCell: ({ value }) => (
+            <ColumnFile
+                value={value}
+            />
+        )
     },
     {
         field: "message",

@@ -7,7 +7,7 @@ export const ScreenTakeoverMapper = (data: TScreenTakeOver[]) => {
     return data?.map(screen => ({
         ...screen,
         created_at: screen?.created_at ? dayjs(screen?.created_at).format("DD MMM YYYY, HH:mm A") : "-",
-        media_file: `${AppConfig.mediaUrl}${screen?.media_file}`,
+        media_file: !!screen?.media_file ? `${AppConfig.mediaUrl}${screen?.media_file}` : null,
         donation_amount: !!screen?.donation_amount ? `Rp${Number(screen?.donation_amount)?.toLocaleString()}` : "-",
         reviewed_at: !!screen?.reviewed_at ? dayjs(screen?.reviewed_at).format("DD MMM YYYY, HH:mm A") : "-"
     }))
