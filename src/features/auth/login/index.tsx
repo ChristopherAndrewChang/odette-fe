@@ -50,6 +50,9 @@ function Login() {
         } else if (role === "user") {
             topLoader.start();
             router.push(APP_URL.ADMIN_HOME.INDEX);
+        } else if (role === "dj") {
+            topLoader.start();
+            router.push(APP_URL.DJ_HOME.INDEX);
         }
     }
 

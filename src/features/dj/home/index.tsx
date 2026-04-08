@@ -48,6 +48,12 @@ function DjMusicRequest() {
                 id={approvalState.id}
             />
             <UserContainer isDj>
+                {/* action */}
+                <div className="py-1 px-4 bg-red-950 border border-red-800">
+                    <p>Logout</p>
+                </div>
+                {/* end of logout action */}
+
                 <p className="font-poppins text-white text-xl">Hello <span>FauzanDj 👋</span></p>
                 <Divider className="my-4 border-gray-700" />
                 <div className="flex flex-col gap-2">

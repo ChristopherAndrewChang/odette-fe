@@ -14,6 +14,9 @@ export const APP_URL = {
     ADMIN_HOME: {
         INDEX: "/admin/home"
     },
+    DJ_HOME: {
+        INDEX: "/dj/home"
+    },
     ADMIN_TABLE: {
         INDEX: "/admin/table"
     },
