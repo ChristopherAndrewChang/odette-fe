@@ -7,6 +7,9 @@ export const API_URL = {
         INDEX: "/users/admins/",
         DETAILS: "/users/admins/:id/"
     },
+    DJ_SONG_APPROVAL: {
+        DETAILS: "/songs/:id/dj-review/"
+    },
     USER_SCAN: {
         INDEX: "/tables/scan/"
     },

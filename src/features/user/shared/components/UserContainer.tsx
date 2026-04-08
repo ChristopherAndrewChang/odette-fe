@@ -12,6 +12,7 @@ import { useColor } from "@/hooks/color";
 
 type TUserContainer = {
     children: ReactNode;
+    isDj?: boolean;
 }
 
 const USERS_MENU: { icon: string; href: string; }[] = [
@@ -21,7 +22,7 @@ const USERS_MENU: { icon: string; href: string; }[] = [
     { icon: "tabler-dice", href: "/user/games" }
 ]
 
-function UserContainer({ children }: TUserContainer) {
+function UserContainer({ children, isDj }: TUserContainer) {
     const { DARKBG } = useColor();
 
     const loader = useTopLoader();
@@ -40,7 +41,7 @@ function UserContainer({ children }: TUserContainer) {
                 {children}
             </main>
 
-            {!pathname.startsWith("/user/home") ? (
+            {(!isDj && !pathname.startsWith("/user/home")) ? (
                 <nav
                     key={pathname}
                     className="w-full p-6 bg-white fixed bottom-0 h-16 grid grid-cols-4 left-1/2 right-1/2 -translate-x-1/2 max-w-4xl rounded-t-xl border-t border-gray-600"

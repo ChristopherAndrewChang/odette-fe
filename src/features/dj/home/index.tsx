@@ -1,16 +1,98 @@
 "use client";
 
-import Link from "@/components/Link";
+import { useState } from "react";
 
-function DjHomePage() {
+import { CircularProgress, Divider } from "@mui/material";
+
+import UserContainer from "@/features/user/shared/components/UserContainer";
+import { useColor } from "@/hooks/color";
+import { useAllSongRequestsInfiniteQuery } from "@/features/superuser/music-request/hooks/song-request";
+import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
+import ApprovalDialog from "./components/ApprovalDialog";
+
+function DjMusicRequest() {
+    const { GOLD } = useColor();
+
+    const [approvalState, setApprovalState] = useState<{ cond: boolean; id: string }>({
+        cond: false,
+        id: ""
+    });
+
+    const { data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage } = useAllSongRequestsInfiniteQuery();
+    const songRequestData = data?.pages?.flatMap(_data => _data?.data?.results);
+
+    const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
+        onNextPage: fetchNextPage,
+        props: {
+            hasNextPage: hasNextPage,
+            isFetching: isFetching,
+            isFetchingNextPage: isFetchingNextPage,
+            isLoading: isLoading
+        }
+    });
+
+    const renderLoading = (
+        <CircularProgress size={20} className="text-white" />
+    )
+
     return (
-        <main className="grid grid-cols-1 p-4">
-            <Link href="/dj/music-request" className="p-4 bg-gradient-to-r from-[#1E0A35] via-[#1E0A35] to-[#230D46] rounded-lg border border-purple-950 flex">
-                <i className="tabler-music text-purple-300"></i>
-                <p className="text-purple-300">Music Request</p>
-            </Link>
-        </main>
+        <>
+            <ApprovalDialog
+                open={approvalState.cond}
+                onClose={() => {
+                    setApprovalState({
+                        cond: false,
+                        id: ""
+                    })
+                }}
+                id={approvalState.id}
+            />
+            <UserContainer isDj>
+                <p className="font-poppins text-white text-xl">Hello <span>FauzanDj 👋</span></p>
+                <Divider className="my-4 border-gray-700" />
+                <div className="flex flex-col gap-2">
+                    <p className="font-poppins text-xl font-medium" style={{ color: GOLD }}>Song Request</p>
+                    <p className="mb-4 text-gray-300 text-lg">Below is the song request, click the card to take an action</p>
+
+                    <div className="p-4 bg-[#1A1406]">
+                        <p className="font-poppins">Warning</p>
+                    </div>
+
+                    {isFetching ? renderLoading : (
+                        <>
+                            {songRequestData?.map((songReq, i) => (
+                                <>
+                                    <div
+                                        key={i}
+                                        onClick={() => {
+                                            setApprovalState({
+                                                cond: true,
+                                                id: songReq?.id?.toString()
+                                            });
+                                        }}
+                                    >
+                                        <div className="p-4 bg-gradient-to-r from-[#1E0A35] via-[#1E0A35] to-[#230D46] rounded-lg border border-purple-950">
+                                            <div className="flex items-center gap-1">
+                                                <i className="tabler-music text-purple-200"></i>
+                                                <p className="text-purple-100 font-medium text-xl">{songReq.song_title} - {songReq.artist}</p>
+                                            </div>
+                                            {/* <p className="text-gray-400">Request from: Table <span className="text-white">{songReq?.table_number}</span></p> */}
+                                        </div>
+                                    </div>
+
+                                    {(((i + 1) === songRequestData?.length) && hasNextPage) ? (
+                                        <div ref={lastElementRef}>
+                                            {nextPageFetchingIndicator}
+                                        </div>
+                                    ) : null}
+                                </>
+                            ))}
+                        </>
+                    )}
+                </div>
+            </UserContainer>
+        </>
     )
 }
 
-export default DjHomePage;
+export default DjMusicRequest;

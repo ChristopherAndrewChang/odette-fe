@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DjMusicRequest from '@/features/dj/music-request'
+import DjMusicRequest from '@/features/dj/home'
 
 function page() {
     return (

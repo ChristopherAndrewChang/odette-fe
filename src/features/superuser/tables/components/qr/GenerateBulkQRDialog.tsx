@@ -52,7 +52,9 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
     const { mutate, isPending } = useGenerateTableQRMutation({
         onSuccess: (res) => {
             toast.success("Success");
-            handleFileResponse(res.data, isAllTables ? "application/zip" : "image/png");
+
+            // handleFileResponse(res.data, isAllTables ? "application/zip" : "image/png");
+            handleFileResponse(res.data, "application/pdf");
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));
