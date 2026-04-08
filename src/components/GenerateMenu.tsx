@@ -4,6 +4,8 @@ import type { ReactNode } from 'react'
 // MUI Imports
 import type { ChipProps } from '@mui/material/Chip'
 
+import CookieStore from "js-cookie";
+
 // Type Imports
 import type {
   VerticalMenuDataType,
@@ -19,6 +21,8 @@ import type {
 import { SubMenu as HorizontalSubMenu, MenuItem as HorizontalMenuItem } from '@menu/horizontal-menu'
 import { SubMenu as VerticalSubMenu, MenuItem as VerticalMenuItem, MenuSection } from '@menu/vertical-menu'
 import CustomChip from '@core/components/mui/Chip'
+import { STORAGE_KEY } from '@/data/internal/storage';
+import { getRoleFromJWT } from '@/utils/auth';
 
 // Generate a menu from the menu data array
 export const GenerateVerticalMenu = ({ menuData }: { menuData: VerticalMenuDataType[] }) => {
@@ -30,6 +34,12 @@ export const GenerateVerticalMenu = ({ menuData }: { menuData: VerticalMenuDataT
       const menuSectionItem = item as VerticalSectionDataType
       const subMenuItem = item as VerticalSubMenuDataType
       const menuItem = item as VerticalMenuItemDataType
+
+      if (!!item?.onlyForSu) {
+        if (getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser") {
+          return null
+        }
+      }
 
       // Check if the current item is a section
       if (menuSectionItem.isSection) {

@@ -55,6 +55,8 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
 
             handleFileResponse(res.data, isAllTables ? "application/zip" : "image/png", "download");
 
+            // handleFileResponse(res.data, "application/pdf", "download");
+
             // handleFileResponse(res.data, "application/zip", "download");
         },
         onError: (err) => {

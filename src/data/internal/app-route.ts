@@ -38,5 +38,8 @@ export const APP_URL = {
     },
     SUPERUSER_SCREEN_TAKEOVER: {
         INDEX: "/su/screen-takeover"
+    },
+    SUPERUSER_SETTINGS: {
+        INDEX: "/su/settings"
     }
 }

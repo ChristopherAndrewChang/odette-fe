@@ -1,5 +1,8 @@
 export const API_URL = {
     SHARED: {},
+    SETTINGS: {
+        INDEX: "/core/settings/"
+    },
     LOGIN: {
         INDEX: "/auth/login/"
     },

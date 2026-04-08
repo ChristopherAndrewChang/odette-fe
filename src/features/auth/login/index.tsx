@@ -41,12 +41,12 @@ function Login() {
     const redirectToHome = (role: string) => {
         if (role === "superuser") {
             topLoader.start();
-            router.push(APP_URL.SUPERUSER_HOME.INDEX);
+            router.push(APP_URL.SUPERUSER_USERS.INDEX);
 
             // TODO: [critical] Make sure role nya apa aja
         } else if (role === "admin") {
             topLoader.start();
-            router.push(APP_URL.SUPERUSER_HOME.INDEX);
+            router.push(APP_URL.SUPERUSER_TABLE.INDEX);
         } else if (role === "user") {
             topLoader.start();
             router.push(APP_URL.ADMIN_HOME.INDEX);

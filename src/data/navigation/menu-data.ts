@@ -17,11 +17,11 @@ export const MenuData: VerticalMenuDataType[] = [
 ]
 
 export const MenuDataSuperuser: VerticalMenuDataType[] = [
-    {
-        label: "Home",
-        icon: "tabler-home",
-        href: APP_URL.SUPERUSER_HOME.INDEX,
-    },
+    // {
+    //     label: "Home",
+    //     icon: "tabler-home",
+    //     href: APP_URL.SUPERUSER_HOME.INDEX,
+    // },
     {
         label: "User",
         icon: "tabler-users",
@@ -57,5 +57,12 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         href: APP_URL.SUPERUSER_SCREEN_TAKEOVER.INDEX,
         exactMatch: false,
         activeUrl: APP_URL.SUPERUSER_SCREEN_TAKEOVER.INDEX
+    },
+    {
+        label: "Settings",
+        icon: "tabler-settings",
+        href: APP_URL.SUPERUSER_SETTINGS.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_SETTINGS.INDEX
     }
 ]
