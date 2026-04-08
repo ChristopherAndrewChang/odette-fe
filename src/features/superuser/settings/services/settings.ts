@@ -7,6 +7,7 @@ export const getSettings = (): Promise<ResponseWrapper<TSettings>> => {
     return api({
         method: "GET",
         urlKey: API_URL.SETTINGS.INDEX,
+        noAuth: true
     });
 }
 
