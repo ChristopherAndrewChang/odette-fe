@@ -52,10 +52,11 @@ function DjMusicRequest() {
                 <Divider className="my-4 border-gray-700" />
                 <div className="flex flex-col gap-2">
                     <p className="font-poppins text-xl font-medium" style={{ color: GOLD }}>Song Request</p>
-                    <p className="mb-4 text-gray-300 text-lg">Below is the song request, click the card to take an action</p>
+                    <p className="mb-4 text-gray-300 text-lg">You can see the song request list below, click the card to take an action</p>
 
-                    <div className="p-4 bg-[#1A1406]">
-                        <p className="font-poppins">Warning</p>
+                    <div className="p-4 bg-[#1A1406] border border-[#FACC1570] rounded-lg">
+                        <p className="font-poppins text-white">⚠️ Warning </p>
+                        <p className="text-white">Once you approve or reject, the song will be removed from the list</p>
                     </div>
 
                     {isFetching ? renderLoading : (
