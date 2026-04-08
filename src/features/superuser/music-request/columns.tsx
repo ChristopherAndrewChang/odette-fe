@@ -6,7 +6,7 @@ export const columns: GridColDef[] = [
         field: "table_number",
         headerName: "Table Number",
         minWidth: 150,
-        flex: 1
+        flex: 1,
     },
     {
         field: "song_title",

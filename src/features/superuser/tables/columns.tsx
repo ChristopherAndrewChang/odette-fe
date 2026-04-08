@@ -6,7 +6,12 @@ export const columns: GridColDef[] = [
         field: "number",
         headerName: "Number",
         minWidth: 150,
-        flex: 1
+        flex: 1,
+        renderCell: ({ value }) => (
+            <div className="h-full flex items-center">
+                <p className="text-xl font-semibold">Table {value}</p>
+            </div>
+        )
     },
     {
         field: "is_open",
