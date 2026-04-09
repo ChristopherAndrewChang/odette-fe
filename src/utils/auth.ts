@@ -9,6 +9,8 @@ export const onLogout = () => {
 }
 
 export const getRoleFromJWT = (jwtToken: string) => {
+    if (!jwtToken) return;
+
     const jwtResponse = jwtDecode(jwtToken) as { role: string };
     const role = jwtResponse.role;
 

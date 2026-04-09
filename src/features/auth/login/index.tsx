@@ -64,7 +64,7 @@ function Login() {
             Cookies.set(STORAGE_KEY.TOKEN, res?.data?.access);
             localStorage.setItem(STORAGE_KEY.TOKEN, res.data?.access);
 
-            redirectToHome(role);
+            redirectToHome(role || "");
         },
         onError: (err) => {
             const errMsg = err?.response?.data?.detail;
