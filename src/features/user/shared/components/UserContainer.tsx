@@ -79,7 +79,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
                             {data?.data?.menu_enabled ? (
                                 <div
                                     onClick={() => {
-                                        router.push("");
+                                        router.push("/user/menus");
                                         loader.start();
                                     }}
                                     className="flex items-center justify-center rounded-lg gap-2">
@@ -92,7 +92,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
                             {data?.data?.screen_request_enabled ? (
                                 <div
                                     onClick={() => {
-                                        router.push("");
+                                        router.push("/user/screen-takeover");
                                         loader.start();
                                     }}
                                     className="flex items-center justify-center rounded-lg gap-2">
@@ -105,11 +105,11 @@ function UserContainer({ children, isDj }: TUserContainer) {
                             {data?.data?.song_request_enabled ? (
                                 <div
                                     onClick={() => {
-                                        router.push("");
+                                        router.push("/user/song-request");
                                         loader.start();
                                     }}
                                     className="flex items-center justify-center rounded-lg gap-2">
-                                    <i className={classNames("tabler-tools-kitchen", "text-white", {
+                                    <i className={classNames("tabler-music", "text-white", {
                                         "!text-yellow-700": (pathname.startsWith("/user/song-request"))
                                     })}></i>
                                 </div>
@@ -117,7 +117,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
 
                             <div
                                 onClick={() => {
-                                    router.push("");
+                                    router.push("/user/games");
                                     loader.start();
                                 }}
                                 className="flex items-center justify-center rounded-lg gap-2">
