@@ -53,7 +53,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
         onSuccess: (res) => {
             toast.success("Success");
 
-            handleFileResponse(res.data, isAllTables ? "application/pdf" : "application/pdf", "view");
+            handleFileResponse(res.data, isAllTables ? "application/pdf" : "image/png", "view");
 
             // handleFileResponse(res.data, "application/pdf", "download");
 
