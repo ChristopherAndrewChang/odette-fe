@@ -10,11 +10,34 @@ export const middleware = (request: NextRequest) => {
     const isLoginPage = pathname.startsWith("/login");
     const isUserPage = pathname.startsWith("/user");
 
+    function getClientIP(req: any): string {
+        const ip =
+            req.headers["x-forwarded-for"]?.split(",")[0] ||
+            req.headers["x-real-ip"] ||
+            req.socket?.remoteAddress ||
+            "";
+
+        if (!ip) return "unknown";
+
+        // localhost IPv6
+        if (ip === "::1") return "127.0.0.1";
+
+        // IPv6 mapped IPv4
+        if (ip.startsWith("::ffff:")) {
+            return ip.replace("::ffff:", "");
+        }
+
+        return ip;
+    }
+
     const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
 
     console.log("mywifi-ip", request.headers.get("x-forwarded-for"));
     console.log("real-ip", request.headers.get("x-real-ip"));
     console.log("ip", request.ip);
+    console.log("gpt", getClientIP(request));
+
+
 
     // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
     //     return NextResponse.redirect(new URL("/user/home", request.url));
