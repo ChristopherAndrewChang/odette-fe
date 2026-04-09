@@ -1,5 +1,8 @@
 export const API_URL = {
     SHARED: {},
+    ME: {
+        INDEX: "/users/me/"
+    },
     SETTINGS: {
         INDEX: "/core/settings/"
     },

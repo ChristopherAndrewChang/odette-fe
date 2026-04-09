@@ -4,6 +4,14 @@ import { API_URL } from "@/data/internal/api-route";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
 import type { TUsers } from "../types/users";
+import type { TMe } from "../types/me";
+
+export const getMe = (): Promise<ResponseWrapper<TMe>> => {
+    return api({
+        method: "GET",
+        urlKey: API_URL.ME.INDEX
+    });
+}
 
 export const getAllUsers = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TUsers[]>>> => {
     return api({

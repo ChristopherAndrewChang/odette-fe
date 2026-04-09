@@ -21,8 +21,12 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
 // Hook Imports
+import { CircularProgress } from '@mui/material'
+
 import { useSettings } from '@core/hooks/useSettings'
 import { onLogout } from '@/utils/logout'
+import { useMeQuery } from '@/features/superuser/users/hooks/users'
+import { STORAGE_KEY } from '@/data/internal/storage'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -43,6 +47,7 @@ const UserDropdown = () => {
 
   // Hooks
   const router = useRouter()
+  const { data, isLoading } = useMeQuery(!localStorage.getItem(STORAGE_KEY.TOKEN));
 
   const { settings } = useSettings()
 
@@ -105,12 +110,15 @@ const UserDropdown = () => {
                 <MenuList>
                   <div className='flex items-center plb-2 pli-6 gap-2' tabIndex={-1}>
                     <Avatar alt='John Doe' src='/images/avatars/1.png' />
-                    <div className='flex items-start flex-col'>
-                      <Typography className='font-medium' color='text.primary'>
-                        John Doe
-                      </Typography>
-                      <Typography variant='caption'>admin@vuexy.com</Typography>
-                    </div>
+                    {isLoading ? <CircularProgress size={20} /> : (
+                      <div className='flex items-start flex-col'>
+                        <Typography className='font-medium' color='text.primary'>
+                          {data?.data?.username}
+                        </Typography>
+                        <Typography variant='caption'>{data?.data?.email}</Typography>
+                        <Typography variant='caption'>Role: {data?.data?.role}</Typography>
+                      </div>
+                    )}
                   </div>
                   <Divider className='mlb-1' />
                   {/* <MenuItem className='mli-2 gap-3' onClick={e => handleDropdownClose(e)}>

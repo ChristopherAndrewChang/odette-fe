@@ -13,6 +13,8 @@ import { useUsersQuery } from "./hooks/users";
 
 
 import CreateUserDialog from "./components/CreateUserDialog";
+import { STORAGE_KEY } from "@/data/internal/storage";
+import { getRoleFromJWT } from "@/utils/auth";
 
 function UsersPage() {
     const [openCreateUser, setOpenCreateUser] = useState(false);
@@ -26,6 +28,10 @@ function UsersPage() {
         page: paginationModel.page + 1,
         pageSize: paginationModel.pageSize,
     });
+
+    if (getRoleFromJWT(localStorage.getItem(STORAGE_KEY.TOKEN) || "") !== "superuser") {
+        return;
+    }
 
     return (
         <>
