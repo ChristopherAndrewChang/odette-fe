@@ -9,7 +9,10 @@ export const middleware = (request: NextRequest) => {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname.startsWith("/login");
     const isUserPage = pathname.startsWith("/user");
+
     const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
+
+    console.log("mywifi-ip", request.headers.get("x-forwarded-for"));
 
     // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
     //     return NextResponse.redirect(new URL("/user/home", request.url));
@@ -48,6 +51,8 @@ export const middleware = (request: NextRequest) => {
             return NextResponse.redirect(new URL("/home", request.url));
         }
     }
+
+
 
     return NextResponse.next();
 }
