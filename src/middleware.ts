@@ -9,6 +9,7 @@ export const middleware = (request: NextRequest) => {
     const { pathname } = request.nextUrl;
     const isLoginPage = pathname.startsWith("/login");
     const isUserPage = pathname.startsWith("/user");
+    const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
 
     function getClientIP(req: any): string {
         const ip =
@@ -30,14 +31,10 @@ export const middleware = (request: NextRequest) => {
         return ip;
     }
 
-    const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
-
     console.log("mywifi-ip", request.headers.get("x-forwarded-for"));
     console.log("real-ip", request.headers.get("x-real-ip"));
     console.log("ip", request.ip);
     console.log("gpt", getClientIP(request));
-
-
 
     // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
     //     return NextResponse.redirect(new URL("/user/home", request.url));
