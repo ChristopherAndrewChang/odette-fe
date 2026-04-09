@@ -3,13 +3,11 @@
 import { useState } from "react";
 
 import { Button } from "@mui/material";
-import { getErrorMessage, PvTable } from "@ozanplanviu/planviu-core";
+import { PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
-import toast from "react-hot-toast";
-
-import { useTablesMutation, useTablesQuery } from "./hooks/tables";
+import { useTablesQuery } from "./hooks/tables";
 import { TablesMapper } from "./mapper";
 import { columns } from "./columns";
 import CloseNightDialog from "./components/CloseNightDialog";
@@ -53,16 +51,16 @@ function TablesManagement() {
         table: 0
     });
 
-    const { data, isFetching, refetch } = useTablesQuery({
+    const { data, isFetching } = useTablesQuery({
         page: pagination.page + 1,
         pageSize: pagination.pageSize,
         search: searchDebounced
     });
 
-    const { mutateAsync, isPending } = useTablesMutation({
-        onSuccess: () => { },
-        onError: () => { }
-    });
+    // const { mutateAsync, isPending } = useTablesMutation({
+    //     onSuccess: () => { },
+    //     onError: () => { }
+    // });
 
     const TablesData = data?.data?.results || [];
 
@@ -143,27 +141,29 @@ function TablesManagement() {
                         hide: true
                     }}
                     deleteProps={{
-                        isPending: isPending,
-                        hiddenCondition: (_, row) => {
-                            const rowsData = row as ReturnType<typeof TablesMapper>[number];
+                        hide: true
 
-                            return !rowsData?.is_active;
-                        },
-                        onDelete: async (id, onClose) => {
-                            try {
-                                await mutateAsync({
-                                    method: "DELETE",
-                                    type: "single",
-                                    id: id?.toString()
-                                });
+                        // isPending: isPending,
+                        // hiddenCondition: (_, row) => {
+                        //     const rowsData = row as ReturnType<typeof TablesMapper>[number];
 
-                                onClose && onClose();
-                                refetch();
-                                toast.success("Succees");
-                            } catch (err) {
-                                toast.error(getErrorMessage(err));
-                            }
-                        }
+                        //     return !rowsData?.is_active;
+                        // },
+                        // onDelete: async (id, onClose) => {
+                        //     try {
+                        //         await mutateAsync({
+                        //             method: "DELETE",
+                        //             type: "single",
+                        //             id: id?.toString()
+                        //         });
+
+                        //         onClose && onClose();
+                        //         refetch();
+                        //         toast.success("Succees");
+                        //     } catch (err) {
+                        //         toast.error(getErrorMessage(err));
+                        //     }
+                        // }
                     }}
                     addProps={{
                         onAdd: () => {

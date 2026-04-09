@@ -6,13 +6,14 @@ import { QUERY_KEY } from "@/data/internal/query-keys";
 import { getAllScreenTakeover, patchApprovalScreenTakeover } from "../services/screen-takeover";
 import type { ResponseWrapper } from "@/types/api";
 
-export const useScreenTakeoverQuery = (params?: Record<any, any>) => {
+export const useScreenTakeoverQuery = (params?: Record<any, any>, interval?: number) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<any[]>>>({
         queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX, params],
         queryFn: () => getAllScreenTakeover(params),
         retry: false,
         refetchOnWindowFocus: false,
-        placeholderData: data => data
+        placeholderData: data => data,
+        refetchInterval: interval
     });
 }
 

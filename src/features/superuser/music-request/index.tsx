@@ -41,11 +41,11 @@ function MusicRequestManagement() {
 
     const { filterAppliedCount, filterParams } = useFilter(["date", "status"]);
 
-    const { data, isFetching, refetch } = useAllSongRequestsQuery({
+    const { data, isFetching, refetch, dataUpdatedAt } = useAllSongRequestsQuery({
         ...(!!getParam("date") ? {} : { all: true }),
         page: pagination.page + 1,
         ...filterParams
-    });
+    }, 10000);
 
     const onReload = () => {
         refetch();
@@ -84,9 +84,12 @@ function MusicRequestManagement() {
             />
             <AppLayout title="Song Request">
                 {/* TODO: Add date filter to planviu-core */}
-                {!!getParam("date") ? (
-                    <p className="mb-4">Date:{" "}{dayjs(getParam("date")).format("DD MMMM YYYY")} </p>
-                ) : null}
+                <div className="flex items-center gap-2 mb-4">
+                    {!!getParam("date") ? (
+                        <p>Date:{" "}{dayjs(getParam("date")).format("DD MMMM YYYY")} </p>
+                    ) : null}
+                    <p className="italic text-blue-700 text-sm">(Last Updated at: {dayjs(dataUpdatedAt).format("DD MMM YYYY, HH:mm:ss A")})</p>
+                </div>
 
                 <PvTable
                     columns={columns}

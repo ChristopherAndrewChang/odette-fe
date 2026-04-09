@@ -19,12 +19,13 @@ export const columns: GridColDef[] = [
         minWidth: 150,
         renderCell: ({ value }) => <ColumnStatus status={value} />
     },
-    {
-        field: "is_active",
-        headerName: "Is Active",
-        minWidth: 150,
-        renderCell: ({ value }) => <ColumnStatus status={value} />
-    },
+
+    // {
+    //     field: "is_active",
+    //     headerName: "Is Active",
+    //     minWidth: 150,
+    //     renderCell: ({ value }) => <ColumnStatus status={value} />
+    // },
 
     // {
     //     field: "active_sessions",

@@ -42,10 +42,10 @@ function ScreenTakeoverPage() {
 
     const { filterAppliedCount, filterParams } = useFilter(["status", "date"]);
 
-    const { data, isFetching, refetch } = useScreenTakeoverQuery({
+    const { data, isFetching, refetch, dataUpdatedAt } = useScreenTakeoverQuery({
         page: pagination?.page + 1,
         ...filterParams
-    });
+    }, 10000);
 
     const onReload = () => {
         refetch();
@@ -82,9 +82,13 @@ function ScreenTakeoverPage() {
                 }}
             />
             <AppLayout title="Screen Takeover">
-                {!!getParam("date") ? (
-                    <p className="mb-4">Date: {dayjs(getParam("date")).format("DD MMMM YYYY")}</p>
-                ) : null}
+                <div className="flex gap-2">
+                    {!!getParam("date") ? (
+                        <p className="mb-4">Date: {dayjs(getParam("date")).format("DD MMMM YYYY")}</p>
+                    ) : null}
+
+                    <p className="italic text-blue-700 text-sm">Last updated at: {dayjs(dataUpdatedAt).format("DD MMM YYYY, HH:mm:ss A")}</p>
+                </div>
 
                 <PvTable
                     columns={columns}

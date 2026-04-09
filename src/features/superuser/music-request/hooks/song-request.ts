@@ -7,7 +7,7 @@ import type { ResponseWrapper } from "@/types/api";
 import type { TMySongReq } from "@/features/user/song-request/types/song-request";
 import { getAllMusicRequest, reviewRequest } from "../services/music-request";
 
-export const useAllSongRequestsQuery = (params?: Record<any, any>) => {
+export const useAllSongRequestsQuery = (params?: Record<any, any>, interval?: number) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
         queryKey: [QUERY_KEY.SONG_REQUEST.INDEX, params],
         queryFn: () => {
@@ -15,6 +15,7 @@ export const useAllSongRequestsQuery = (params?: Record<any, any>) => {
         },
         retry: false,
         refetchOnWindowFocus: false,
+        refetchInterval: interval
     });
 }
 
