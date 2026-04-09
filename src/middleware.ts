@@ -13,6 +13,7 @@ export const middleware = (request: NextRequest) => {
     const isUserScanPath = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
 
     console.log("mywifi-ip", request.headers.get("x-forwarded-for"));
+    console.log("real-ip", request.headers.get("x-real-ip"));
 
     // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
     //     return NextResponse.redirect(new URL("/user/home", request.url));
