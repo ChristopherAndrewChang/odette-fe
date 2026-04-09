@@ -25,12 +25,16 @@ export const middleware = (request: NextRequest) => {
     }
 
     if (!isLoginPage && !request.cookies.get(STORAGE_KEY.TOKEN)) {
-        const loginUrl = new URL("/login", request.url);
+        // const loginUrl = new URL("/login", request.url);
 
         // Opsional: Simpan halaman asal agar setelah login bisa kembali ke sini
-        loginUrl.searchParams.set("from", pathname);
+        // loginUrl.searchParams.set("from", pathname);
 
-        return NextResponse.redirect(loginUrl);
+        // return NextResponse.redirect(loginUrl);
+
+        const homeUrl = new URL('/user/404', request.url);
+
+        return NextResponse.redirect(homeUrl);
     } else if (isLoginPage && !!request?.cookies?.get(STORAGE_KEY.TOKEN)) {
         const token = request.cookies.get(STORAGE_KEY.TOKEN);
 

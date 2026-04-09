@@ -28,7 +28,9 @@ function DjMusicRequest() {
         id: ""
     });
 
-    const { data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage, dataUpdatedAt } = useAllSongRequestsInfiniteQuery({}, 3000);
+    const { data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage, dataUpdatedAt } = useAllSongRequestsInfiniteQuery({
+        date: dayjs(new Date()).format("YYYY-MM-DD")
+    }, 3000);
 
     const songRequestData = data?.pages?.flatMap(_data => _data?.data?.results);
 
