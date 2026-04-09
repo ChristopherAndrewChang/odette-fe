@@ -14,6 +14,7 @@ export const middleware = (request: NextRequest) => {
 
     console.log("mywifi-ip", request.headers.get("x-forwarded-for"));
     console.log("real-ip", request.headers.get("x-real-ip"));
+    console.log("ip", request.ip);
 
     // if (isUserScanPath && request.cookies.get(STORAGE_KEY.USER_SESSION)) {
     //     return NextResponse.redirect(new URL("/user/home", request.url));
