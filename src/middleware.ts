@@ -39,7 +39,11 @@ export const middleware = (request: NextRequest) => {
         const token = request.cookies.get(STORAGE_KEY.TOKEN);
 
         if (getRoleFromJWT(token?.value || "") === "superuser") {
-            return NextResponse.redirect(new URL(APP_URL.SUPERUSER_HOME.INDEX, request.url));
+            return NextResponse.redirect(new URL(APP_URL.SUPERUSER_USERS.INDEX, request.url));
+        } else if (getRoleFromJWT(token?.value || "") === "admin") {
+            return NextResponse.redirect(new URL(APP_URL.SUPERUSER_TABLE.INDEX, request.url));
+        } else if (getRoleFromJWT(token?.value || "") === "dj") {
+            return NextResponse.redirect(new URL(APP_URL.DJ_HOME.INDEX, request.url));
         } else {
             return NextResponse.redirect(new URL("/home", request.url));
         }

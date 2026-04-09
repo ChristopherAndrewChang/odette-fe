@@ -16,7 +16,7 @@ import { useAllSongRequestsInfiniteQuery } from "@/features/superuser/music-requ
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ApprovalDialog from "./components/ApprovalDialog";
 import { onLogout } from "@/utils/logout";
-import { API_URL } from "@/data/internal/api-route";
+import { APP_URL } from "@/data/internal/app-route";
 
 function DjMusicRequest() {
     const loader = useTopLoader();
@@ -65,7 +65,7 @@ function DjMusicRequest() {
                 <div onClick={() => {
                     onLogout();
                     loader.start();
-                    router.push(API_URL.USER_SCAN.INDEX);
+                    router.push(APP_URL.GUEST_LOGIN.INDEX);
                 }} className="py-1 px-4 border border-red-800 w-fit rounded-lg mb-6 cursor-pointer">
                     <p className="text-error">Logout</p>
                 </div>
