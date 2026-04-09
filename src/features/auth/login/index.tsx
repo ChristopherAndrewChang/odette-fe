@@ -85,57 +85,55 @@ function Login() {
     }
 
     return (
-        <>
-            <div className="w-screen h-screen fixed flex items-center justify-center">
-                <Card className="w-1/3">
-                    <CardContent>
-                        {/* Image */}
-                        <div className="flex flex-col gap-2 items-center mb-4">
-                            <Logo noText />
-                            <Typography className="text-primary font-semibold text-2xl font-poppins">Login Here</Typography>
-                            <Typography>Enter your credentials to access the system</Typography>
+        <div className="w-screen min-h-screen flex items-center justify-center">
+            <Card className="w-full sm:w-4/5 md:w-1/2 lg:w-1/3">
+                <CardContent>
+                    {/* Image */}
+                    <div className="flex flex-col gap-2 items-center mb-4">
+                        <Logo noText />
+                        <Typography className="text-primary font-semibold text-2xl font-poppins">Login Here</Typography>
+                        <Typography>Enter your credentials to access the system</Typography>
+                    </div>
+                    {/* end of image logo */}
+                    <form onSubmit={handleSubmit(onLogin)} className="flex flex-col gap-4">
+                        <InputCustomized
+                            control={control}
+                            name="username"
+                            label="Username"
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: "This field is required"
+                                },
+                                validate: {
+                                    noBlankSpace: value => regNoBlankspace.test(value) || "You must fill with no blankspace",
+                                }
+                            }}
+                        />
+
+                        <InputCustomized
+                            control={control}
+                            name="password"
+                            isPassword
+                            type={showPassword ? "text" : "password"}
+                            onPasswordTypeChange={() => {
+                                setShowPassword(prev => !prev);
+                            }}
+                            rules={{
+                                required: { value: true, message: "This field is required" }
+                            }}
+                            label="Password"
+                        />
+
+                        <div className="flex items-center gap-2">
+                            <Button fullWidth variant="contained" type="submit">
+                                {isPending ? "Loading..." : "Login"}
+                            </Button>
                         </div>
-                        {/* end of image logo */}
-                        <form onSubmit={handleSubmit(onLogin)} className="flex flex-col gap-4">
-                            <InputCustomized
-                                control={control}
-                                name="username"
-                                label="Username"
-                                rules={{
-                                    required: {
-                                        value: true,
-                                        message: "This field is required"
-                                    },
-                                    validate: {
-                                        noBlankSpace: value => regNoBlankspace.test(value) || "You must fill with no blankspace",
-                                    }
-                                }}
-                            />
-
-                            <InputCustomized
-                                control={control}
-                                name="password"
-                                isPassword
-                                type={showPassword ? "text" : "password"}
-                                onPasswordTypeChange={() => {
-                                    setShowPassword(prev => !prev);
-                                }}
-                                rules={{
-                                    required: { value: true, message: "This field is required" }
-                                }}
-                                label="Password"
-                            />
-
-                            <div className="flex items-center gap-2">
-                                <Button fullWidth variant="contained" type="submit">
-                                    {isPending ? "Loading..." : "Login"}
-                                </Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
-            </div>
-        </>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
     )
 }
 
