@@ -8,7 +8,12 @@ export const columns: GridColDef[] = [
         field: "table_number",
         headerName: "Table Number",
         minWidth: 250,
-        flex: 1
+        flex: 1,
+        renderCell: ({ value }) => (
+            <div className="h-full flex items-center">
+                <p className="text-xl font-semibold">Table {value}</p>
+            </div>
+        )
     },
     {
         field: "request_type",
