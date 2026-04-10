@@ -68,7 +68,7 @@ function UserScan() {
 
     const renderNoToken = (
         <div>
-            <Typography>Session Has Ended</Typography>
+            <Typography>Your session has ended or no token was found. Please scan the QR code to start a new session.</Typography>
         </div>
     );
 

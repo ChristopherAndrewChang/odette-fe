@@ -25,7 +25,7 @@ function PWAPage() {
 
     if (!isPWA) {
         return (
-            <p className="font-poppins">This page only can access while in PWA mode</p>
+            <p className="font-poppins">This page can only be accessed in PWA mode</p>
         )
     }
 
