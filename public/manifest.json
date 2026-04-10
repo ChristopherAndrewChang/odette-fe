@@ -2,7 +2,7 @@
     "name": "Odette App",
     "short_name": "OdetteApp",
     "description": "This is the Odette App",
-    "start_url": "/",
+    "start_url": "/login",
     "display": "standalone",
     "background_color": "#0f0a04",
     "theme_color": "#0f0a04",
