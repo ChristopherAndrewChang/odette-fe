@@ -1,18 +1,23 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { LuDices, LuMonitor, LuUtensilsCrossed } from "react-icons/lu";
 
 import { PiMusicNotesPlus } from "react-icons/pi";
 
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 import CardMenu from "./components/CardMenu";
 import UserContainer from "../shared/components/UserContainer";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import Logo from "@/components/layout/shared/Logo";
 import { useGetSettings } from "@/features/superuser/settings/hooks/settings";
+import { onLogout } from "@/utils/logout";
+import { APP_URL } from "@/data/internal/app-route";
 
 function HomePage() {
+    const router = useRouter();
     const { data, isFetching } = useGetSettings();
 
     return (
@@ -35,7 +40,13 @@ function HomePage() {
 
             {/* welcome */}
             <section className="flex flex-col gap-2 mb-8">
-                <p className="text-gray-500 text-lg font-poppins">Welcome Back,</p>
+                <Button variant="outlined" color="error" size="small" onClick={() => {
+                    onLogout();
+                    router.push(APP_URL.USER_SCAN.INDEX);
+                }} className="w-fit mb-4">
+                    Logout
+                </Button>
+                <p className="text-gray-300 text-lg font-poppins">Welcome Back,</p>
                 <p className="text-5xl text-white font-bold font-poppins mb-4">Mr/Ms. {localStorage.getItem(STORAGE_KEY.USER_NAME)}</p>
 
                 {/* table badge */}

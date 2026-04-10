@@ -14,6 +14,7 @@ export const middleware = (request: NextRequest) => {
     const isUserScanPage = pathname.startsWith(APP_URL.USER_SCAN.INDEX);
     const is404Page = pathname.startsWith("/user/404");
     const isHomePage = pathname.startsWith("/home");
+    const isPWAPage = pathname.startsWith("/pwa");
 
     const isUser = !!request?.cookies?.get(STORAGE_KEY.USER_SESSION);
     const isSuperuser = getRoleFromJWT(request?.cookies?.get(STORAGE_KEY.TOKEN)?.value || "") === "superuser";
@@ -43,7 +44,33 @@ export const middleware = (request: NextRequest) => {
         return NextResponse.redirect(notFoundPage);
     }
 
-    if (is404Page || isUserScanPage) {
+    if (isPWAPage) {
+        if (isGuest) {
+            return NextResponse.next();
+        } else if (isUser) {
+            return NextResponse.redirect(userDefaultPage);
+        } else if (isSuperuser) {
+            return NextResponse.redirect(superuserDefaultPage);
+        } else if (isAdmin) {
+            return NextResponse.redirect(adminDefaultPage);
+        } else if (isDJ) {
+            return NextResponse.redirect(djDefaultPage);
+        }
+    }
+
+    if (isUserScanPage) {
+        if (isGuest || isUser) {
+            return NextResponse.next();
+        } else if (isSuperuser) {
+            return NextResponse.redirect(superuserDefaultPage);
+        } else if (isAdmin) {
+            return NextResponse.redirect(adminDefaultPage);
+        } else if (isDJ) {
+            return NextResponse.redirect(djDefaultPage);
+        }
+    }
+
+    if (is404Page) {
         return NextResponse.next();
     }
 
