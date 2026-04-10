@@ -19,6 +19,7 @@ import { regNoBlankspace } from "@/@pv/utils/validation";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import { getRoleFromJWT } from "@/utils/auth";
 import { APP_URL } from "@/data/internal/app-route";
+import { useIsPWA } from "@/hooks/pwa";
 
 type TRequest = {
     username: string;
@@ -26,6 +27,8 @@ type TRequest = {
 }
 
 function Login() {
+    const isPWA = useIsPWA();
+
     const router = useRouter();
     const topLoader = useTopLoader();
 
@@ -88,7 +91,7 @@ function Login() {
         <div className="w-screen min-h-screen flex items-center justify-center">
             <Card className="w-full sm:w-4/5 md:w-1/2 lg:w-1/3">
                 <CardContent>
-                    {/* Image */}
+                    {isPWA && <p>PWA</p>}
                     <div className="flex flex-col gap-2 items-center mb-4">
                         <Logo noText />
                         <Typography className="text-primary font-semibold text-2xl font-poppins">Login Here</Typography>
