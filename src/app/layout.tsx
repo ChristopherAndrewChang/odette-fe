@@ -2,7 +2,10 @@
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // Type Imports
+import type { Metadata, Viewport } from "next"
+
 import type { ChildrenType } from '@core/types'
+
 
 // Style Imports
 import '@/app/globals.css'
@@ -14,8 +17,13 @@ import { AppConfig } from '@/configs/appConfig'
 import PvProviderContainer from '@/components/PvProviderContainer'
 
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `${AppConfig.appName}`,
+  manifest: '/manifest.json',
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0f0a04"
 }
 
 const RootLayout = ({ children }: ChildrenType) => {

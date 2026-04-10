@@ -14,6 +14,7 @@
     "postinstall": "npm run build:icons"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
     "@emotion/cache": "11.13.0",
     "@emotion/react": "11.13.0",
     "@emotion/styled": "11.13.0",
@@ -22,6 +23,7 @@
     "@mui/lab": "5.0.0-alpha.172",
     "@mui/material": "5.16.4",
     "@mui/material-nextjs": "5.16.4",
+    "@mui/utils": "^9.0.0",
     "@mui/x-data-grid": "^8.10.0",
     "@ozanplanviu/planviu-core": "1.9.2",
     "@tanstack/react-query": "^5.95.2",
@@ -51,6 +53,7 @@
     "@iconify/tools": "4.0.4",
     "@iconify/types": "2.0.0",
     "@iconify/utils": "2.1.25",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

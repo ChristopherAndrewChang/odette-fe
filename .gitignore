@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# PWA
+**/public/sw.js
+**/public/workbox-*.js
+**/public/workbox-*.js.map
+**/public/sw.js.map
+
 # dependencies
 /node_modules
 /.pnp
