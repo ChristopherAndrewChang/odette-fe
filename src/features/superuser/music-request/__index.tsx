@@ -79,6 +79,9 @@ function MusicRequestManagement() {
                 }}
                 open={openApproval.cond}
 
+                // change this if you want to select the action inside the modal
+                type="admin_approved"
+
                 // type={openApproval.type}
                 id={openApproval.id}
             />
