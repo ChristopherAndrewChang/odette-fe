@@ -77,7 +77,7 @@ function SongRequest() {
 
     const onSubmit = (data: TRequest) => {
         if (!data?.donation || (data?.donation === "custom" && !data?.donation_amount)) {
-            toast.error("Invalid Sawer Amount");
+            toast.error("Invalid Tip Amount");
         }
 
         mutate({
@@ -179,7 +179,7 @@ function SongRequest() {
                     </div>
 
                     <div className="mb-4">
-                        <GroupTitle title="Sawer Amount" />
+                        <GroupTitle title="Tip Amount" />
                         <div className="grid grid-cols-3 gap-4 mb-4">
                             {[10000, 25000, 50000, 100000, 250000, 500000].map(num => (
                                 <div
@@ -251,7 +251,7 @@ function SongRequest() {
                         {isPending ? <CircularProgress size={20} className="text-white" /> : "Send and Pay"}
                     </Button>
 
-                    <p className="text-gray-400 text-sm text-center">Min sawer Rp10.000 - Subject to approval</p>
+                    <p className="text-gray-400 text-sm text-center">Min tip Rp10.000 - Subject to approval</p>
                 </form>
 
                 {/* <main className="flex flex-col gap-4">

@@ -36,7 +36,7 @@ function ListMyScreenTakeover() {
                     }}>Type: {screen?.request_type}</Typography>
                     <Typography className="text-white font-semibold">Message: {screen?.message || "-"}</Typography>
 
-                    <Typography className="text-gray-300">Sawer Amount: Rp{Number(screen?.donation_amount)?.toLocaleString()}</Typography>
+                    <Typography className="text-gray-300">Tip Amount: Rp{Number(screen?.donation_amount)?.toLocaleString()}</Typography>
                     <Typography className="text-gray-300">Status: {screen?.status}</Typography>
                     {(screen.request_type !== "text") ? (
                         <a href={`${AppConfig.mediaUrl}${screen?.media_file}`} target="_blank" className="mt-2 flex items-center gap-2 bg-gray-500 w-fit p-1 rounded-lg">

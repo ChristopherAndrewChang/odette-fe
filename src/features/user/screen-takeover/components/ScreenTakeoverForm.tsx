@@ -196,7 +196,7 @@ function ScreenTakeoverForm() {
 
             {/* sawer amount */}
             <div className="">
-                <GroupTitle title="Sawer Amount" />
+                <GroupTitle title="Tip Amount" />
                 <div className="grid grid-cols-3 gap-4 mb-4">
                     {[10000, 25000, 50000, 100000, 250000, 500000].map(num => (
                         <div
@@ -267,7 +267,7 @@ function ScreenTakeoverForm() {
                 {isPending ? <CircularProgress size={18} className="text-black" /> : "Send and Pay"}
             </Button>
 
-            <p className="text-gray-400 text-sm text-center">Min sawer Rp10.000 - Subject to approval</p>
+            <p className="text-gray-400 text-sm text-center">Min tip Rp10.000 - Subject to approval</p>
         </form>
     )
 }
