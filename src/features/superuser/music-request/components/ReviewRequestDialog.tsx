@@ -16,9 +16,10 @@ type TReviewRequestDialog = {
 
     // type: "approved" | "rejected";
     id: string;
+    type: "admin_approved" | "admin_rejected"
 }
 
-function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
+function ReviewRequestDialog({ onClose, open, id, type }: TReviewRequestDialog) {
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useApprovalSongRequestMutation({
@@ -34,7 +35,7 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
         }
     });
 
-    const onSubmit = (type: "admin_approved" | "admin_rejected") => {
+    const onSubmit = () => {
         mutate({
             method: "PATCH",
             id: id,
@@ -49,7 +50,15 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
             <DialogTitle>Approval</DialogTitle>
             <DialogContent>
 
-                <p className="font-poppins text-gray-600 mb-4">Select your action below, either APPROVE or REJECT</p>
+                <p className="mb-4">Are you sure to proceed this action, it can not be undone.</p>
+                <div className="flex gap-2">
+                    <Button onClick={onClose} variant="outlined" color="inherit">Cancel</Button>
+                    <Button onClick={onSubmit} variant="contained">
+                        {isPending ? <CircularProgress size={14} /> : "Proceed"}
+                    </Button>
+                </div>
+
+                {/* <p className="font-poppins text-gray-600 mb-4">Select your action below, either APPROVE or REJECT</p>
 
                 <div className="flex gap-2">
                     <Button
@@ -72,7 +81,7 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
                     >
                         {isPending ? <CircularProgress size={20} className="text-white" /> : "Approve"}
                     </Button>
-                </div>
+                </div> */}
                 {/* <Typography>Are you sure to {(type === "approved") ? "approve" : "reject"} this request?</Typography>
                 <div className="mt-4 flex gap-2">
                     <Button variant="outlined" onClick={onClose}>Cancel</Button>
