@@ -6,7 +6,12 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 import { dummyByRequestType } from "../../dummy";
 
-function VTronTextKanban() {
+type TVTronTextKanban = {
+    onAccept: (id: string) => void;
+    onReject: (id: string) => void;
+}
+
+function VTronTextKanban({ onAccept, onReject }: TVTronTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_text"
@@ -19,8 +24,8 @@ function VTronTextKanban() {
                     table={data?.table_number?.toString()}
                     time={dayjs(data?.created_at).format("HH:mm A")}
                     user={data?.customer_name || ""}
-                    onAccept={() => { }}
-                    onReject={() => { }}
+                    onAccept={() => onAccept(data?.id?.toString())}
+                    onReject={() => onReject(data?.id?.toString())}
                     textContent={{
                         content: data?.message || ""
                     }}

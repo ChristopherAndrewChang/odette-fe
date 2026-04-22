@@ -6,7 +6,12 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 import { dummyByRequestType } from "../../dummy";
 
-function VtronImage() {
+type TVtronImage = {
+    onAccept: (id: string) => void;
+    onReject: (id: string) => void;
+}
+
+function VtronImage({ onAccept, onReject }: TVtronImage) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_photo"
@@ -19,8 +24,8 @@ function VtronImage() {
                     table={data?.table_number?.toString()}
                     time={dayjs(data?.created_at).format("HH:mm A")}
                     user={data?.customer_name || ""}
-                    onAccept={() => { }}
-                    onReject={() => { }}
+                    onAccept={() => onAccept(data?.id?.toString())}
+                    onReject={() => onReject(data?.id?.toString())}
                     textContent={{
                         content: data?.message || ""
                     }}

@@ -10,7 +10,6 @@ import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import AppLayout from "@/components/internal/AppLayout";
 
-import ReviewRequestDialog from "./components/ReviewRequestDialog";
 import DateFilter from "../shared/components/DateFilter";
 import SessionFilter from "../shared/components/filter/SessionFilter";
 import StatsCards from "./components/stats";
@@ -19,6 +18,7 @@ import RunningTextKanban from "./components/kanban/RunningTextKanban";
 import VTronTextKanban from "./components/kanban/VTronTextKanban";
 import VtronImage from "./components/kanban/VtronImage";
 import VTronVideo from "./components/kanban/VtronVideo";
+import ReviewRequestDialogV2 from "./components/ReviewRequestDialogV2";
 
 function ScreenTakeoverPage() {
     const loader = useTopLoader();
@@ -51,7 +51,7 @@ function ScreenTakeoverPage() {
                     setDateOpen(false);
                 }}
             />
-            <ReviewRequestDialog
+            {/* <ReviewRequestDialog
                 id={openApproval?.id}
                 open={openApproval?.cond}
                 onClose={() => {
@@ -61,22 +61,102 @@ function ScreenTakeoverPage() {
                         type: "approved"
                     });
                 }}
+            /> */}
+
+            <ReviewRequestDialogV2
+                onClose={() => {
+                    setOpenApproval({
+                        cond: false,
+                        id: "",
+                        type: "approved"
+                    });
+                }}
+                open={openApproval.cond}
+                type={openApproval.type}
             />
             <AppLayout title="Screen Takeover">
                 <SessionFilter />
                 <StatsCards />
                 <KanbanScreenTakeover
                     runningTextSlot={{
-                        content: <RunningTextKanban />
+                        content: (
+                            <RunningTextKanban
+                                onAccept={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "approved"
+                                    });
+                                }}
+                                onReject={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "rejected"
+                                    })
+                                }}
+                            />
+                        )
                     }}
                     vtronImageSlot={{
-                        content: <VtronImage />
+                        content: (
+                            <VtronImage
+                                onAccept={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "approved"
+                                    });
+                                }}
+                                onReject={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "rejected"
+                                    });
+                                }}
+                            />
+                        )
                     }}
                     vtronTextSlot={{
-                        content: <VTronTextKanban />
+                        content: (
+                            <VTronTextKanban
+                                onAccept={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "approved"
+                                    });
+                                }}
+                                onReject={(id: string) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "rejected"
+                                    });
+                                }}
+                            />
+                        )
                     }}
                     vtronVideoSlot={{
-                        content: <VTronVideo />
+                        content: (
+                            <VTronVideo
+                                onAccept={(id) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "approved"
+                                    });
+                                }}
+                                onReject={(id: string) => {
+                                    setOpenApproval({
+                                        cond: true,
+                                        id: id,
+                                        type: "rejected"
+                                    });
+                                }}
+                            />
+                        )
                     }}
                 />
             </AppLayout>

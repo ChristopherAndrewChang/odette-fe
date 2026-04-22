@@ -6,7 +6,12 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 import { dummyByRequestType } from "../../dummy";
 
-function RunningTextKanban() {
+type TRunningTextKanban = {
+    onAccept: (id: string) => void;
+    onReject: (id: string) => void;
+}
+
+function RunningTextKanban({ onAccept, onReject }: TRunningTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="running_text"
@@ -20,8 +25,8 @@ function RunningTextKanban() {
                     table={`T${_data?.table_number?.toString()}`}
                     time={dayjs(_data?.created_at).format("HH:mm A")}
                     user={_data?.customer_name || ""}
-                    onAccept={() => { }}
-                    onReject={() => { }}
+                    onAccept={() => onAccept(_data?.id?.toString())}
+                    onReject={() => onReject(_data?.id?.toString())}
                     textContent={{
                         content: _data?.message
                     }}
