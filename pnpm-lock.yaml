@@ -92,6 +92,9 @@ importers:
       react-dom:
         specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
+      react-flatpickr:
+        specifier: ^4.0.11
+        version: 4.0.11(react@18.3.1)
       react-hook-form:
         specifier: ^7.62.0
         version: 7.72.1(react@18.3.1)
@@ -2446,6 +2449,9 @@ packages:
     resolution: {integrity: sha512-JrqFmyUl2PnPi1OvLyTVHnQvwQ0S+e6lGSwu8OkAZlSaNIZciTY2H/cOOROxsBA1m/LZNHDsqAgDZt6akWcjsQ==}
     engines: {node: '>=18'}
 
+  flatpickr@4.6.13:
+    resolution: {integrity: sha512-97PMG/aywoYpB4IvbvUJi0RQi8vearvU0oov1WW3k0WZPBMrTQVqekSX5CjSG/M4Q3i6A/0FKXC7RyAoAUUSPw==}
+
   flatted@3.4.2:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
@@ -3440,6 +3446,11 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-flatpickr@4.0.11:
+    resolution: {integrity: sha512-S0TAu8eUeJgN8lZ0Efi41WGPM/tPPUvrveXQ8CAUO60+7TTrF5Ehyv8fvPVagKCqJahY7hXYERM7XfH2hSAWdg==}
+    peerDependencies:
+      react: '>= 16 <= 19'
 
   react-hook-form@7.72.1:
     resolution: {integrity: sha512-RhwBoy2ygeVZje+C+bwJ8g0NjTdBmDlJvAUHTxRjTmSUKPYsKfMphkS2sgEMotsY03bP358yEYlnUeZy//D9Ig==}
@@ -6905,6 +6916,8 @@ snapshots:
       flatted: 3.4.2
       keyv: 4.5.4
 
+  flatpickr@4.6.13: {}
+
   flatted@3.4.2: {}
 
   follow-redirects@1.15.11: {}
@@ -7845,6 +7858,11 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-flatpickr@4.0.11(react@18.3.1):
+    dependencies:
+      flatpickr: 4.6.13
+      react: 18.3.1
 
   react-hook-form@7.72.1(react@18.3.1):
     dependencies:

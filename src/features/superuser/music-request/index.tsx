@@ -9,6 +9,7 @@ import PendingPage from "./components/pending";
 import WithDJ from "./components/withDj";
 import DjApproved from "./components/djApproved";
 import MusicStats from "./components/stats";
+import SessionFilter from "../shared/components/filter/SessionFilter";
 
 function MusicRequestManagement() {
     const [openDateFilter, setOpenDateFilter] = useState(false);
@@ -21,20 +22,9 @@ function MusicRequestManagement() {
                     setOpenDateFilter(false);
                 }}
             />
-            {/* <ReviewRequestDialog
-                onClose={() => {
-                    setOpenApproval({
-                        cond: false,
-                        id: "",
-                        type: "approved"
-                    });
-                }}
-                open={openApproval.cond}
-
-                // type={openApproval.type}
-                id={openApproval.id}
-            /> */}
             <AppLayout title="Song Request">
+                <SessionFilter />
+
                 <MusicStats />
                 <KanbanContainer
                     dj={<WithDJ />}

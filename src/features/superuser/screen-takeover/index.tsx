@@ -2,54 +2,35 @@
 
 import { useEffect, useState } from "react";
 
-import { PvTable, useQueryParams } from "@ozanplanviu/planviu-core";
-
-import type { GridPaginationModel } from "@mui/x-data-grid";
-
 import dayjs from "dayjs";
 
 import { useTopLoader } from "nextjs-toploader";
 
-import { Button } from "@mui/material";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import AppLayout from "@/components/internal/AppLayout";
-import { useScreenTakeoverQuery } from "./hooks/screen-takeover";
-import { ScreenTakeoverMapper } from "./mapper";
-import { columns } from "./columns";
-
-import { useFilter } from "@/@pv/hooks/use-filter";
 
 import ReviewRequestDialog from "./components/ReviewRequestDialog";
 import DateFilter from "../shared/components/DateFilter";
-import DateFilterButton from "../shared/components/DateFilterButton";
+import SessionFilter from "../shared/components/filter/SessionFilter";
+import StatsCards from "./components/stats";
+import KanbanScreenTakeover from "./components/kanban";
+import RunningTextKanban from "./components/kanban/RunningTextKanban";
+import VTronTextKanban from "./components/kanban/VTronTextKanban";
+import VtronImage from "./components/kanban/VtronImage";
+import VTronVideo from "./components/kanban/VtronVideo";
 
 function ScreenTakeoverPage() {
     const loader = useTopLoader();
-    const { updateParams, getParam } = useQueryParams();
+    const { updateParams } = useQueryParams();
 
     const [dateOpen, setDateOpen] = useState(false);
-
-    const [pagination, setPagination] = useState<GridPaginationModel>({
-        page: 0,
-        pageSize: 10
-    });
 
     const [openApproval, setOpenApproval] = useState<{ cond: boolean; id: string; type: "approved" | "rejected" }>({
         cond: false,
         id: "",
         type: "approved"
     });
-
-    const { filterAppliedCount, filterParams } = useFilter(["status", "date"]);
-
-    const { data, isFetching, refetch, dataUpdatedAt } = useScreenTakeoverQuery({
-        page: pagination?.page + 1,
-        ...filterParams
-    }, 10000);
-
-    const onReload = () => {
-        refetch();
-    }
 
     useEffect(() => {
         loader.done();
@@ -82,110 +63,21 @@ function ScreenTakeoverPage() {
                 }}
             />
             <AppLayout title="Screen Takeover">
-                <div className="flex gap-2">
-                    {!!getParam("date") ? (
-                        <p className="mb-4">Date: {dayjs(getParam("date")).format("DD MMMM YYYY")}</p>
-                    ) : null}
-
-                    <p className="italic text-blue-700 text-sm">Last updated at: {dayjs(dataUpdatedAt).format("DD MMM YYYY, HH:mm:ss A")}</p>
-                </div>
-
-                <PvTable
-                    columns={columns}
-                    rowCount={data?.data?.count || 0}
-                    rows={ScreenTakeoverMapper(data?.data?.results || [])}
-                    containerProps={{
-                        variant: "outlined"
+                <SessionFilter />
+                <StatsCards />
+                <KanbanScreenTakeover
+                    runningTextSlot={{
+                        content: <RunningTextKanban />
                     }}
-                    pagination={{
-                        paginationModel: pagination,
-                        paginationControl: model => setPagination(model)
+                    vtronImageSlot={{
+                        content: <VtronImage />
                     }}
-                    additionalMenu={[
-                        {
-                            renderMenu: (
-                                <Button onClick={onReload} variant="outlined" startIcon={<i className="tabler-reload"></i>}>Reload</Button>
-                            )
-                        }
-                    ]}
-                    filterProps={{
-                        appliedCount: filterAppliedCount,
-                        filterItems: [
-                            {
-                                label: "Status",
-                                type: "option",
-                                valueKey: "status",
-                                options: [
-                                    { label: "Pending", value: "pending" },
-                                    { label: "Approved", value: "approved" },
-                                    { label: "Rejected", value: "rejected" },
-                                ]
-                            },
-                            {
-                                label: "Date",
-                                type: "custom",
-                                valueKey: "date",
-                                renderFilter: (
-                                    <DateFilterButton
-                                        onClick={() => {
-                                            setDateOpen(true);
-                                        }}
-                                    />
-                                )
-                            }
-                        ]
+                    vtronTextSlot={{
+                        content: <VTronTextKanban />
                     }}
-                    loading={isFetching}
-                    addProps={{
-                        hide: true
+                    vtronVideoSlot={{
+                        content: <VTronVideo />
                     }}
-                    onRowClick={(params) => {
-                        setOpenApproval({
-                            cond: true,
-                            id: params?.id?.toString(),
-                            type: "approved"
-                        });
-                    }}
-                    showProps={{ hide: true }}
-                    deleteProps={{ hide: true }}
-                    editProps={{ hide: true }}
-
-                // actionsSlots={(id) => [
-                //     {
-                //         renderAction: (
-                //             <Tooltip title="Approve" enterDelay={250}>
-                //                 <div
-                //                     onClick={() => {
-                //                         setOpenApproval({
-                //                             cond: true,
-                //                             id: id?.toString(),
-                //                             type: "approved"
-                //                         });
-                //                     }}
-                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-green-500">
-                //                     <i className="tabler-check text-lg text-white"></i>
-                //                 </div>
-                //             </Tooltip>
-                //         )
-                //     },
-                //     {
-                //         renderAction: (
-                //             <Tooltip title="Reject" enterDelay={250}>
-                //                 <div
-                //                     onClick={() => {
-                //                         setOpenApproval({
-                //                             cond: true,
-                //                             id: id?.toString(),
-                //                             type: "rejected"
-                //                         });
-                //                     }}
-                //                     className="w-6 h-6 flex items-center justify-center rounded-lg cursor-pointer bg-red-500">
-                //                     <i className="tabler-x text-lg text-white"></i>
-                //                 </div>
-                //             </Tooltip>
-                //         )
-                //     }
-                // ]}
                 />
             </AppLayout>
         </>

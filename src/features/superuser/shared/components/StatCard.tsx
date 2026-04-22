@@ -8,7 +8,7 @@ type TStatContainer = {
     loading?: boolean;
 }
 
-function StatContainer({ label, value, loading }: TStatContainer) {
+function StatsCard({ label, value, loading }: TStatContainer) {
     return (
         <div className="bg-gray-50 border border-gray-400 p-6 rounded-lg">
             <Typography>{label}</Typography>
@@ -22,4 +22,4 @@ function StatContainer({ label, value, loading }: TStatContainer) {
     )
 }
 
-export default StatContainer
+export default StatsCard;

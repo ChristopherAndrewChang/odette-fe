@@ -47,7 +47,11 @@ const UserDropdown = () => {
 
   // Hooks
   const router = useRouter()
+
+  // UPDATE_BEFORE
   const { data, isLoading } = useMeQuery(!localStorage.getItem(STORAGE_KEY.TOKEN));
+
+  // const { data, isLoading } = useMeQuery(false);
 
   const { settings } = useSettings()
 

@@ -2,7 +2,7 @@
 
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "../../data";
 import { useAllSongRequestsQuery } from "../../hooks/song-request";
-import StatContainer from "./StatContainer";
+import StatsCard from "../../../shared/components/StatCard";
 
 function PendingReviewStatCard() {
     const { data, isLoading } = useAllSongRequestsQuery({
@@ -10,7 +10,7 @@ function PendingReviewStatCard() {
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
     return (
-        <StatContainer
+        <StatsCard
             label="PENDING"
             value={data?.data?.count?.toLocaleString() || ""}
             loading={isLoading}

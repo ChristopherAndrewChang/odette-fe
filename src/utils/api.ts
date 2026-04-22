@@ -69,7 +69,8 @@ export const RequestConfig = ({
             paramsSerializer: params.paramsSerializer,
             headers: ({
                 ...DEFAULT_HEADER,
-                ...params.headers
+                ...params.headers,
+                "ngrok-skip-browser-warning": 'true'
             }),
             responseType: params.responseType,
         });

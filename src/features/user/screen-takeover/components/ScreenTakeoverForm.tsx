@@ -75,7 +75,7 @@ function ScreenTakeoverForm() {
                 method: "POST",
                 type: data.content_type as "text" | "photo" | "video",
                 data: {
-                    request_type: data.content_type,
+                    request_type: "running_text",
                     message: data?.message,
                     donation_amount: (data?.donation === "custom") ? data?.donation_amount : data?.donation
                 }

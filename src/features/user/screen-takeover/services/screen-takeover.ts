@@ -25,7 +25,8 @@ export const postReqScreenTakeOverText = (data?: Record<any, any>) => {
         urlKey: API_URL.SCREEN_TAKEOVER.INDEX,
         noAuth: true,
         headers: {
-            "X-Session-Token": localStorage.getItem(STORAGE_KEY.USER_SESSION)
+            "X-Session-Token": localStorage.getItem(STORAGE_KEY.USER_SESSION),
+            "ngrok-skip-browser-warning": 'true'
         }
     })
 }
