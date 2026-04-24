@@ -53,7 +53,7 @@ function SingleCreation({ onClose }: TSingleCreation) {
             method: "POST",
             type: "single",
             data: {
-                number: Number(data.number)
+                number: data.number
             }
         });
     }
