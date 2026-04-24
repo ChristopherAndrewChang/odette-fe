@@ -42,7 +42,7 @@ function HomePage() {
             <section className="flex flex-col gap-2 mb-8">
                 <Button variant="outlined" color="error" size="small" onClick={() => {
                     onLogout();
-                    router.push(APP_URL.USER_SCAN.INDEX);
+                    router.replace(APP_URL.USER_SCAN.INDEX);
                 }} className="w-fit mb-4">
                     Logout
                 </Button>

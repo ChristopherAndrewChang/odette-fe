@@ -6,6 +6,10 @@ export const QUERY_KEY = {
     SETTINGS: {
         INDEX: "settings"
     },
+    SETTINGS_DONATION: {
+        INDEX: "settings-donation",
+        PUBLIC: "settings-donation-public"
+    },
     SONG_REQUEST: {
         INDEX: "song-request"
     },

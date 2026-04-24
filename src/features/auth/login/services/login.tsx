@@ -9,5 +9,8 @@ export const login = (data?: Record<any, any>): Promise<ResponseWrapper<TLoginRe
         data: data,
         noAuth: true,
         urlKey: API_URL.LOGIN.INDEX,
+        headers: {
+            "ngrok-skip-browser-warning": 'true'
+        }
     });
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import dayjs from "dayjs";
 
-import { CustomTextField } from "@ozanplanviu/planviu-core";
+import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
 
 import { Typography } from "@mui/material";
 
@@ -12,15 +12,17 @@ import { useAllSongRequestsInfiniteQuery } from "../../hooks/song-request";
 import KanbanCard from "../KanbanCard";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
-import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "../../data";
+import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 
 function WithDJ() {
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
+    const { getParam } = useQueryParams();
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
-        status: "admin_approved",
-        search: searchDebounced
+        status: "admin_approved,dj_rejected",
+        search: searchDebounced,
+        date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
     const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
@@ -51,6 +53,11 @@ function WithDJ() {
                         price={Number(withDj?.donation_amount)?.toLocaleString()}
                         table={withDj?.table_number?.toString()}
                         title={withDj?.song_title}
+                        renderComponent={(
+                            <div className="mt-4 border w-fit px-2 py-1 text-xs rounded-lg" style={STATUS_COLOR_DATA[withDj.status]}>
+                                {withDj?.status_display}
+                            </div>
+                        )}
 
                     // renderComponent={(
                     //     <div className="px-4 py-1 bg-red-50 border border-red-200 text-red-500 text-sm rounded-lg w-fit mt-4">

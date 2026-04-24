@@ -1,97 +1,67 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { useForm } from "react-hook-form";
+import { Tab, Tabs } from "@mui/material";
 
-import { getErrorMessage, PvInput } from "@ozanplanviu/planviu-core";
-
-import { Button, CircularProgress } from "@mui/material";
-
-import toast from "react-hot-toast";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import AppLayout from "@/components/internal/AppLayout";
-import { useGetSettings, useSettingsMutation } from "./hooks/settings";
+import GeneralSetting from "./components/general";
+import MinimumDonationSetting from "./components/minimum-donation";
+import BadwordsSettings from "./components/badwords";
 
-type TRequest = {
-    song_request_enabled: boolean;
-    screen_request_enabled: boolean;
-    menu_enabled: boolean
+const SETTINGS_TAB: { label: string; value: string; }[] = [
+    { label: "General Settings", value: "general" },
+    { label: "Donation", value: "donation" },
+    { label: "Bad Words", value: "badwords" }
+]
+
+const TabComponent: Record<string, ReactNode> = {
+    general: <GeneralSetting />,
+    donation: <MinimumDonationSetting />,
+    badwords: <BadwordsSettings />
 }
 
 function SuSettingsPage() {
-    const { handleSubmit, control, reset } = useForm<TRequest>({
-        defaultValues: {
-            menu_enabled: true,
-            screen_request_enabled: true,
-            song_request_enabled: true
-        }
-    });
-
-    const { data, isFetching, refetch } = useGetSettings();
-
-    const { mutate, isPending } = useSettingsMutation({
-        onSuccess: () => {
-            toast.success("Success");
-            refetch();
-        },
-        onError: (err) => {
-            toast.error(getErrorMessage(err));
-        }
-    });
-
-    const onSubmit = (data: TRequest) => {
-        mutate({
-            method: "PATCH",
-            data: data
-        });
-    }
-
-    const renderLoading = (
-        <CircularProgress size={20} />
-    )
+    const { getParam, updateParams } = useQueryParams();
 
     useEffect(() => {
-        reset({
-            menu_enabled: data?.data?.menu_enabled,
-            screen_request_enabled: data?.data?.screen_request_enabled,
-            song_request_enabled: data?.data?.song_request_enabled
-        });
-    }, [data]);
+        if (!getParam("activeTab")) {
+            updateParams({
+                remove: ["activeTab"],
+                add: {
+                    activeTab: "general"
+                }
+            });
+        }
+    }, []);
 
     return (
         <AppLayout title="Settings">
-            {isFetching ? renderLoading : (
-                <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-                    <PvInput
-                        control={control}
-                        name="menu_enabled"
-                        label="Menu"
-                        variant="switch"
+            <Tabs
+                value={getParam("activeTab")}
+                className="mb-4"
+                onChange={(_, value) => {
+                    updateParams({
+                        remove: ["activeTab"],
+                        add: {
+                            activeTab: value
+                        }
+                    });
+                }}
+            >
+                {SETTINGS_TAB.map(setting => (
+                    <Tab
+                        key={setting.value}
+                        value={setting.value}
+                        label={setting.label}
                     />
-                    <PvInput
-                        control={control}
-                        name="screen_request_enabled"
-                        label="Screen Menu Request"
-                        variant="switch"
-                    />
-                    <PvInput
-                        control={control}
-                        name="song_request_enabled"
-                        label="Song Request"
-                        variant="switch"
-                    />
+                ))}
+            </Tabs>
 
-                    <Button
-                        disabled={isPending}
-                        variant="contained"
-                        type="submit"
-                        className="w-fit mt-4"
-                    >
-                        {isPending ? <CircularProgress size={20} className="text-white" /> : "Save"}
-                    </Button>
-                </form>
-            )}
+            {TabComponent[getParam("activeTab") || "general"]}
         </AppLayout>
     )
 }

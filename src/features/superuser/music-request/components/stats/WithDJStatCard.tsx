@@ -1,12 +1,19 @@
 "use client";
 
+import { useQueryParams } from "@ozanplanviu/planviu-core";
+
+import dayjs from "dayjs";
+
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "../../data";
 import { useAllSongRequestsQuery } from "../../hooks/song-request";
 import StatsCard from "../../../shared/components/StatCard";
 
 function WithDJStatCard() {
+    const { getParam } = useQueryParams();
+
     const { data, isLoading } = useAllSongRequestsQuery({
-        status: "admin_approved"
+        status: "admin_approved",
+        date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
     return (

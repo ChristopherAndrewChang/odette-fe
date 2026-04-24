@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import dayjs from "dayjs";
 
-import { CustomTextField } from "@ozanplanviu/planviu-core";
+import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
 
 import { Typography } from "@mui/material";
 
@@ -13,21 +13,23 @@ import KanbanCard from "../KanbanCard";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ReviewRequestDialog from "../ReviewRequestDialog";
-import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "../../data";
+import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 
 function PendingPage() {
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
+    const { getParam } = useQueryParams();
 
     const [openReview, setOpenReview] = useState<{ id: string; open: boolean; type: "admin_approved" | "admin_rejected" }>({
         id: "",
         open: false,
-        type: "admin_approved"
+        type: "admin_approved",
     });
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
-        status: "pending",
-        search: searchDebounced
+        status: "pending,admin_rejected",
+        search: searchDebounced,
+        date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
     const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
@@ -70,14 +72,19 @@ function PendingPage() {
                         price={Number(pendingItem?.donation_amount)?.toLocaleString()}
                         table={pendingItem?.table_number?.toString()}
                         title={pendingItem?.song_title}
-                        onAccept={() => {
+                        renderComponent={(
+                            <div className="mt-4 border w-fit px-2 py-1 text-xs rounded-lg" style={STATUS_COLOR_DATA[pendingItem.status]}>
+                                {pendingItem?.status_display}
+                            </div>
+                        )}
+                        onAccept={(pendingItem.status !== "pending") ? undefined : () => {
                             setOpenReview({
                                 id: pendingItem?.id?.toString(),
                                 open: true,
                                 type: "admin_approved"
                             });
                         }}
-                        onReject={() => {
+                        onReject={(pendingItem.status !== "pending") ? undefined : () => {
                             setOpenReview({
                                 id: pendingItem?.id?.toString(),
                                 open: true,

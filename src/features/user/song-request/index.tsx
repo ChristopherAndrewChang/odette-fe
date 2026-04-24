@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 
 import toast from "react-hot-toast";
 
@@ -22,6 +22,7 @@ import HistoryButton from "../shared/components/HistoryButton";
 import ListRequestSongDrawer from "./components/ListRequestSongDrawer";
 import { useSongRequestMutation } from "./hooks/song-request";
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import { useDonationSettingsPublicQuery } from "../shared/hooks/donation-settings";
 
 type TRequest = {
     song_title: string;
@@ -45,6 +46,16 @@ function SongRequest() {
     const { control, setValue, watch, handleSubmit, reset } = useForm<TRequest>({
         defaultValues: defaultValue
     })
+
+    const { data: donations, isFetching: donationsFetching } = useDonationSettingsPublicQuery();
+
+    const getDonationsList = () => {
+        if (!donations) return [];
+
+        const arrAdder = [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
+
+        return arrAdder.map(adder => adder + donations?.data?.song_request);
+    }
 
     const { mutate, isPending } = useSongRequestMutation({
         onSuccess: () => {
@@ -76,8 +87,22 @@ function SongRequest() {
     const [openRequestSongList, setOpenRequestSongList] = useState(false);
 
     const onSubmit = (data: TRequest) => {
+        if (donationsFetching) {
+            toast.error("Please wait for the tip amount list");
+
+            return;
+        }
+
         if (!data?.donation || (data?.donation === "custom" && !data?.donation_amount)) {
             toast.error("Invalid Tip Amount");
+
+            return;
+        }
+
+        if (data?.donation === "custom" && (Number(data?.donation_amount) < (donations?.data?.song_request || 0))) {
+            toast.error(`Minimum tip amount is Rp${donations?.data?.song_request?.toLocaleString()}`);
+
+            return;
         }
 
         mutate({
@@ -178,63 +203,73 @@ function SongRequest() {
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <GroupTitle title="Tip Amount" />
-                        <div className="grid grid-cols-3 gap-4 mb-4">
-                            {[10000, 25000, 50000, 100000, 250000, 500000].map(num => (
+                    {donationsFetching ? (
+                        <>
+                            <GroupTitle title="Tip Amount" />
+                            <div className="flex items-center gap-2 mb-4">
+                                <CircularProgress size={18} className="text-gray-400" />
+                                <Typography className="text-gray-400">Loading Tip Amount</Typography>
+                            </div>
+                        </>
+                    ) : (
+                        <div className="mb-4">
+                            <GroupTitle title="Tip Amount" />
+                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                {getDonationsList().map(num => (
+                                    <div
+                                        key={num}
+                                        onClick={() => {
+                                            setValue("donation", num?.toString());
+                                        }}
+                                        className="py-2 px-4 rounded-xl"
+                                        style={{
+                                            borderWidth: 0.2,
+                                            borderColor: (watch("donation") !== num?.toString()) ? `${GRAY}80` : PURPLE,
+                                            backgroundColor: (watch("donation") !== num?.toString()) ? DARKBLUE : `${PURPLE}60`,
+                                            color: (watch("donation") !== num?.toString()) ? GRAY : GOLD
+                                        }}
+                                    >
+                                        <p className="font-poppins text-center text-gray-400 font-medium">Rp{num.toLocaleString("ID")}</p>
+                                    </div>
+                                ))}
+
                                 <div
-                                    key={num}
                                     onClick={() => {
-                                        setValue("donation", num?.toString());
+                                        setValue("donation", "custom");
                                     }}
                                     className="py-2 px-4 rounded-xl"
                                     style={{
                                         borderWidth: 0.2,
-                                        borderColor: (watch("donation") !== num?.toString()) ? `${GRAY}80` : PURPLE,
-                                        backgroundColor: (watch("donation") !== num?.toString()) ? DARKBLUE : `${PURPLE}60`,
-                                        color: (watch("donation") !== num?.toString()) ? GRAY : GOLD
+                                        borderColor: (watch("donation") !== "custom") ? `${GRAY}80` : PURPLE,
+                                        backgroundColor: (watch("donation") !== "custom") ? DARKBLUE : `${PURPLE}60`,
+                                        color: (watch("donation") !== "custom") ? GRAY : GOLD
                                     }}
                                 >
-                                    <p className="font-poppins text-center text-gray-400 font-medium">Rp{num.toLocaleString("ID")}</p>
+                                    <p className="font-poppins text-center text-gray-400 font-medium">Custom</p>
                                 </div>
-                            ))}
 
-                            <div
-                                onClick={() => {
-                                    setValue("donation", "custom");
-                                }}
-                                className="py-2 px-4 rounded-xl"
-                                style={{
-                                    borderWidth: 0.2,
-                                    borderColor: (watch("donation") !== "custom") ? `${GRAY}80` : PURPLE,
-                                    backgroundColor: (watch("donation") !== "custom") ? DARKBLUE : `${PURPLE}60`,
-                                    color: (watch("donation") !== "custom") ? GRAY : GOLD
-                                }}
-                            >
-                                <p className="font-poppins text-center text-gray-400 font-medium">Custom</p>
+                                <Controller
+                                    control={control}
+                                    name="donation_amount"
+                                    render={({ field: { value, onChange } }) => (
+                                        <input
+                                            type="text"
+                                            placeholder="Type Custom Amount"
+                                            value={value}
+                                            onChange={onChange}
+                                            className="block col-span-2 w-full px-4 py-2 rounded-xl border text-white font-poppins placeholder:text-gray-400 focus:outline-none"
+                                            disabled={(watch("donation") !== "custom")}
+                                            style={{
+                                                backgroundColor: (watch("donation") === "custom") ? DARKBLUE : `${GRAY}70`,
+                                                borderWidth: 0.4,
+                                                borderColor: `${GRAY}70`
+                                            }}
+                                        />
+                                    )}
+                                />
                             </div>
-
-                            <Controller
-                                control={control}
-                                name="donation_amount"
-                                render={({ field: { value, onChange } }) => (
-                                    <input
-                                        type="text"
-                                        placeholder="Type Custom Amount"
-                                        value={value}
-                                        onChange={onChange}
-                                        className="block col-span-2 w-full px-4 py-2 rounded-xl border text-white font-poppins placeholder:text-gray-400 focus:outline-none"
-                                        disabled={(watch("donation") !== "custom")}
-                                        style={{
-                                            backgroundColor: (watch("donation") === "custom") ? DARKBLUE : `${GRAY}70`,
-                                            borderWidth: 0.4,
-                                            borderColor: `${GRAY}70`
-                                        }}
-                                    />
-                                )}
-                            />
                         </div>
-                    </div>
+                    )}
 
                     {/* submit button */}
                     <Button
@@ -244,6 +279,7 @@ function SongRequest() {
                         size="large"
                         variant="contained"
                         fullWidth
+                        disabled={donationsFetching}
                         className="text-white my-3 bg-purple-950"
                         style={{
                             // backgroundImage: `linear-gradient(to right, ${GOLD}, ${GOLD},${GOLD}, ${GOLD}, ${GOLD},${GOLD}90)`

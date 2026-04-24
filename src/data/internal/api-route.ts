@@ -6,6 +6,13 @@ export const API_URL = {
     SETTINGS: {
         INDEX: "/core/settings/"
     },
+    SETTINGS_DONATION: {
+        INDEX: "/core/settings/donation/admin/",
+        PUBLIC: "/core/settings/donation/"
+    },
+    SETTINGS_BAD_WORDS: {
+        INDEX: "/core/banned-words/"
+    },
     LOGIN: {
         INDEX: "/auth/login/"
     },
