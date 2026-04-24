@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import classNames from "classnames";
 
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 
 import toast from "react-hot-toast";
 
@@ -18,15 +18,19 @@ import GroupTitle from "./GroupTitle";
 import { useColor } from "@/hooks/color";
 import { useReqScreenTakeoverMutation } from "../hooks/screen-takeover";
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import { useDonationSettingsPublicQuery } from "../../shared/hooks/donation-settings";
 
-const CONTENT_TYPE_DATA: { label: string; icon: string; key: string; }[] = [
-    { key: "text", label: "Text", icon: "tabler-message" },
-    { key: "photo", label: "Image", icon: "tabler-photo" },
-    { key: "video", label: "Video", icon: "tabler-video" }
+type TCONTENT_TYPE = "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
+
+const CONTENT_TYPE_DATA: { label: string; icon: string; key: TCONTENT_TYPE; }[] = [
+    { key: "running_text", label: "Running Text", icon: "tabler-message" },
+    { key: "vtron_text", label: "Vtron Text", icon: "tabler-message" },
+    { key: "vtron_photo", label: "Vtron Image", icon: "tabler-photo" },
+    { key: "vtron_video", label: "Vtron Video", icon: "tabler-video" }
 ]
 
 type TRequest = {
-    content_type: string;
+    content_type: TCONTENT_TYPE;
     message: string;
     donation: string;
     donation_amount: string;
@@ -34,7 +38,7 @@ type TRequest = {
 
 function ScreenTakeoverForm() {
     const defaultValue = {
-        content_type: "text",
+        content_type: "running_text" as TCONTENT_TYPE,
         message: "",
         donation_amount: "",
         donation: ""
@@ -50,13 +54,33 @@ function ScreenTakeoverForm() {
         defaultValues: defaultValue
     });
 
+    const { data: donations, isFetching: fetchingDonation } = useDonationSettingsPublicQuery();
+
+    const getDonationsList = (content: TCONTENT_TYPE) => {
+        if (fetchingDonation) return [];
+
+        const adderValues = [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
+
+        return adderValues.map(adder => (donations?.data?.[content] || 0) + adder);
+    }
+
     const { mutate, isPending } = useReqScreenTakeoverMutation({
-        onSuccess: () => {
-            toast.success("Success");
+        onSuccess: (res) => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX]
             });
             reset(defaultValue);
+
+            console.log(res);
+
+            if ((res?.data?.request_type === "running_text") || (res?.data?.request_type === "vtron_text")) {
+                toast.success("Success");
+                window.open(res?.data?.payment_link || "", "_blank");
+            } else {
+                toast.success("Please wait for your request to be confirmed by the admin. Check the history or visit the home page to proceed with your payment.", {
+                    duration: 5000,
+                });
+            }
         },
         onError: (err) => {
             toast.error(getErrorMessage(err));
@@ -70,12 +94,18 @@ function ScreenTakeoverForm() {
             return;
         }
 
-        if (data.content_type === "text") {
+        if (data?.donation === "custom" && (Number(data?.donation_amount) < (donations?.data?.[data.content_type] || 0))) {
+            toast.error(`Minimum tip amount is Rp${donations?.data?.[data.content_type].toLocaleString()}`);
+
+            return;
+        }
+
+        if (data.content_type === "running_text" || data.content_type === "vtron_text") {
             mutate({
                 method: "POST",
-                type: data.content_type as "text" | "photo" | "video",
+                type: "text",
                 data: {
-                    request_type: "running_text",
+                    request_type: data.content_type,
                     message: data?.message,
                     donation_amount: (data?.donation === "custom") ? data?.donation_amount : data?.donation
                 }
@@ -96,7 +126,7 @@ function ScreenTakeoverForm() {
 
             mutate({
                 method: "POST",
-                type: watch("content_type") as "photo" | "video",
+                type: watch("content_type") === "vtron_photo" ? "photo" : "video",
                 data: formData,
             });
         }
@@ -111,7 +141,7 @@ function ScreenTakeoverForm() {
             {/* content type */}
             <div className="mb-8">
                 <GroupTitle title="Content Type" />
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-4 gap-4">
                     {CONTENT_TYPE_DATA.map((contentType) => (
                         <div
                             key={contentType.key}
@@ -134,7 +164,7 @@ function ScreenTakeoverForm() {
             </div>
 
             {/* media */}
-            {((watch("content_type") === "photo") || (watch("content_type") === "video")) ? (
+            {((watch("content_type") === "vtron_photo") || (watch("content_type") === "vtron_video")) ? (
                 <div className="mb-8">
                     <input
                         ref={fileRef}
@@ -146,7 +176,7 @@ function ScreenTakeoverForm() {
                             }
                         }}
                     />
-                    <GroupTitle title={`Your ${watch("content_type") === "photo" ? "Photo" : "Video"}`} />
+                    <GroupTitle title={`Your ${watch("content_type") === "vtron_photo" ? "Photo" : "Video"}`} />
                     <div
                         onClick={() => {
                             fileRef.current?.click();
@@ -157,7 +187,7 @@ function ScreenTakeoverForm() {
                             backgroundColor: DARKBLUE
                         }}>
                         <i className="tabler-file text-lg" style={{ color: `${GRAY}70` }}></i>
-                        <p style={{ color: `${GRAY}70` }}>Upload your {watch("content_type") === "photo" ? "Photo" : "Video"}</p>
+                        <p style={{ color: `${GRAY}70` }}>Upload your {watch("content_type") === "vtron_photo" ? "Photo" : "Video"}</p>
                     </div>
 
                     {/* file uploaded */}
@@ -197,60 +227,68 @@ function ScreenTakeoverForm() {
             {/* sawer amount */}
             <div className="">
                 <GroupTitle title="Tip Amount" />
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                    {[10000, 25000, 50000, 100000, 250000, 500000].map(num => (
+
+                {fetchingDonation ? (
+                    <div className="flex items-center gap-2">
+                        <CircularProgress size={18} className="text-gray-400" />
+                        <Typography className="text-gray-400">Loading Tip List</Typography>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                        {getDonationsList(watch("content_type"))?.map(num => (
+                            <div
+                                key={num}
+                                onClick={() => {
+                                    setValue("donation", num?.toString());
+                                }}
+                                className="py-2 px-4 rounded-xl"
+                                style={{
+                                    borderWidth: 0.2,
+                                    borderColor: (watch("donation") !== num?.toString()) ? `${GRAY}80` : GOLD,
+                                    backgroundColor: (watch("donation") !== num?.toString()) ? DARKBLUE : OLD_GOLD,
+                                    color: (watch("donation") !== num?.toString()) ? GRAY : GOLD
+                                }}
+                            >
+                                <p className="font-poppins text-center text-gray-400 font-medium">Rp{num.toLocaleString("ID")}</p>
+                            </div>
+                        ))}
+
                         <div
-                            key={num}
                             onClick={() => {
-                                setValue("donation", num?.toString());
+                                setValue("donation", "custom");
                             }}
                             className="py-2 px-4 rounded-xl"
                             style={{
                                 borderWidth: 0.2,
-                                borderColor: (watch("donation") !== num?.toString()) ? `${GRAY}80` : GOLD,
-                                backgroundColor: (watch("donation") !== num?.toString()) ? DARKBLUE : OLD_GOLD,
-                                color: (watch("donation") !== num?.toString()) ? GRAY : GOLD
+                                borderColor: (watch("donation") !== "custom") ? `${GRAY}80` : GOLD,
+                                backgroundColor: (watch("donation") !== "custom") ? DARKBLUE : OLD_GOLD,
+                                color: (watch("donation") !== "custom") ? GRAY : GOLD
                             }}
                         >
-                            <p className="font-poppins text-center text-gray-400 font-medium">Rp{num.toLocaleString("ID")}</p>
+                            <p className="font-poppins text-center text-gray-400 font-medium">Custom</p>
                         </div>
-                    ))}
 
-                    <div
-                        onClick={() => {
-                            setValue("donation", "custom");
-                        }}
-                        className="py-2 px-4 rounded-xl"
-                        style={{
-                            borderWidth: 0.2,
-                            borderColor: (watch("donation") !== "custom") ? `${GRAY}80` : GOLD,
-                            backgroundColor: (watch("donation") !== "custom") ? DARKBLUE : OLD_GOLD,
-                            color: (watch("donation") !== "custom") ? GRAY : GOLD
-                        }}
-                    >
-                        <p className="font-poppins text-center text-gray-400 font-medium">Custom</p>
+                        <Controller
+                            control={control}
+                            name="donation_amount"
+                            render={({ field: { value, onChange } }) => (
+                                <input
+                                    type="text"
+                                    placeholder="Type Custom Amount"
+                                    value={value}
+                                    onChange={onChange}
+                                    className="block col-span-2 w-full px-4 py-2 rounded-xl border text-white font-poppins placeholder:text-gray-400 focus:outline-none"
+                                    disabled={(watch("donation") !== "custom")}
+                                    style={{
+                                        backgroundColor: (watch("donation") === "custom") ? DARKBLUE : `${GRAY}70`,
+                                        borderWidth: 0.4,
+                                        borderColor: `${GRAY}70`
+                                    }}
+                                />
+                            )}
+                        />
                     </div>
-
-                    <Controller
-                        control={control}
-                        name="donation_amount"
-                        render={({ field: { value, onChange } }) => (
-                            <input
-                                type="text"
-                                placeholder="Type Custom Amount"
-                                value={value}
-                                onChange={onChange}
-                                className="block col-span-2 w-full px-4 py-2 rounded-xl border text-white font-poppins placeholder:text-gray-400 focus:outline-none"
-                                disabled={(watch("donation") !== "custom")}
-                                style={{
-                                    backgroundColor: (watch("donation") === "custom") ? DARKBLUE : `${GRAY}70`,
-                                    borderWidth: 0.4,
-                                    borderColor: `${GRAY}70`
-                                }}
-                            />
-                        )}
-                    />
-                </div>
+                )}
             </div>
 
             {/* submit button */}
@@ -260,6 +298,7 @@ function ScreenTakeoverForm() {
                 size="large"
                 variant="contained"
                 fullWidth
+                disabled={fetchingDonation}
                 className="text-black my-3"
                 style={{
                     backgroundImage: `linear-gradient(to right, ${GOLD}, ${GOLD},${GOLD}, ${GOLD}, ${GOLD},${GOLD}90)`

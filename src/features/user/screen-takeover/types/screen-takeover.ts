@@ -9,4 +9,10 @@ export type TScreenTakeOver = {
     table_number: number;
     reviewed_at: null;
     created_at: string;
+    payment_link: string;
+}
+
+export type TScreenTakeOverResponseMutation = {
+    payment_link: string | null;
+    request_type: string;
 }

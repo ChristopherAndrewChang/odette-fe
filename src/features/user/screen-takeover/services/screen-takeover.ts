@@ -4,7 +4,7 @@ import { API_URL } from "@/data/internal/api-route";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import type { ResponseWrapper } from "@/types/api";
 import { api } from "@/utils/api"
-import type { TScreenTakeOver } from "../types/screen-takeover";
+import type { TScreenTakeOver, TScreenTakeOverResponseMutation } from "../types/screen-takeover";
 
 export const getMyScreenTakeover = (params?: Record<any, any>): Promise<ResponseWrapper<TPaginationResponseType<TScreenTakeOver[]>>> => {
     return api({
@@ -18,7 +18,7 @@ export const getMyScreenTakeover = (params?: Record<any, any>): Promise<Response
     });
 }
 
-export const postReqScreenTakeOverText = (data?: Record<any, any>) => {
+export const postReqScreenTakeOverText = (data?: Record<any, any>): Promise<ResponseWrapper<TScreenTakeOverResponseMutation>> => {
     return api({
         method: "POST",
         data: data,
@@ -31,7 +31,7 @@ export const postReqScreenTakeOverText = (data?: Record<any, any>) => {
     })
 }
 
-export const postReqScreenTakeOverMedia = (data?: Record<any, any>) => {
+export const postReqScreenTakeOverMedia = (data?: Record<any, any>): Promise<ResponseWrapper<TScreenTakeOverResponseMutation>> => {
     return api({
         method: "POST",
         data: data,

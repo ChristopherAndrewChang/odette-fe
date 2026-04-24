@@ -9,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getErrorMessage, PvButtonForm } from "@ozanplanviu/planviu-core";
 
 import InputCustomized from "@/@pv/components/form/InputCustomized";
-import { numberOnly } from "@/utils/validator";
 import { useTablesMutation } from "../../hooks/tables";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 
@@ -67,7 +66,6 @@ function SingleCreation({ onClose }: TSingleCreation) {
                 label="Table Number"
                 rules={{
                     required: { value: true, message: "This field is required" },
-                    pattern: { value: numberOnly, message: "Invalid Number" }
                 }}
             />
 

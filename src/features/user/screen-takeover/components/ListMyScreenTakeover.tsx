@@ -37,11 +37,17 @@ function ListMyScreenTakeover() {
                     <Typography className="text-white font-semibold">Message: {screen?.message || "-"}</Typography>
 
                     <Typography className="text-gray-300">Tip Amount: Rp{Number(screen?.donation_amount)?.toLocaleString()}</Typography>
-                    <Typography className="text-gray-300">Status: {screen?.status}</Typography>
-                    {(screen.request_type !== "text") ? (
+                    <Typography className="text-gray-300">Status: {screen?.status?.replace("_", " ")}</Typography>
+                    {(screen.request_type !== "vtron_text" && screen.request_type !== "running_text") ? (
                         <a href={`${AppConfig.mediaUrl}${screen?.media_file}`} target="_blank" className="mt-2 flex items-center gap-2 bg-gray-500 w-fit p-1 rounded-lg">
                             <i className="tabler-file text-lg text-white"></i>
                             <p className="text-white">File</p>
+                        </a>
+                    ) : null}
+
+                    {(screen?.status === "pending_payment") ? (
+                        <a href={screen.payment_link} target="_blank" className="px-4 py-1 text-xs bg-blue-800 text-white mt-2 rounded-lg">
+                            Pay
                         </a>
                     ) : null}
                 </div>

@@ -5,7 +5,7 @@ import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } 
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { getMyScreenTakeover, postReqScreenTakeOverMedia, postReqScreenTakeOverText } from "../services/screen-takeover";
 import type { ResponseWrapper } from "@/types/api";
-import type { TScreenTakeOver } from "../types/screen-takeover";
+import type { TScreenTakeOver, TScreenTakeOverResponseMutation } from "../types/screen-takeover";
 
 export const useMyScreenTakeoverQuery = (params?: Record<any, any>) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TScreenTakeOver[]>>>({
@@ -19,7 +19,7 @@ export const useMyScreenTakeoverQuery = (params?: Record<any, any>) => {
     });
 }
 
-export const useReqScreenTakeoverMutation = ({ onError, onSuccess }: MutationFunctionType<unknown>) => {
+export const useReqScreenTakeoverMutation = ({ onError, onSuccess }: MutationFunctionType<ResponseWrapper<TScreenTakeOverResponseMutation>>) => {
     return useMutation({
         mutationFn: ({ data, type }: MutateParamsType & { type: "text" | "photo" | "video" }) => {
             if (type === "text") {
