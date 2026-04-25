@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { Controller, useForm } from "react-hook-form";
@@ -36,7 +37,12 @@ type TRequest = {
     donation_amount: string;
 }
 
-function ScreenTakeoverForm() {
+type TScreenTakeoverForm = {
+    openSuccessDialog: boolean;
+    setOpenSuccessDialog: Dispatch<SetStateAction<boolean>>;
+}
+
+function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
     const defaultValue = {
         content_type: "running_text" as TCONTENT_TYPE,
         message: "",
@@ -77,9 +83,7 @@ function ScreenTakeoverForm() {
                 toast.success("Success");
                 window.open(res?.data?.payment_link || "", "_blank");
             } else {
-                toast.success("Please wait for your request to be confirmed by the admin. Check the history or visit the home page to proceed with your payment.", {
-                    duration: 5000,
-                });
+                setOpenSuccessDialog(true);
             }
         },
         onError: (err) => {

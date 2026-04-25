@@ -28,8 +28,8 @@ export const useMyScreenTakeoverHomeQuery = (params?: Record<any, any>) => {
         retry: false,
         refetchOnWindowFocus: true,
         placeholderData: data => data,
-        refetchInterval: (query) => {
-            const hasPending = query.state?.data?.data?.results?.some(result => (result?.status === "pending_review") || (result?.status === "pending_review"));
+        refetchInterval: () => {
+            // const hasPending = query.state?.data?.data?.results?.some(result => (result?.status === "pending_review") || (result?.status === "pending_review"));
 
             if (false) return;
 

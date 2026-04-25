@@ -21,7 +21,7 @@ function RunningTextKanban({ onAccept, onReject }: TRunningTextKanban) {
                     key={_data?.id || ""}
                     contentType="text"
                     donationAmount={Number(_data?.donation_amount)?.toLocaleString()}
-                    status={_data.status as "pending" | "approved" | "rejected"}
+                    status={_data.status as any} // TODO: adjust any ini
                     table={`T${_data?.table_number?.toString()}`}
                     time={dayjs(_data?.created_at).format("HH:mm A")}
                     user={_data?.customer_name || ""}

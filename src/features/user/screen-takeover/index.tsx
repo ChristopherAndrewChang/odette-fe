@@ -7,6 +7,7 @@ import UserContainer from "../shared/components/UserContainer";
 import DrawerScreenTakeover from "./components/DrawerScreenTakeover";
 import ScreenTakeoverForm from "./components/ScreenTakeoverForm";
 import HistoryButton from "../shared/components/HistoryButton";
+import SuccessMediaScreenRequest from "./components/SuccessMediaScreenRequest";
 
 function ScreenTakeover() {
     // const [tabValue, setTabValue] = useState("list");
@@ -17,6 +18,7 @@ function ScreenTakeover() {
     // }
 
     const [openDrawer, setOpenDrawer] = useState(false);
+    const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
 
     return (
         <>
@@ -26,6 +28,14 @@ function ScreenTakeover() {
                     setOpenDrawer(false);
                 }}
             />
+
+            <SuccessMediaScreenRequest
+                open={openSuccessDialog}
+                onClose={() => {
+                    setOpenSuccessDialog(false);
+                }}
+            />
+
             <UserContainer>
                 <header className="mb-8">
                     <div className="mb-6 flex justify-between items-center">
@@ -47,7 +57,10 @@ function ScreenTakeover() {
             </Tabs> */}
 
                 {/* {TabContent[tabValue]} */}
-                <ScreenTakeoverForm />
+                <ScreenTakeoverForm
+                    openSuccessDialog={openSuccessDialog}
+                    setOpenSuccessDialog={setOpenSuccessDialog}
+                />
             </UserContainer>
         </>
     )

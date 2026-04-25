@@ -2,6 +2,8 @@
 
 import classNames from "classnames";
 
+import { AppConfig } from "@/configs/appConfig";
+
 type TKanbanCard = {
     contentType: "text" | "video" | "image";
     status: "pending_payment" | "pending_review" | "approved" | "rejected";
@@ -24,6 +26,12 @@ type TKanbanCard = {
     onReject?: () => void;
 }
 
+const getFileTitle = (url: string) => {
+    const urlArr = url.split("/");
+
+    return urlArr[urlArr?.length - 1];
+}
+
 function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time }: TKanbanCard) {
     const Content = {
         text: (
@@ -33,12 +41,12 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
         ),
         video: (
             <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
-                <p className="text-black font-medium">{videoContent?.title || ""}</p>
+                <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className="text-black block font-medium">{getFileTitle(videoContent?.title || "") || ""}</a>
             </div>
         ),
         image: (
             <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
-                <p className="text-black font-medium">{imageContent?.title || ""}</p>
+                <a href={`${AppConfig.mediaUrl}${imageContent?.image}`} target="_blank" className="text-black block font-medium">{getFileTitle(imageContent?.title || "") || ""}</a>
             </div>
         )
     }
