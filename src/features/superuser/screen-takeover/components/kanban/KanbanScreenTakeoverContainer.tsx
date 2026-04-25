@@ -16,9 +16,18 @@ type TKanbanScreenTakeoverContainer = {
 function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData }: TKanbanScreenTakeoverContainer) {
     const { data, isFetching, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: type,
+        all: true
     });
 
     const datas = data?.pages?.flatMap(_data => _data?.data?.results);
+
+    if (!datas?.length && !isFetching) {
+        return (
+            <div className="w-full h-32 bg-gray-100 flex items-center justify-center rounded-lg border p-6">
+                <p>No Data</p>
+            </div>
+        )
+    }
 
     return (
         <>

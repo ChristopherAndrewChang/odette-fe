@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
-import { dummyByRequestType } from "../../dummy";
 
 type TRunningTextKanban = {
     onAccept: (id: string) => void;
@@ -15,7 +14,8 @@ function RunningTextKanban({ onAccept, onReject }: TRunningTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="running_text"
-            data={dummyByRequestType.running_text}
+
+            // data={dummyByRequestType.running_text}
             CardComponent={(_data) => (
                 <KanbanCard
                     key={_data?.id || ""}

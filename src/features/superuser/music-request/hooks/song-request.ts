@@ -27,7 +27,8 @@ export const useAllSongRequestsInfiniteQuery = (params?: Record<any, any>, refet
         queryFn: ({ pageParam }) => {
             return getAllMusicRequest({
                 ...params,
-                page: pageParam
+                page: pageParam,
+                all: true
             });
         },
         retry: false,

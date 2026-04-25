@@ -19,6 +19,25 @@ export const useMyScreenTakeoverQuery = (params?: Record<any, any>) => {
     });
 }
 
+export const useMyScreenTakeoverHomeQuery = (params?: Record<any, any>) => {
+    return useQuery<ResponseWrapper<TPaginationResponseType<TScreenTakeOver[]>>>({
+        queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX, params],
+        queryFn: () => {
+            return getMyScreenTakeover(params)
+        },
+        retry: false,
+        refetchOnWindowFocus: true,
+        placeholderData: data => data,
+        refetchInterval: (query) => {
+            const hasPending = query.state?.data?.data?.results?.some(result => (result?.status === "pending_review") || (result?.status === "pending_review"));
+
+            if (false) return;
+
+            return 15000 + Math.random() * 10000;
+        }
+    });
+}
+
 export const useReqScreenTakeoverMutation = ({ onError, onSuccess }: MutationFunctionType<ResponseWrapper<TScreenTakeOverResponseMutation>>) => {
     return useMutation({
         mutationFn: ({ data, type }: MutateParamsType & { type: "text" | "photo" | "video" }) => {

@@ -73,6 +73,7 @@ function ScreenTakeoverPage() {
                 }}
                 open={openApproval.cond}
                 type={openApproval.type}
+                id={openApproval.id}
             />
             <AppLayout title="Screen Takeover">
                 <SessionFilter />

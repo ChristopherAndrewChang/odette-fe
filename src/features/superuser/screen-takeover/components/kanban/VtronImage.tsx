@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
-import { dummyByRequestType } from "../../dummy";
 
 type TVtronImage = {
     onAccept: (id: string) => void;
@@ -15,7 +14,8 @@ function VtronImage({ onAccept, onReject }: TVtronImage) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_photo"
-            data={dummyByRequestType.vtron_photo}
+
+            // data={dummyByRequestType.vtron_photo}
             CardComponent={(data) => (
                 <KanbanCard
                     contentType="image"

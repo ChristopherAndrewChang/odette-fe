@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
-import { dummyByRequestType } from "../../dummy";
 
 type TVTronVideo = {
     onAccept: (id: string) => void;
@@ -15,7 +14,8 @@ function VTronVideo({ onAccept, onReject }: TVTronVideo) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_video"
-            data={dummyByRequestType.vtron_video}
+
+            // data={dummyByRequestType.vtron_video}
             CardComponent={(data) => (
                 <KanbanCard
                     contentType="video"

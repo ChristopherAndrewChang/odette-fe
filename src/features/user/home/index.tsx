@@ -15,6 +15,7 @@ import Logo from "@/components/layout/shared/Logo";
 import { useGetSettings } from "@/features/superuser/settings/hooks/settings";
 import { onLogout } from "@/utils/logout";
 import { APP_URL } from "@/data/internal/app-route";
+import NeedPaymentSection from "./components/NeedPayment";
 
 function HomePage() {
     const router = useRouter();
@@ -110,6 +111,8 @@ function HomePage() {
                 </div> */}
                 </section>
             )}
+
+            <NeedPaymentSection />
         </UserContainer>
     )
 }

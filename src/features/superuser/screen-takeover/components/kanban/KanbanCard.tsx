@@ -1,8 +1,10 @@
 "use client";
 
+import classNames from "classnames";
+
 type TKanbanCard = {
     contentType: "text" | "video" | "image";
-    status: "pending" | "approved" | "rejected";
+    status: "pending_payment" | "pending_review" | "approved" | "rejected";
     table: string;
     user: string;
     donationAmount: string;
@@ -48,8 +50,11 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                     <p className="text-black">{textContent?.content}</p>
 
                     {/* status */}
-                    <div className="bg-gray-100 px-2 py-1 rounded-lg border text-xs">
-                        {status}
+                    <div className={classNames("bg-gray-100 px-2 py-1 rounded-lg border text-xs", {
+                        "border-red-200 !bg-red-100 !text-red-500": status === "rejected",
+                        "border-yellow-200 !bg-yellow-50 !text-yellow-600": status === "pending_payment",
+                    })}>
+                        {status?.replace("_", " ")?.toUpperCase()}
                     </div>
                 </div>
                 <p className="text-green-600 text-sm">Rp{donationAmount}</p>
@@ -68,20 +73,24 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             {/* content */}
             {Content[contentType]}
 
-            {/* action */}
-            <div className="flex gap-4">
-                {!!onReject ? (
-                    <div onClick={onReject} className="px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200">
-                        <p>Reject</p>
-                    </div>
-                ) : null}
+            {status === "pending_review" ? (
+                <>
+                    {/* action */}
+                    <div className="flex gap-4">
+                        {!!onReject ? (
+                            <div onClick={onReject} className="px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200">
+                                <p>Reject</p>
+                            </div>
+                        ) : null}
 
-                {!!onAccept ? (
-                    <div onClick={onAccept} className="px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200">
-                        <p>Accept</p>
+                        {!!onAccept ? (
+                            <div onClick={onAccept} className="px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200">
+                                <p>Accept</p>
+                            </div>
+                        ) : null}
                     </div>
-                ) : null}
-            </div>
+                </>
+            ) : null}
         </div>
     )
 }

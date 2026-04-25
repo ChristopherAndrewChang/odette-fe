@@ -33,7 +33,7 @@ export const useScreenTakeoverInfiniteQuery = (params?: Record<any, any>, interv
 
 export const useScreenTakeoverApprovalMutation = ({ onSuccess, onError }: MutationFunctionType<unknown>) => {
     return useMutation({
-        mutationFn: ({ id, type }: MutateParamsType & { type: "approved" | "rejected" }) => {
+        mutationFn: ({ id, type }: MutateParamsType & { type: "pending_payment" | "rejected" }) => {
             return patchApprovalScreenTakeover(id || "", {
                 status: type
             })
