@@ -46,6 +46,7 @@ export const API_URL = {
     },
     SONG_REQUEST: {
         INDEX: "/songs/",
-        APPROVAL: "/songs/:id/admin-review/"
+        APPROVAL: "/songs/:id/admin-review/",
+        MARK_BILLED: "/songs/:id/bill/"
     }
 }

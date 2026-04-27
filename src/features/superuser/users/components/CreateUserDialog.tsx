@@ -97,7 +97,8 @@ function CreateUserDialog({ onClose, open }: TCreateUserDialog) {
                         isSelectInput
                         selectOption={[
                             { label: "Admin", value: "admin" },
-                            { label: "DJ", value: "dj" }
+                            { label: "DJ", value: "dj" },
+                            { label: "Cashier", value: "cashier" }
                         ]}
                         rules={{
                             required: { value: true, message: "This field is required" }

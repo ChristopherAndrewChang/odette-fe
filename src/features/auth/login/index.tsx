@@ -53,6 +53,9 @@ function Login() {
         } else if (role === "dj") {
             topLoader.start();
             router.push(APP_URL.DJ_HOME.INDEX);
+        } else if (role === "cashier") {
+            topLoader.start();
+            router.push(APP_URL.CASHIER_HOME.INDEX);
         }
     }
 

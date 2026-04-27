@@ -16,3 +16,12 @@ export const getRoleFromJWT = (jwtToken: string) => {
 
     return role;
 }
+
+export const getUsernameFromJWT = (jwtToken: string) => {
+    if (!jwtToken) return;
+
+    const jwtResponse = jwtDecode(jwtToken) as { username: string };
+    const username = jwtResponse.username;
+
+    return username;
+}

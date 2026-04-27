@@ -6,7 +6,7 @@ import { AppConfig } from "@/configs/appConfig";
 
 type TKanbanCard = {
     contentType: "text" | "video" | "image";
-    status: "pending_payment" | "pending_review" | "approved" | "rejected";
+    status: "pending_payment" | "pending_review" | "approved" | "rejected" | "paid";
     table: string;
     user: string;
     donationAmount: string;
@@ -61,6 +61,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                     <div className={classNames("bg-gray-100 px-2 py-1 rounded-lg border text-xs", {
                         "border-red-200 !bg-red-100 !text-red-500": status === "rejected",
                         "border-yellow-200 !bg-yellow-50 !text-yellow-600": status === "pending_payment",
+                        "border-green-200 !bg-green-50 text-green-600": status === "paid"
                     })}>
                         {status?.replace("_", " ")?.toUpperCase()}
                     </div>

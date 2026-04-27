@@ -10,7 +10,9 @@ export const APP_URL = {
     USER_SCAN: {
         INDEX: "/user/scan"
     },
-
+    CASHIER_HOME: {
+        INDEX: "/cashier/home"
+    },
     ADMIN_HOME: {
         INDEX: "/admin/home"
     },
