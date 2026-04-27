@@ -15,7 +15,8 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
     const { data, isFetching, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: content_type,
         status: "paid",
-        all: true
+
+        // all: true
     });
 
     const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({

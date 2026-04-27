@@ -21,7 +21,8 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
 
     const { data, isFetchingNextPage, isLoading } = useScreenTakeoverInfiniteQuery({
         request_type: type,
-        all: true,
+
+        // all: true,
         date: getParam("date")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
