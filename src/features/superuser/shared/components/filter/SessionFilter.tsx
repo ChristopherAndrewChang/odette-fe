@@ -28,6 +28,30 @@ function SessionFilter() {
         });
     }
 
+    const onNextNight = () => {
+        const activeNight = dayjs(getParam("date") || dayjs(new Date()).format("YYYY-MM-DD"));
+        const nextNight = activeNight.add(1, "day");
+
+        updateParams({
+            remove: ["date"],
+            add: {
+                date: nextNight.format("YYYY-MM-DD")
+            }
+        });
+    }
+
+    const onPrevNight = () => {
+        const activeNight = dayjs(getParam("date") || dayjs(new Date()).format("YYYY-MM-DD"));
+        const prevNight = activeNight.subtract(1, "day");
+
+        updateParams({
+            remove: ["date"],
+            add: {
+                date: prevNight.format("YYYY-MM-DD")
+            }
+        });
+    }
+
     const formatDateIntoSession = (date: string) => {
         // _date adalah date dan fallback jika queryparams belum diload oleh useEffect parent (menghindari invalid date)
         const _date = date || (dayjs(new Date()).format("YYYY-MM-DD"))
@@ -48,6 +72,7 @@ function SessionFilter() {
             <Typography className="text-black">Session</Typography>
             <div className="flex gap-2 pr-4 border-r">
                 <div
+                    onClick={onPrevNight}
                     className="px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100"
                 >
                     <i className="tabler-arrow-left text-lg"></i>
@@ -61,6 +86,7 @@ function SessionFilter() {
                 </div>
 
                 <div
+                    onClick={onNextNight}
                     className="px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100"
                 >
                     <i className="tabler-arrow-right text-lg"></i>

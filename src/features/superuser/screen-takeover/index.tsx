@@ -8,6 +8,10 @@ import { useTopLoader } from "nextjs-toploader";
 
 import { useQueryParams } from "@ozanplanviu/planviu-core";
 
+import { Button } from "@mui/material";
+
+import { useQueryClient } from "@tanstack/react-query";
+
 import AppLayout from "@/components/internal/AppLayout";
 
 import DateFilter from "../shared/components/DateFilter";
@@ -20,7 +24,10 @@ import VtronImage from "./components/kanban/VtronImage";
 import VTronVideo from "./components/kanban/VtronVideo";
 import ReviewRequestDialogV2 from "./components/ReviewRequestDialogV2";
 
+import { QUERY_KEY } from "@/data/internal/query-keys";
+
 function ScreenTakeoverPage() {
+    const queryClient = useQueryClient();
     const loader = useTopLoader();
     const { updateParams } = useQueryParams();
 
@@ -31,6 +38,12 @@ function ScreenTakeoverPage() {
         id: "",
         type: "approved"
     });
+
+    const onReload = () => {
+        queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX]
+        });
+    }
 
     useEffect(() => {
         loader.done();
@@ -75,7 +88,14 @@ function ScreenTakeoverPage() {
                 type={openApproval.type}
                 id={openApproval.id}
             />
-            <AppLayout title="Screen Takeover">
+            <AppLayout
+                title="Screen Takeover"
+                renderAction={(
+                    <Button onClick={onReload} variant="tonal" color="secondary">
+                        <i className="tabler-reload text-base"></i>
+                    </Button>
+                )}
+            >
                 <SessionFilter />
                 <StatsCards />
                 <KanbanScreenTakeover
