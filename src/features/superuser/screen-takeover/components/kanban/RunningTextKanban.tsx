@@ -24,7 +24,7 @@ function RunningTextKanban({ onAccept, onReject, onMarkPlayed }: TRunningTextKan
                     donationAmount={Number(_data?.donation_amount)?.toLocaleString()}
                     status={_data.status as any} // TODO: adjust any ini
                     table={`T${_data?.table_number?.toString()}`}
-                    time={dayjs(_data?.created_at).format("HH:mm A")}
+                    time={dayjs(_data?.created_at).format("DD/MM/YYYY HH:mm A")}
                     user={_data?.customer_name || ""}
                     onAccept={() => onAccept(_data?.id?.toString())}
                     onReject={() => onReject(_data?.id?.toString())}

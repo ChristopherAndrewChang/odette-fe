@@ -25,6 +25,7 @@ type TKanbanCard = {
     onAccept?: () => void;
     onReject?: () => void;
     onMarkPlayed?: () => void;
+    onShowImage?: (image: string) => void;
 }
 
 const getFileTitle = (url: string) => {
@@ -33,7 +34,7 @@ const getFileTitle = (url: string) => {
     return urlArr[urlArr?.length - 1];
 }
 
-function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time, onMarkPlayed }: TKanbanCard) {
+function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time, onMarkPlayed, onShowImage }: TKanbanCard) {
     const Content = {
         text: (
             <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
@@ -46,8 +47,10 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             </div>
         ),
         image: (
-            <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
-                <a href={`${AppConfig.mediaUrl}${imageContent?.image}`} target="_blank" className="text-black block font-medium">{getFileTitle(imageContent?.title || "") || ""}</a>
+            <div
+                onClick={() => onShowImage && onShowImage(`${AppConfig.mediaUrl}${imageContent?.image || ""}`)}
+                className="bg-white p-2 border-l-2 border-gray-300 mb-4 cursor-pointer">
+                <p className="text-black block font-medium">{getFileTitle(imageContent?.title || "") || ""}</p>
             </div>
         )
     }
@@ -73,7 +76,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
 
             <div className="flex gap-2 items-center mb-4">
                 <div className="px-2 py-1 bg-white rounded-lg border">
-                    <p className="text-xs">{table}</p>
+                    <p className="text-xs">Table {table}</p>
                 </div>
 
                 <p className="text-sm">{user}</p>

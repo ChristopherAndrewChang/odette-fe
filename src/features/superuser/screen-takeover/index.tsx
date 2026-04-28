@@ -25,6 +25,7 @@ import ReviewRequestDialogV2 from "./components/ReviewRequestDialogV2";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import MarkPlayedDialog from "./components/MarkPlayedDialog";
+import ShowMediaDialog from "./components/ShowMediaDialog";
 
 function ScreenTakeoverPage() {
     const queryClient = useQueryClient();
@@ -42,6 +43,12 @@ function ScreenTakeoverPage() {
         cond: false,
         id: "",
         type: "approved"
+    });
+
+    const [showMedia, setShowMedia] = useState<{ cond: boolean; media: string; type: "video" | "photo"; }>({
+        cond: false,
+        media: "",
+        type: "photo"
     });
 
     const onReload = () => {
@@ -103,6 +110,18 @@ function ScreenTakeoverPage() {
                     });
                 }}
             />
+            <ShowMediaDialog
+                mediaUrl={showMedia.media}
+                open={showMedia.cond}
+                type={showMedia.type}
+                onClose={() => {
+                    setShowMedia({
+                        cond: false,
+                        media: "",
+                        type: "photo"
+                    });
+                }}
+            />
             <AppLayout
                 title="Screen Takeover"
                 renderAction={(
@@ -147,6 +166,13 @@ function ScreenTakeoverPage() {
                                     setMarkPlayed({
                                         cond: true,
                                         id: id
+                                    });
+                                }}
+                                onShowMedia={(media) => {
+                                    setShowMedia({
+                                        cond: true,
+                                        media: media,
+                                        type: "photo"
                                     });
                                 }}
                                 onAccept={(id) => {
