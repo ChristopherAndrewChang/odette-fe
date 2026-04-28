@@ -9,9 +9,10 @@ type TVTronVideo = {
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
     onMarkPlayed: (id: string) => void;
+    onShowMedia: (media: string) => void;
 }
 
-function VTronVideo({ onAccept, onReject, onMarkPlayed }: TVTronVideo) {
+function VTronVideo({ onAccept, onReject, onMarkPlayed, onShowMedia }: TVTronVideo) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_video"
@@ -28,6 +29,9 @@ function VTronVideo({ onAccept, onReject, onMarkPlayed }: TVTronVideo) {
                     onAccept={() => onAccept(data?.id?.toString())}
                     onReject={() => onReject(data?.id?.toString())}
                     onMarkPlayed={() => onMarkPlayed(data?.id?.toString())}
+                    onShowImage={() => {
+                        onShowMedia(data?.media_file?.toString() || "")
+                    }}
                     textContent={{
                         content: data?.message || ""
                     }}

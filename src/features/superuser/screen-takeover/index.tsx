@@ -227,6 +227,13 @@ function ScreenTakeoverPage() {
                                         id: id
                                     });
                                 }}
+                                onShowMedia={(media) => {
+                                    setShowMedia({
+                                        cond: true,
+                                        media: media,
+                                        type: "video"
+                                    })
+                                }}
                                 onAccept={(id) => {
                                     setOpenApproval({
                                         cond: true,
