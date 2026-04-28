@@ -10,23 +10,25 @@ import AppLayout from "@/components/internal/AppLayout";
 import { columns } from "./columns";
 import { useUsersQuery } from "./hooks/users";
 
-
-
 import CreateUserDialog from "./components/CreateUserDialog";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import { getRoleFromJWT } from "@/utils/auth";
+import { useDebounce } from "@/@pv/hooks/use-debounce";
 
 function UsersPage() {
     const [openCreateUser, setOpenCreateUser] = useState(false);
+    const [search, setSearch] = useState("");
+    const searchDebounced = useDebounce(search, 500);
 
     const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
         page: 0,
-        pageSize: 10
+        pageSize: 10,
     });
 
     const { data, isFetching } = useUsersQuery({
         page: paginationModel.page + 1,
         pageSize: paginationModel.pageSize,
+        search: searchDebounced
     });
 
     if (getRoleFromJWT(localStorage.getItem(STORAGE_KEY.TOKEN) || "") !== "superuser") {
@@ -47,6 +49,9 @@ function UsersPage() {
                     rowCount={data?.data?.count || 0}
                     rows={data?.data?.results || []}
                     loading={isFetching}
+                    onSearch={(value) => {
+                        setSearch(value);
+                    }}
                     containerProps={{
                         variant: "outlined"
                     }}

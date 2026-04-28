@@ -13,8 +13,6 @@ import { Typography } from "@mui/material";
 import InputCustomized from "@/@pv/components/form/InputCustomized";
 import { useTablesMutation } from "../../hooks/tables";
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import { numberOnly } from "@/utils/validator";
-
 
 type TRequest = {
     numbers: string;
@@ -37,27 +35,37 @@ function BulkCreation({ onClose }: TBulkCreation) {
         });
     }
 
-    const convertStringCommaToNumberArray = (_numbers: string) => {
+    const isHasCommaBehind = (_numbers: string) => {
         // TODO: Handle ketika ada koma di belakang (misal 1,2,3,)
 
-        return _numbers.split(",").map(_number => {
-            if (!!numberOnly.test(_number.trim())) {
-                return Number(_number.trim());
-            } else {
-                return _number;
-            }
-        });
+        let accept = false;
+
+        const numberArray = _numbers.split(",");
+
+        console.log(numberArray);
+
+        if (numberArray[numberArray.length - 1] === "") {
+            accept = true;
+        }
+
+        return accept;
     }
 
-    const validateNumberArray = (_numbers: any[]) => {
-        let isValid = true;
+    const convertIntoSuitablePayload = (datas: string) => {
+        const datasArr = datas.split(",");
 
-        _numbers.forEach(_number => {
-            if (typeof _number !== "number") isValid = false;
-        });
-
-        return isValid;
+        return datasArr.map(_dataArr => _dataArr.trim());
     }
+
+    // const validateNumberArray = (_numbers: any[]) => {
+    //     let isValid = true;
+
+    //     _numbers.forEach(_number => {
+    //         if (typeof _number !== "number") isValid = false;
+    //     });
+
+    //     return isValid;
+    // }
 
     const { mutate, isPending } = useTablesMutation({
         onSuccess: () => {
@@ -73,10 +81,8 @@ function BulkCreation({ onClose }: TBulkCreation) {
     });
 
     const onSubmit = (data: TRequest) => {
-        const numbersData = convertStringCommaToNumberArray(data.numbers);
-
-        if (!validateNumberArray(numbersData)) {
-            toast.error("Invalid Number");
+        if (isHasCommaBehind(data.numbers)) {
+            toast.error("Invalid Input (There is a comma behind)");
 
             return;
         }
@@ -85,7 +91,7 @@ function BulkCreation({ onClose }: TBulkCreation) {
             method: "POST",
             type: "bulk",
             data: {
-                numbers: numbersData
+                numbers: convertIntoSuitablePayload(data?.numbers || "")
             }
         });
     }
