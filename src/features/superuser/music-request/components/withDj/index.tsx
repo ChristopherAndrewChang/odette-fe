@@ -21,7 +21,7 @@ function WithDJ() {
     const { getParam } = useQueryParams();
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
-        all: AppConfig.appMode === "development",
+        ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "admin_approved,dj_rejected",
         search: searchDebounced,
         date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")

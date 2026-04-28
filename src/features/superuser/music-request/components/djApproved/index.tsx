@@ -21,7 +21,7 @@ function DjApproved() {
     const { getParam } = useQueryParams();
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
-        all: AppConfig.appMode === "development",
+        ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "dj_approved",
         search: searchDebounced,
         date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")

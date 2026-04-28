@@ -11,7 +11,7 @@ function MusicStats() {
     const { getParam } = useQueryParams();
 
     const { data, isFetching } = useSummarySongRequest({
-        all: AppConfig.appMode === "development",
+        ...(AppConfig.appMode === "development" ? { all: true } : {}),
         date: getParam("date")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
 
