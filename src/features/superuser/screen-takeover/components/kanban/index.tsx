@@ -29,9 +29,9 @@ type TKanbanScreenTakeover = {
 
 function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, vtronVideoSlot }: TKanbanScreenTakeover) {
     return (
-        <div className="grid grid-cols-2 mt-6">
+        <div className="flex mt-6 overflow-x-auto">
             {/* card */}
-            <div className="border-x border-b-2 p-6 flex flex-col gap-2">
+            <div className="border-x border-b-2 p-6 flex flex-col gap-2 w-fit">
                 <p className="font-poppins text-black font-semibold">RUNNING TEXT</p>
                 <CustomTextField
                     placeholder="Search"
@@ -44,7 +44,7 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 {runningTextSlot?.content || null}
             </div>
 
-            <div className="border-x p-6 border-b-2 flex flex-col gap-2">
+            <div className="border-x p-6 border-b-2 flex flex-col gap-2 w-fit">
                 <p className="font-poppins text-black font-semibold">VTRON TEXT</p>
                 <CustomTextField
                     placeholder="Search"
@@ -57,7 +57,7 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 {vtronTextSlot?.content || null}
             </div>
 
-            <div className="border-x p-6 flex flex-col gap-2">
+            <div className="border-x p-6 flex flex-col gap-2 w-fit">
                 <p className="font-poppins text-black font-semibold">VTRON IMAGE</p>
                 <CustomTextField
                     placeholder="Search"
@@ -70,7 +70,7 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 {vtronImageSlot?.content || null}
             </div>
 
-            <div className="border-x p-6 flex flex-col gap-2">
+            <div className="border-x p-6 flex flex-col gap-2 w-fit">
                 <p className="font-poppins text-black font-semibold">VTRON VIDEO</p>
                 <CustomTextField
                     placeholder="Search"

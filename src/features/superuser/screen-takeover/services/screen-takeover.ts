@@ -20,3 +20,10 @@ export const patchApprovalScreenTakeover = (id: string, data?: Record<any, any>)
         urlKey: API_URL.SCREEN_TAKEOVER.APPROVAL.replace(":id", id)
     });
 }
+
+export const patchMarkAsPlayedScreenTakeover = (id: string) => {
+    return api({
+        method: "PATCH",
+        urlKey: API_URL.SCREEN_TAKEOVER.MARK_PLAYED.replace(":id", id),
+    });
+}

@@ -16,7 +16,6 @@ import AppLayout from "@/components/internal/AppLayout";
 
 import DateFilter from "../shared/components/DateFilter";
 import SessionFilter from "../shared/components/filter/SessionFilter";
-import StatsCards from "./components/stats";
 import KanbanScreenTakeover from "./components/kanban";
 import RunningTextKanban from "./components/kanban/RunningTextKanban";
 import VTronTextKanban from "./components/kanban/VTronTextKanban";
@@ -25,11 +24,17 @@ import VTronVideo from "./components/kanban/VtronVideo";
 import ReviewRequestDialogV2 from "./components/ReviewRequestDialogV2";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import MarkPlayedDialog from "./components/MarkPlayedDialog";
 
 function ScreenTakeoverPage() {
     const queryClient = useQueryClient();
     const loader = useTopLoader();
     const { updateParams } = useQueryParams();
+
+    const [markPlayed, setMarkPlayed] = useState<{ cond: boolean; id: string; }>({
+        cond: false,
+        id: ""
+    });
 
     const [dateOpen, setDateOpen] = useState(false);
 
@@ -88,6 +93,16 @@ function ScreenTakeoverPage() {
                 type={openApproval.type}
                 id={openApproval.id}
             />
+            <MarkPlayedDialog
+                id={markPlayed.id}
+                open={markPlayed.cond}
+                onClose={() => {
+                    setMarkPlayed({
+                        cond: false,
+                        id: ""
+                    });
+                }}
+            />
             <AppLayout
                 title="Screen Takeover"
                 renderAction={(
@@ -97,11 +112,17 @@ function ScreenTakeoverPage() {
                 )}
             >
                 <SessionFilter />
-                <StatsCards />
+                {/* <StatsCards /> */}
                 <KanbanScreenTakeover
                     runningTextSlot={{
                         content: (
                             <RunningTextKanban
+                                onMarkPlayed={(id) => {
+                                    setMarkPlayed({
+                                        cond: true,
+                                        id: id
+                                    });
+                                }}
                                 onAccept={(id) => {
                                     setOpenApproval({
                                         cond: true,
@@ -122,6 +143,12 @@ function ScreenTakeoverPage() {
                     vtronImageSlot={{
                         content: (
                             <VtronImage
+                                onMarkPlayed={(id) => {
+                                    setMarkPlayed({
+                                        cond: true,
+                                        id: id
+                                    });
+                                }}
                                 onAccept={(id) => {
                                     setOpenApproval({
                                         cond: true,
@@ -142,6 +169,12 @@ function ScreenTakeoverPage() {
                     vtronTextSlot={{
                         content: (
                             <VTronTextKanban
+                                onMarkPlayed={(id) => {
+                                    setMarkPlayed({
+                                        cond: true,
+                                        id: id
+                                    });
+                                }}
                                 onAccept={(id) => {
                                     setOpenApproval({
                                         cond: true,
@@ -162,6 +195,12 @@ function ScreenTakeoverPage() {
                     vtronVideoSlot={{
                         content: (
                             <VTronVideo
+                                onMarkPlayed={(id) => {
+                                    setMarkPlayed({
+                                        cond: true,
+                                        id: id
+                                    });
+                                }}
                                 onAccept={(id) => {
                                     setOpenApproval({
                                         cond: true,

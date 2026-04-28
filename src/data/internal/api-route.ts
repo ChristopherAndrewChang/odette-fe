@@ -42,7 +42,8 @@ export const API_URL = {
     },
     SCREEN_TAKEOVER: {
         INDEX: "/screen/",
-        APPROVAL: "/screen/:id/review/"
+        APPROVAL: "/screen/:id/review/",
+        MARK_PLAYED: "/screen/:id/played/"
     },
     SONG_REQUEST: {
         INDEX: "/songs/",

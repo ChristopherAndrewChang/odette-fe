@@ -8,9 +8,10 @@ import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 type TVTronTextKanban = {
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
+    onMarkPlayed: (id: string) => void;
 }
 
-function VTronTextKanban({ onAccept, onReject }: TVTronTextKanban) {
+function VTronTextKanban({ onAccept, onReject, onMarkPlayed }: TVTronTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_text"
@@ -24,6 +25,7 @@ function VTronTextKanban({ onAccept, onReject }: TVTronTextKanban) {
                     user={data?.customer_name || ""}
                     onAccept={() => onAccept(data?.id?.toString())}
                     onReject={() => onReject(data?.id?.toString())}
+                    onMarkPlayed={() => onMarkPlayed(data?.id?.toString())}
                     textContent={{
                         content: data?.message || ""
                     }}

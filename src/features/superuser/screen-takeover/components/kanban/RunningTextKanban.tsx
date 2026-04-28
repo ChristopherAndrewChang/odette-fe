@@ -8,9 +8,10 @@ import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 type TRunningTextKanban = {
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
+    onMarkPlayed: (id: string) => void;
 }
 
-function RunningTextKanban({ onAccept, onReject }: TRunningTextKanban) {
+function RunningTextKanban({ onAccept, onReject, onMarkPlayed }: TRunningTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="running_text"
@@ -27,6 +28,7 @@ function RunningTextKanban({ onAccept, onReject }: TRunningTextKanban) {
                     user={_data?.customer_name || ""}
                     onAccept={() => onAccept(_data?.id?.toString())}
                     onReject={() => onReject(_data?.id?.toString())}
+                    onMarkPlayed={() => onMarkPlayed(_data?.id?.toString())}
                     textContent={{
                         content: _data?.message
                     }}

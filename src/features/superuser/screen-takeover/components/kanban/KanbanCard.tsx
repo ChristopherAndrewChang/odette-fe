@@ -6,7 +6,7 @@ import { AppConfig } from "@/configs/appConfig";
 
 type TKanbanCard = {
     contentType: "text" | "video" | "image";
-    status: "pending_payment" | "pending_review" | "approved" | "rejected" | "paid";
+    status: "pending_payment" | "pending_review" | "approved" | "rejected" | "paid" | "played";
     table: string;
     user: string;
     donationAmount: string;
@@ -24,6 +24,7 @@ type TKanbanCard = {
     }
     onAccept?: () => void;
     onReject?: () => void;
+    onMarkPlayed?: () => void;
 }
 
 const getFileTitle = (url: string) => {
@@ -32,7 +33,7 @@ const getFileTitle = (url: string) => {
     return urlArr[urlArr?.length - 1];
 }
 
-function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time }: TKanbanCard) {
+function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time, onMarkPlayed }: TKanbanCard) {
     const Content = {
         text: (
             <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
@@ -52,7 +53,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
     }
 
     return (
-        <div className="p-4 bg-gray-50 rounded-lg border">
+        <div className="px-4 py-2 bg-gray-50 rounded-lg border min-w-96">
             <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
                     <p className="text-black">{textContent?.content}</p>
@@ -61,7 +62,8 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                     <div className={classNames("bg-gray-100 px-2 py-1 rounded-lg border text-xs", {
                         "border-red-200 !bg-red-100 !text-red-500": status === "rejected",
                         "border-yellow-200 !bg-yellow-50 !text-yellow-600": status === "pending_payment",
-                        "border-green-200 !bg-green-50 text-green-600": status === "paid"
+                        "border-green-200 !bg-green-50 text-green-600": status === "paid",
+                        "border-blue-200 !bg-blue-50 text-blue-600": status === "played"
                     })}>
                         {status?.replace("_", " ")?.toUpperCase()}
                     </div>
@@ -81,6 +83,15 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
 
             {/* content */}
             {Content[contentType]}
+
+            {status === "paid" ? (
+                <div
+                    onClick={onMarkPlayed}
+                    className="w-full px-4 py-2 flex items-center justify-center transition-all cursor-pointer bg-blue-100 border border-blue-200 rounded-lg text-blue-500 hover:bg-blue-200"
+                >
+                    Mark as Played
+                </div>
+            ) : null}
 
             {status === "pending_review" ? (
                 <>

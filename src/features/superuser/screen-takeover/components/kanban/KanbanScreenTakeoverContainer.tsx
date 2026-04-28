@@ -9,6 +9,8 @@ import { useQueryParams } from "@ozanplanviu/planviu-core";
 import { useScreenTakeoverInfiniteQuery } from "../../hooks/screen-takeover";
 import type { TScreenTakeover } from "../../types/screen-takeover";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "@/features/superuser/music-request/data";
+import { AppConfig } from "@/configs/appConfig";
+import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 
 type TKanbanScreenTakeoverContainer = {
     type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
@@ -19,12 +21,21 @@ type TKanbanScreenTakeoverContainer = {
 function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData }: TKanbanScreenTakeoverContainer) {
     const { getParam } = useQueryParams();
 
-    const { data, isFetchingNextPage, isLoading } = useScreenTakeoverInfiniteQuery({
+    const { data, isFetchingNextPage, isLoading, fetchNextPage, hasNextPage, isFetching } = useScreenTakeoverInfiniteQuery({
         request_type: type,
-
-        // all: true,
+        all: AppConfig.appMode === "development",
         date: getParam("date")
     }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
+
+    const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
+        onNextPage: fetchNextPage,
+        props: {
+            hasNextPage: hasNextPage,
+            isFetching: isFetching,
+            isFetchingNextPage: isFetchingNextPage,
+            isLoading: isLoading
+        }
+    });
 
     const datas = data?.pages?.flatMap(_data => _data?.data?.results);
 
@@ -43,7 +54,23 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
                     <CircularProgress size={18} />
                 </div>
             ) : null}
-            {!!externalData ? externalData?.map(_data => CardComponent(_data)) : datas?.map(_data => CardComponent(_data))}
+
+            <div className="max-h-[50vh] overflow-y-auto flex flex-col gap-2">
+                {!!externalData ? externalData?.map(_data => CardComponent(_data)) : (
+                    datas?.map((_data, i) => (
+                        <>
+                            {CardComponent(_data)}
+                            {(
+                                ((i + 1) === datas?.length) && hasNextPage
+                            ) ? (
+                                <div ref={lastElementRef}>
+                                    {nextPageFetchingIndicator}
+                                </div>
+                            ) : null}
+                        </>
+                    ))
+                )}
+            </div>
         </>
     )
 }
