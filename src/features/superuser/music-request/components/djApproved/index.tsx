@@ -13,6 +13,7 @@ import KanbanCard from "../KanbanCard";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
+import { AppConfig } from "@/configs/appConfig";
 
 function DjApproved() {
     const [search, setSearch] = useState("");
@@ -20,6 +21,7 @@ function DjApproved() {
     const { getParam } = useQueryParams();
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+        all: AppConfig.appMode === "development",
         status: "dj_approved",
         search: searchDebounced,
         date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
@@ -49,7 +51,7 @@ function DjApproved() {
                     <KanbanCard
                         key={djApproved?.id}
                         artist={djApproved?.artist || ""}
-                        created={dayjs(djApproved?.created_at).format("HH:mm A")}
+                        created={dayjs(djApproved?.created_at).format("DD/MM/YYYY HH:mm A")}
                         price={Number(djApproved?.donation_amount)?.toLocaleString()}
                         table={djApproved?.table_number?.toString()}
                         title={djApproved?.song_title}

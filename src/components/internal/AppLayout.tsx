@@ -28,7 +28,7 @@ function AppLayout({ title, children, renderAction }: TAppLayout) {
     const { data, isFetching } = useGetIpQuery();
 
     return (
-        <div className='bg-white p-6 rounded-lg border'>
+        <div className='bg-white p-6 !pb-0 rounded-lg border'>
             <div className="flex justify-between items-center mb-6">
                 <Typography className="text-xl font-poppins text-black">{title}</Typography>
                 <div className="flex gap-2 items-center">

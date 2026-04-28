@@ -16,7 +16,7 @@ function KanbanContainer({ djApproveds, dj, pending }: TKanbanContainer) {
                 <p className="font-semibold text-black mb-4">PENDING</p>
 
                 {/* scrollable area */}
-                <div className="max-h-[700px] overflow-auto flex flex-col gap-4">
+                <div className="max-h-[50vh] overflow-auto flex flex-col gap-4">
                     {pending}
                 </div>
             </div>
@@ -26,7 +26,7 @@ function KanbanContainer({ djApproveds, dj, pending }: TKanbanContainer) {
                 <p className="font-semibold text-black mb-4">WITH DJ</p>
 
                 {/* scrollable area */}
-                <div className="max-h-[700px] overflow-auto flex flex-col gap-4">
+                <div className="max-h-[50vh] overflow-auto flex flex-col gap-4">
                     {dj}
                 </div>
             </div>
@@ -36,7 +36,7 @@ function KanbanContainer({ djApproveds, dj, pending }: TKanbanContainer) {
                 <p className="font-semibold text-black mb-4">DJ APPROVED</p>
 
                 {/* scrollable area */}
-                <div className="max-h-[700px] overflow-auto flex flex-col gap-4">
+                <div className="max-h-[50vh] overflow-auto flex flex-col gap-4">
                     {djApproveds}
                 </div>
             </div>

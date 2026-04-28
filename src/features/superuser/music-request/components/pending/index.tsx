@@ -14,6 +14,7 @@ import { useDebounce } from "@/@pv/hooks/use-debounce";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ReviewRequestDialog from "../ReviewRequestDialog";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
+import { AppConfig } from "@/configs/appConfig";
 
 function PendingPage() {
     const [search, setSearch] = useState("");
@@ -27,6 +28,7 @@ function PendingPage() {
     });
 
     const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+        all: AppConfig.appMode === "development",
         status: "pending,admin_rejected",
         search: searchDebounced,
         date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
@@ -68,7 +70,7 @@ function PendingPage() {
                     <KanbanCard
                         key={pendingItem?.id}
                         artist={pendingItem?.artist || ""}
-                        created={dayjs(pendingItem?.created_at).format("HH:mm A")}
+                        created={dayjs(pendingItem?.created_at).format("DD/MM/YYYY HH:mm A")}
                         price={Number(pendingItem?.donation_amount)?.toLocaleString()}
                         table={pendingItem?.table_number?.toString()}
                         title={pendingItem?.song_title}

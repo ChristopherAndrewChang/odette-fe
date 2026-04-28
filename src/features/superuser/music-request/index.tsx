@@ -21,6 +21,9 @@ function MusicRequestManagement() {
         queryClient.invalidateQueries({
             queryKey: [QUERY_KEY.SONG_REQUEST.INDEX]
         });
+        queryClient.invalidateQueries({
+            queryKey: [QUERY_KEY.SONG_REQUEST.SUMMARY]
+        });
     }
 
     return (
@@ -32,6 +35,7 @@ function MusicRequestManagement() {
                 </Button>
             )}
         >
+            {/* <main className="max-h-[75vh] overflow-y-auto"> */}
             <SessionFilter />
 
             <MusicStats />
@@ -40,6 +44,7 @@ function MusicRequestManagement() {
                 djApproveds={<DjApproved />}
                 pending={<PendingPage />}
             />
+            {/* </main> */}
         </AppLayout>
     )
 }

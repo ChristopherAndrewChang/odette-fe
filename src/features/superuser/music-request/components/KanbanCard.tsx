@@ -20,16 +20,14 @@ function KanbanCard({ artist, created, price, table, title, onAccept, onReject, 
                 <p className="font-medium text-black">{title}</p>
                 <p className="text-green-600">Rp{price}</p>
             </div>
-            <p className="text-sm mb-4">The Weekend</p>
+            <p className="text-sm mb-4">{artist}</p>
 
             {/* table identity */}
             <div className="flex items-center gap-2">
                 <div className="px-4 py-1 flex items-center justify-center bg-gray-200 rounded-lg">
-                    <p className="text-xs">{table}</p>
+                    <p className="text-xs">Table {table}</p>
                 </div>
                 <p className="text-sm">{created}</p>
-                <p>|</p>
-                <p className="text-sm">{artist}</p>
             </div>
 
             {renderComponent}

@@ -5,13 +5,26 @@ import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } 
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import type { ResponseWrapper } from "@/types/api";
 import type { TMySongReq } from "@/features/user/song-request/types/song-request";
-import { getAllMusicRequest, reviewRequest } from "../services/music-request";
+import { getAllMusicRequest, getSummaryMusicRequest, reviewRequest } from "../services/music-request";
+import type { TSummary } from "../types/summary";
 
 export const useAllSongRequestsQuery = (params?: Record<any, any>, interval?: number) => {
     return useQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
         queryKey: [QUERY_KEY.SONG_REQUEST.INDEX, params],
         queryFn: () => {
             return getAllMusicRequest(params);
+        },
+        retry: false,
+        refetchOnWindowFocus: false,
+        refetchInterval: interval
+    });
+}
+
+export const useSummarySongRequest = (params?: Record<any, any>, interval?: number) => {
+    return useQuery<ResponseWrapper<TSummary>>({
+        queryKey: [QUERY_KEY.SONG_REQUEST.SUMMARY, params],
+        queryFn: () => {
+            return getSummaryMusicRequest(params);
         },
         retry: false,
         refetchOnWindowFocus: false,

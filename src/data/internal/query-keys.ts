@@ -11,7 +11,8 @@ export const QUERY_KEY = {
         PUBLIC: "settings-donation-public"
     },
     SONG_REQUEST: {
-        INDEX: "song-request"
+        INDEX: "song-request",
+        SUMMARY: "song-request-summary"
     },
     MY_SONG_REQUEST: {
         INDEX: "my-song-request"
