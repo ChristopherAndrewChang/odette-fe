@@ -1,7 +1,6 @@
 "use client";
 
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import Image from "next/image";
 
 type TShowMediaDialog = {
     open: boolean;
