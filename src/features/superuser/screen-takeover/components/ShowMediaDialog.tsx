@@ -1,7 +1,8 @@
 "use client";
 
-import { AppConfig } from "@/configs/appConfig";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+
+import { AppConfig } from "@/configs/appConfig";
 
 type TShowMediaDialog = {
     open: boolean;
@@ -27,6 +28,7 @@ function ShowMediaDialog({ mediaUrl, onClose, open }: TShowMediaDialog) {
 
             // Membuat elemen <a> sementara untuk men-trigger download
             const link = document.createElement("a");
+
             link.href = blobUrl;
             link.download = mediaTitle;
             document.body.appendChild(link);
@@ -37,6 +39,7 @@ function ShowMediaDialog({ mediaUrl, onClose, open }: TShowMediaDialog) {
             window.URL.revokeObjectURL(blobUrl);
         } catch (error) {
             console.error("Gagal mendownload file, CORS mungkin memblokir:", error);
+
             // Fallback: jika gagal fetch (biasanya karena CORS), buka di tab baru
             window.open(`${AppConfig.mediaUrl}${mediaUrl}`, "_blank");
         }
