@@ -24,10 +24,12 @@ import { onLogout } from "@/utils/logout";
 import { APP_URL } from "@/data/internal/app-route";
 import StatsIndex from "./components/stats";
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import { useColor } from "@/hooks/color";
 
 function CashierHome() {
     const router = useRouter();
     const loader = useTopLoader();
+    const { DARKBG } = useColor();
 
     const queryClient = useQueryClient();
 
@@ -63,7 +65,9 @@ function CashierHome() {
                     })
                 }}
             />
-            <UserContainer isDj>
+            <div className="max-w-screen-xl min-h-screen py-16 px-32" style={{
+                backgroundColor: DARKBG
+            }}>
                 <div className="pb-6 border-b border-gray-700">
                     <div className="flex justify-between items-center gap-6 mb-6">
                         <div className="flex items-center gap-2">
@@ -100,7 +104,7 @@ function CashierHome() {
                         <VtronVideoSlot />
                     )}
                 />
-            </UserContainer>
+            </div>
         </>
     )
 }

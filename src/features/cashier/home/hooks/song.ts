@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 
 import { patchMarkBilled } from "../services/song";
 
-
 export const useMarkBilledSongMutation = ({ onError, onSuccess }: MutationFunctionType<unknown>) => {
     return useMutation({
         mutationFn: ({ id }: MutateParamsType) => {

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types/screen-takeover";
 import { useScreenTakeoverInfiniteQuery } from "@/features/superuser/screen-takeover/hooks/screen-takeover";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
+import { AppConfig } from "@/configs/appConfig";
 
 type TScreenTakeoverContainer = {
     content_type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
@@ -15,8 +16,7 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
     const { data, isFetching, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: content_type,
         status: "paid",
-
-        // all: true
+        all: AppConfig.appMode === "development"
     });
 
     const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
