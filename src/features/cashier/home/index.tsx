@@ -10,7 +10,6 @@ import { useTopLoader } from "nextjs-toploader";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import UserContainer from "@/features/user/shared/components/UserContainer";
 import KanbanContainer from "./components/KanbanContainer";
 import SongRequest from "./components/songRequest";
 import MarkBilledDialog from "./components/songRequest/MarkBilledDialog";
