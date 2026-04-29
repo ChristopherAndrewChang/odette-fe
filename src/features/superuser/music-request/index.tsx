@@ -9,7 +9,6 @@ import KanbanContainer from "./components/KanbanContainer";
 import PendingPage from "./components/pending";
 import WithDJ from "./components/withDj";
 import DjApproved from "./components/djApproved";
-import MusicStats from "./components/stats";
 import SessionFilter from "../shared/components/filter/SessionFilter";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
@@ -38,7 +37,7 @@ function MusicRequestManagement() {
             {/* <main className="max-h-[75vh] overflow-y-auto"> */}
             <SessionFilter />
 
-            <MusicStats />
+            {/* <MusicStats /> */}
             <KanbanContainer
                 dj={<WithDJ />}
                 djApproveds={<DjApproved />}
