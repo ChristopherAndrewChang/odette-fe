@@ -11,6 +11,7 @@ import type { TScreenTakeover } from "../../types/screen-takeover";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL } from "@/features/superuser/music-request/data";
 import { AppConfig } from "@/configs/appConfig";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
+import NoDataCard from "@/features/superuser/music-request/components/NoDataCard";
 
 type TKanbanScreenTakeoverContainer = {
     type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
@@ -41,16 +42,14 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
 
     if (!datas?.length) {
         return (
-            <div className="w-full h-32 bg-gray-100 flex items-center justify-center rounded-lg border p-6">
-                <p>No Data</p>
-            </div>
+            <NoDataCard />
         )
     }
 
     return (
         <>
             {(isLoading && !isFetchingNextPage) ? (
-                <div className="flex justify-center">
+                <div className="flex justify-center min-w-96">
                     <CircularProgress size={18} />
                 </div>
             ) : null}

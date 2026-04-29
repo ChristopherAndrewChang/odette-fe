@@ -3,18 +3,22 @@
 import { type ReactNode } from "react";
 
 import { Typography } from "@mui/material"
+import classNames from "classnames";
 
 type TAppLayout = {
     title: string;
     children: ReactNode;
     renderAction?: ReactNode;
+    isBottomFit?: boolean;
 }
 
-function AppLayout({ title, children, renderAction }: TAppLayout) {
+function AppLayout({ title, children, renderAction, isBottomFit }: TAppLayout) {
     return (
         <>
             {/* <p className="w-full text-end mb-2 text-gray-500">{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p> */}
-            <div className='bg-white p-6 !pb-0 rounded-lg border'>
+            <div className={classNames('bg-white p-6 rounded-lg border', {
+                "!pb-0": isBottomFit
+            })}>
                 <div className="flex justify-between items-center mb-6">
                     <Typography className="text-xl font-poppins text-black">{title}</Typography>
                     <div className="flex gap-2 items-center">

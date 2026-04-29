@@ -28,6 +28,7 @@ function MusicRequestManagement() {
     return (
         <AppLayout
             title="Song Request"
+            isBottomFit
             renderAction={(
                 <Button onClick={onReload} variant="tonal" color="secondary">
                     <i className="tabler-reload text-base"></i>
