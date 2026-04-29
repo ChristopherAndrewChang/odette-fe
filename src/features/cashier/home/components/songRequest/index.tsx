@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useAllSongRequestsInfiniteQuery } from "@/features/superuser/music-request/hooks/song-request";
 import KanbanCard from "../KanbanCard";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
+import { AppConfig } from "@/configs/appConfig";
 
 type TSongRequest = {
     setMarkBilled: Dispatch<SetStateAction<{ cond: boolean; id: string }>>;
@@ -14,6 +15,7 @@ type TSongRequest = {
 
 function SongRequest({ setMarkBilled }: TSongRequest) {
     const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useAllSongRequestsInfiniteQuery({
+        ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "dj_approved"
     });
 
