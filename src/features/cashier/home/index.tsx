@@ -21,7 +21,6 @@ import { getUsernameFromJWT } from "@/utils/auth";
 import { STORAGE_KEY } from "@/data/internal/storage";
 import { onLogout } from "@/utils/logout";
 import { APP_URL } from "@/data/internal/app-route";
-import StatsIndex from "./components/stats";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { useColor } from "@/hooks/color";
 
@@ -64,7 +63,7 @@ function CashierHome() {
                     })
                 }}
             />
-            <div className="max-w-screen-xl min-h-screen py-16 px-32" style={{
+            <div className="max-w-screen-xl min-h-screen p-6 lg:py-16 lg:px-32" style={{
                 backgroundColor: DARKBG
             }}>
                 <div className="pb-6 border-b border-gray-700">
@@ -81,7 +80,7 @@ function CashierHome() {
 
                         <Button variant="outlined" color="error" size="small" onClick={_onLogout}>Logout</Button>
                     </div>
-                    <StatsIndex />
+                    {/* <StatsIndex /> */}
                 </div>
 
                 <KanbanContainer
