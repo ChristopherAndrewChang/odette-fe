@@ -41,6 +41,7 @@ function SuSettingsPage() {
     return (
         <AppLayout title="Settings">
             <Tabs
+                variant="scrollable"
                 value={getParam("activeTab")}
                 className="mb-4"
                 onChange={(_, value) => {

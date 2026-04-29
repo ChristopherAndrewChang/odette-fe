@@ -10,7 +10,7 @@ type TKanbanContainer = {
 
 function KanbanContainer({ djApproveds, dj, pending }: TKanbanContainer) {
     return (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
             {/* section */}
             <div className="border-x p-4 flex flex-col gap-2">
                 <p className="font-semibold text-black mb-4">PENDING</p>

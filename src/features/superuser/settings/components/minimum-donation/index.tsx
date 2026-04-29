@@ -60,7 +60,7 @@ function MinimumDonationSetting() {
                     });
                 }}
             />
-            <main className="grid grid-cols-2">
+            <main className="grid grid-cols-1 lg:grid-cols-2">
                 {/* weekdays */}
                 <section className="border-r">
                     <Typography className="mb-4 text-xl font-semibold">Weekdays</Typography>
@@ -92,11 +92,11 @@ function MinimumDonationSetting() {
 
                 {/* weekend */}
                 <section>
-                    <Typography className="mb-4 text-xl font-semibold pl-6">Weekend</Typography>
+                    <Typography className="mb-4 text-xl font-semibold mt-4 lg:mt-0 lg:pl-6">Weekend</Typography>
                     {dataGrouped().weekend.map(_data => (
                         <div
                             key={_data?.id}
-                            className="flex items-center gap-2 px-2 !pl-6 py-4 border-b"
+                            className="flex items-center gap-2 px-2 lg:!pl-6 py-4 border-b"
                         >
                             <Typography>{_data?.request_type.replace("_", " ")} ({_data?.day_type})</Typography>
                             <Typography>:</Typography>

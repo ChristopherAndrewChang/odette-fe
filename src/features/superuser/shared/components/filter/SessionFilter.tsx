@@ -68,7 +68,7 @@ function SessionFilter() {
     }
 
     return (
-        <div className="flex items-center gap-4 border-b pb-4 mb-4">
+        <div className="flex flex-col lg:flex-row items-center gap-4 border-b pb-4 mb-4">
             <Typography className="text-black">Session</Typography>
             <div className="flex gap-2 pr-4 border-r">
                 <div
@@ -95,12 +95,12 @@ function SessionFilter() {
             </div>
 
             {/* jump to section */}
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                 <Typography className="text-black">Jump To</Typography>
                 {/* tonight */}
                 <div
                     onClick={onJumpToTonight}
-                    className="px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base"
+                    className="px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base w-full lg:w-fit"
                 >
                     Tonight
                 </div>
