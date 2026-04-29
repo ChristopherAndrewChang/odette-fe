@@ -95,12 +95,12 @@ function SessionFilter() {
             </div>
 
             {/* jump to section */}
-            <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                <Typography className="text-black">Jump To</Typography>
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-fit">
+                <Typography className="text-black ">Jump To</Typography>
                 {/* tonight */}
                 <div
                     onClick={onJumpToTonight}
-                    className="px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base w-full lg:w-fit"
+                    className="px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base lg:w-fit text-center"
                 >
                     Tonight
                 </div>
@@ -111,7 +111,7 @@ function SessionFilter() {
                     onChange={(date: Date | null) => {
                         onChangeDate(dayjs(date).format("YYYY-MM-DD"))
                     }}
-                    className="border px-2 py-1 rounded-lg text-base font-sans cursor-pointer bg-gray-50 border-blue-400 text-black hover:bg-blue-100 placeholder:text-black text-center"
+                    className="border px-2 py-1 rounded-lg text-base font-sans cursor-pointer bg-gray-50 border-blue-400 text-black hover:bg-blue-100 placeholder:text-black text-center w-full lg:w-fit"
                     placeholderText="Select date"
                 />
             </div>

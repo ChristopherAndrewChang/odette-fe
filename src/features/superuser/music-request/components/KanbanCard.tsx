@@ -15,7 +15,7 @@ type TKanbanCard = {
 
 function KanbanCard({ artist, created, price, table, title, onAccept, onReject, renderComponent }: TKanbanCard) {
     return (
-        <div className="bg-gray-50 p-4 rounded-lg border">
+        <div className="bg-gray-50 p-4 rounded-lg border min-w-72 lg:min-w-96">
             <div className="flex justify-between gap-4">
                 <p className="font-medium text-black">{title}</p>
                 <p className="text-green-600">Rp{price}</p>

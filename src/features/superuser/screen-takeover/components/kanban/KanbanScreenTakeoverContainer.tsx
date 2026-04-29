@@ -55,7 +55,7 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
                 </div>
             ) : null}
 
-            <div className="max-h-[50vh] overflow-y-auto flex flex-col gap-2">
+            <div className="max-h-[45vh] overflow-y-auto flex flex-col gap-2">
                 {!!externalData ? externalData?.map(_data => CardComponent(_data)) : (
                     datas?.map((_data, i) => (
                         <>

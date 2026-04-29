@@ -6,8 +6,6 @@ import dayjs from "dayjs";
 
 import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
 
-import { Typography } from "@mui/material";
-
 import { useAllSongRequestsInfiniteQuery } from "../../hooks/song-request";
 import KanbanCard from "../KanbanCard";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
@@ -15,6 +13,7 @@ import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ReviewRequestDialog from "../ReviewRequestDialog";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 import { AppConfig } from "@/configs/appConfig";
+import NoDataCard from "../NoDataCard";
 
 function PendingPage() {
     const [search, setSearch] = useState("");
@@ -102,9 +101,7 @@ function PendingPage() {
                     ) : null}
                 </>
             )) : (
-                <div className="p-6 bg-gray-50 rounded-lg border flex items-center justify-center">
-                    <Typography>No data</Typography>
-                </div>
+                <NoDataCard />
             )}
         </>
     )
