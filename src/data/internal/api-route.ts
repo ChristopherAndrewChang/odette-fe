@@ -45,7 +45,8 @@ export const API_URL = {
     SCREEN_TAKEOVER: {
         INDEX: "/screen/",
         APPROVAL: "/screen/:id/review/",
-        MARK_PLAYED: "/screen/:id/played/"
+        MARK_PLAYED: "/screen/:id/played/",
+        MARK_BILLED: "/screen/:id/bill/"
     },
     SONG_REQUEST: {
         INDEX: "/songs/",

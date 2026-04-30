@@ -50,7 +50,7 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
                 </div>
             </div>
 
-            <div className="flex flex-col gap-2 max-h-[750px] overflow-y-scroll scrollbar-hide">
+            <div className="flex-1 flex flex-col gap-2 overflow-y-scroll scrollbar-hide">
                 {screenTakeover?.map((_screen, i) => (
                     <div key={`${content_type}-${i}`}>
                         {CardComponent(_screen)}

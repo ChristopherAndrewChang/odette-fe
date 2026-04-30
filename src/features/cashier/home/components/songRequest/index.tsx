@@ -12,7 +12,7 @@ import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { AppConfig } from "@/configs/appConfig";
 
 type TSongRequest = {
-    setMarkBilled: Dispatch<SetStateAction<{ cond: boolean; id: string }>>;
+    setMarkBilled: Dispatch<SetStateAction<{ cond: boolean; id: string; type: "song" | "screen"; }>>;
 }
 
 function SongRequest({ setMarkBilled }: TSongRequest) {
@@ -59,7 +59,8 @@ function SongRequest({ setMarkBilled }: TSongRequest) {
                             onMarkBilled={() => {
                                 setMarkBilled({
                                     cond: true,
-                                    id: song?.id?.toString()
+                                    id: song?.id?.toString(),
+                                    type: "song"
                                 });
                             }}
                             status={song?.status}

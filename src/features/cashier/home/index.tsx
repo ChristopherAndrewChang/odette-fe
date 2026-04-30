@@ -32,9 +32,10 @@ function CashierHome() {
 
     const queryClient = useQueryClient();
 
-    const [markBilled, setMarkBilled] = useState<{ id: string; cond: boolean; }>({
+    const [markBilled, setMarkBilled] = useState<{ id: string; cond: boolean; type: "song" | "screen" }>({
         cond: false,
-        id: ""
+        id: "",
+        type: "song"
     });
 
     const _onLogout = () => {
@@ -57,14 +58,16 @@ function CashierHome() {
             <MarkBilledDialog
                 open={markBilled.cond}
                 id={markBilled?.id}
+                type={markBilled.type}
                 onClose={() => {
                     setMarkBilled({
                         cond: false,
-                        id: ""
+                        id: "",
+                        type: "song"
                     })
                 }}
             />
-            <div className="max-w-screen-2xl mx-auto overflow-y-auto p-6 lg:py-16 lg:px-32" style={{
+            <div className="max-w-screen-2xl h-screen flex flex-col mx-auto overflow-y-auto p-6 !pb-4 lg:py-16 lg:px-32" style={{
                 backgroundColor: DARKBG
             }}>
                 <div className="pb-6 mb-6 border-b border-gray-700">
@@ -84,29 +87,65 @@ function CashierHome() {
                     {/* <StatsIndex /> */}
                 </div>
 
-                <SessionFilter
-                    darkMode
-                />
+                <div className="mb-4">
+                    <SessionFilter
+                        darkMode
+                    />
+                </div>
 
-                <KanbanContainer
-                    runningTextSlot={(
-                        <RunningTextSlot />
-                    )}
-                    songRequestSlot={(
-                        <SongRequest
-                            setMarkBilled={setMarkBilled}
-                        />
-                    )}
-                    vtronImageSlot={(
-                        <VtronPhotoSlot />
-                    )}
-                    vtronTextSlot={(
-                        <VtronTextSlot />
-                    )}
-                    vtronVideoSlot={(
-                        <VtronVideoSlot />
-                    )}
-                />
+                <div className="flex-1 min-h-0">
+                    <KanbanContainer
+                        runningTextSlot={(
+                            <RunningTextSlot
+                                onMarkBilled={(screen) => {
+                                    setMarkBilled({
+                                        cond: true,
+                                        id: screen?.id?.toString(),
+                                        type: "screen"
+                                    });
+                                }}
+                            />
+                        )}
+                        songRequestSlot={(
+                            <SongRequest
+                                setMarkBilled={setMarkBilled}
+                            />
+                        )}
+                        vtronImageSlot={(
+                            <VtronPhotoSlot
+                                onMarkBilled={(screen) => {
+                                    setMarkBilled({
+                                        cond: true,
+                                        id: screen?.id?.toString(),
+                                        type: "screen"
+                                    });
+                                }}
+                            />
+                        )}
+                        vtronTextSlot={(
+                            <VtronTextSlot
+                                onMarkBilled={(screen) => {
+                                    setMarkBilled({
+                                        cond: true,
+                                        id: screen?.id?.toString(),
+                                        type: "screen"
+                                    });
+                                }}
+                            />
+                        )}
+                        vtronVideoSlot={(
+                            <VtronVideoSlot
+                                onMarkBilled={(screen) => {
+                                    setMarkBilled({
+                                        cond: true,
+                                        id: screen?.id?.toString(),
+                                        type: "screen"
+                                    });
+                                }}
+                            />
+                        )}
+                    />
+                </div>
             </div>
         </>
     )

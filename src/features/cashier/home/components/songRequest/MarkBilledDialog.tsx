@@ -9,15 +9,30 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { useMarkBilledSongMutation } from "../../hooks/song";
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import { useScreenMutation } from "../../hooks/screen";
 
 type TMarkBilledDialog = {
     open: boolean;
     onClose: () => void;
     id: string;
+    type: "song" | "screen";
 }
 
-function MarkBilledDialog({ onClose, open, id }: TMarkBilledDialog) {
+function MarkBilledDialog({ onClose, open, id, type }: TMarkBilledDialog) {
     const queryClient = useQueryClient();
+
+    const { mutate: mutateScreen, isPending: pendingScreen } = useScreenMutation({
+        onSuccess: () => {
+            toast.success("Success");
+            onClose();
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX]
+            });
+        },
+        onError: (err) => {
+            toast.error(getErrorMessage(err));
+        }
+    });
 
     const { mutate, isPending } = useMarkBilledSongMutation({
         onSuccess: () => {
@@ -33,10 +48,17 @@ function MarkBilledDialog({ onClose, open, id }: TMarkBilledDialog) {
     });
 
     const onSubmit = () => {
-        mutate({
-            method: "PATCH",
-            id: id
-        });
+        if (type === "screen") {
+            mutateScreen({
+                method: "PATCH",
+                id: id
+            });
+        } else {
+            mutate({
+                method: "PATCH",
+                id: id
+            });
+        }
     }
 
     return (
@@ -48,7 +70,7 @@ function MarkBilledDialog({ onClose, open, id }: TMarkBilledDialog) {
                 <div className="flex items-center gap-2">
                     <Button variant="outlined" color="inherit" onClick={onClose}>Cancel</Button>
                     <Button onClick={onSubmit} variant="contained">
-                        {isPending ? <CircularProgress size={18} className="text-white" /> : "Proceed"}
+                        {(isPending || pendingScreen) ? <CircularProgress size={18} className="text-white" /> : "Proceed"}
                     </Button>
                 </div>
             </DialogContent>

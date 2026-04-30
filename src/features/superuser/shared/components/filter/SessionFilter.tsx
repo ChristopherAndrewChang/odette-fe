@@ -131,7 +131,7 @@ function SessionFilter({ darkMode }: TSessionFilter) {
                         onChangeDate(dayjs(date).format("YYYY-MM-DD"))
                     }}
                     className={classNames("border px-2 py-1 rounded-lg text-base font-sans cursor-pointer bg-gray-50 border-blue-400 text-black hover:bg-blue-100 placeholder:text-black text-center w-full sm:w-fit", {
-                        "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                        "!bg-gray-800 !border-gray-700 !text-white placeholder:!text-white": darkMode
                     })}
                     placeholderText="Select date"
                 />

@@ -69,7 +69,8 @@ function KanbanCard({ donation_amount, artist, title, table, time, user, onMarkB
             </div>
 
             {/* billed */}
-            {type === "songs" ? (
+            {/* Sementara true dulu, nanti baru type === "song" */}
+            {true ? (
                 <>
                     {(!is_billed) ? (
                         <div className="py-2 px-4 w-full flex justify-center items-center bg-gray-900 border rounded-lg border-gray-700 mt-4 transition-all cursor-pointer hover:bg-gray-950" onClick={onMarkBilled}>

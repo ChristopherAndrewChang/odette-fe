@@ -9,4 +9,6 @@ export type TScreenTakeover = {
     table_number: number;
     reviewed_at: string;
     created_at: string;
+    is_billed: boolean;
+    billed_at: string;
 }

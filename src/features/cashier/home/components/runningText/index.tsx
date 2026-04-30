@@ -4,8 +4,13 @@ import dayjs from "dayjs";
 
 import ScreenTakeoverContainer from "../ScreenTakeoverContainer";
 import KanbanCard from "../KanbanCard";
+import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types/screen-takeover";
 
-function RunningTextSlot() {
+type TRunningTextSlot = {
+    onMarkBilled: (screen: TScreenTakeover) => void;
+}
+
+function RunningTextSlot({ onMarkBilled }: TRunningTextSlot) {
     return (
         <>
             <ScreenTakeoverContainer
@@ -19,6 +24,10 @@ function RunningTextSlot() {
                         title={screen?.message}
                         type="running_text"
                         user={screen?.customer_name}
+                        onMarkBilled={() => {
+                            onMarkBilled(screen);
+                        }}
+                        is_billed={screen?.is_billed}
                     />
                 )}
             />

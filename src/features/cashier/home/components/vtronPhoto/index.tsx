@@ -4,8 +4,13 @@ import dayjs from "dayjs";
 
 import ScreenTakeoverContainer from "../ScreenTakeoverContainer";
 import KanbanCard from "../KanbanCard";
+import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types/screen-takeover";
 
-function VtronPhotoSlot() {
+type TVtronPhotoSlot = {
+    onMarkBilled: (screen: TScreenTakeover) => void;
+}
+
+function VtronPhotoSlot({ onMarkBilled }: TVtronPhotoSlot) {
     return (
         <>
             <ScreenTakeoverContainer
@@ -19,9 +24,13 @@ function VtronPhotoSlot() {
                         title={screen?.message}
                         type="running_text"
                         user={screen?.customer_name}
+                        onMarkBilled={() => {
+                            onMarkBilled(screen);
+                        }}
                         mediaData={{
                             mediaUrl: screen?.media_file || ""
                         }}
+                        is_billed={screen?.is_billed}
                     />
                 )}
             />
