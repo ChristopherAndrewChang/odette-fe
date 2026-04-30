@@ -6,8 +6,13 @@ import { DatePicker } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useQueryParams } from "@ozanplanviu/planviu-core";
 import dayjs from "dayjs";
+import classNames from "classnames";
 
-function SessionFilter() {
+type TSessionFilter = {
+    darkMode?: boolean;
+}
+
+function SessionFilter({ darkMode }: TSessionFilter) {
     const { updateParams, getParam } = useQueryParams();
 
     const onChangeDate = (date: string) => {
@@ -69,16 +74,23 @@ function SessionFilter() {
 
     return (
         <div className="flex flex-col lg:flex-row items-center gap-4 border-b pb-4 mb-4">
-            <Typography className="text-black">Session</Typography>
+            <Typography className={classNames({
+                "text-black": !darkMode,
+                "text-white": darkMode
+            })}>Session</Typography>
             <div className="flex gap-2 pr-4 border-r">
                 <div
                     onClick={onPrevNight}
-                    className="px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100"
+                    className={classNames("px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100", {
+                        "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                    })}
                 >
                     <i className="tabler-arrow-left text-lg"></i>
                 </div>
 
-                <div className="bg-gray-50 px-4 py-1 rounded-lg border flex gap-2 items-center">
+                <div className={classNames("bg-gray-50 px-4 py-1 rounded-lg border flex gap-2 items-center min-h-10", {
+                    "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                })}>
                     <p className="font-semibold text-sm">{formatDateIntoSession(getParam("date") || "")}</p>
                     {(!getParam("date") || (getParam("date") === dayjs(new Date()).format("YYYY-MM-DD"))) ? (
                         <div className="bg-blue-200 rounded-lg border border-blue-400 px-2 py-1 text-xs text-blue-700">Tonight</div>
@@ -87,7 +99,9 @@ function SessionFilter() {
 
                 <div
                     onClick={onNextNight}
-                    className="px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100"
+                    className={classNames("px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100", {
+                        "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                    })}
                 >
                     <i className="tabler-arrow-right text-lg"></i>
                 </div>
@@ -96,11 +110,16 @@ function SessionFilter() {
 
             {/* jump to section */}
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-fit">
-                <Typography className="text-black ">Jump To</Typography>
+                <Typography className={classNames({
+                    "text-black": !darkMode,
+                    "text-white": darkMode
+                })}>Jump To</Typography>
                 {/* tonight */}
                 <div
                     onClick={onJumpToTonight}
-                    className="px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base lg:w-fit text-center"
+                    className={classNames("px-4 py-1 border rounded-lg cursor-pointer border-blue-400 bg-gray-50 transition-all hover:bg-blue-200 text-black text-base lg:w-fit text-center", {
+                        "!bg-gray-800 !text-white !border-gray-700": darkMode
+                    })}
                 >
                     Tonight
                 </div>
@@ -111,7 +130,9 @@ function SessionFilter() {
                     onChange={(date: Date | null) => {
                         onChangeDate(dayjs(date).format("YYYY-MM-DD"))
                     }}
-                    className="border px-2 py-1 rounded-lg text-base font-sans cursor-pointer bg-gray-50 border-blue-400 text-black hover:bg-blue-100 placeholder:text-black text-center w-full lg:w-fit"
+                    className={classNames("border px-2 py-1 rounded-lg text-base font-sans cursor-pointer bg-gray-50 border-blue-400 text-black hover:bg-blue-100 placeholder:text-black text-center w-full lg:w-fit", {
+                        "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                    })}
                     placeholderText="Select date"
                 />
             </div>

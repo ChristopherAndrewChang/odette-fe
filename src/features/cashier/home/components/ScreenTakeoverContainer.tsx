@@ -6,6 +6,7 @@ import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types
 import { useScreenTakeoverInfiniteQuery } from "@/features/superuser/screen-takeover/hooks/screen-takeover";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { AppConfig } from "@/configs/appConfig";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 type TScreenTakeoverContainer = {
     content_type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
@@ -13,9 +14,12 @@ type TScreenTakeoverContainer = {
 }
 
 function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeoverContainer) {
+    const { getParam } = useQueryParams();
+
     const { data, isFetching, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: content_type,
         status: "paid",
+        date: getParam("date"),
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
     });
 

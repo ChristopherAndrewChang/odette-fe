@@ -23,6 +23,7 @@ import { onLogout } from "@/utils/logout";
 import { APP_URL } from "@/data/internal/app-route";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { useColor } from "@/hooks/color";
+import SessionFilter from "@/features/superuser/shared/components/filter/SessionFilter";
 
 function CashierHome() {
     const router = useRouter();
@@ -63,10 +64,10 @@ function CashierHome() {
                     })
                 }}
             />
-            <div className="max-w-screen-xl min-h-screen p-6 lg:py-16 lg:px-32" style={{
+            <div className="max-w-screen-2xl mx-auto overflow-y-auto p-6 lg:py-16 lg:px-32" style={{
                 backgroundColor: DARKBG
             }}>
-                <div className="pb-6 border-b border-gray-700">
+                <div className="pb-6 mb-6 border-b border-gray-700">
                     <div className="flex justify-between items-center gap-6 mb-6">
                         <div className="flex items-center gap-2">
                             <p className="text-xl text-gray-300">
@@ -82,6 +83,10 @@ function CashierHome() {
                     </div>
                     {/* <StatsIndex /> */}
                 </div>
+
+                <SessionFilter
+                    darkMode
+                />
 
                 <KanbanContainer
                     runningTextSlot={(

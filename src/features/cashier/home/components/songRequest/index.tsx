@@ -8,14 +8,18 @@ import { useAllSongRequestsInfiniteQuery } from "@/features/superuser/music-requ
 import KanbanCard from "../KanbanCard";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { AppConfig } from "@/configs/appConfig";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 type TSongRequest = {
     setMarkBilled: Dispatch<SetStateAction<{ cond: boolean; id: string }>>;
 }
 
 function SongRequest({ setMarkBilled }: TSongRequest) {
+    const { getParam } = useQueryParams();
+
     const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
+        date: getParam("date"),
         status: "dj_approved"
     });
 
