@@ -14,6 +14,8 @@ import { useTablesInfiniteQuery } from "../../hooks/tables";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { useGenerateTableQRMutation } from "../../hooks/qr";
 import { handleFileResponse } from "@/utils/file";
+import CustomTextField from "@/@core/components/mui/TextField";
+import { useDebounce } from "@/@pv/hooks/use-debounce";
 
 type TGenerateBulkQRDialog = {
     open: boolean;
@@ -21,7 +23,13 @@ type TGenerateBulkQRDialog = {
 }
 
 function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
-    const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useTablesInfiniteQuery();
+    const [search, setSearch] = useState("");
+    const searchDebounced = useDebounce(search, 500);
+
+    const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useTablesInfiniteQuery({
+        search: searchDebounced
+    });
+
     const TablesData = data?.pages?.flatMap(pageData => pageData?.data?.results) || [];
 
     const [isAllTables, setIsAllTables] = useState(false);
@@ -107,6 +115,13 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
                 </div>
 
                 <Typography className="mb-4">Select Table</Typography>
+                <CustomTextField placeholder="Search Table" fullWidth className="mb-4" value={search} onChange={(e) => setSearch(e.target.value)} />
+
+                {(isFetching && !isFetchingNextPage) ? (
+                    <div className="mb-2 flex items-center justify-center">
+                        <CircularProgress size={18} />
+                    </div>
+                ) : null}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6 max-h-96 overflow-y-auto">
                     {TablesData?.map((tableData, i) => (
                         <>
