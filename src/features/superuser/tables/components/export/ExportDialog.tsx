@@ -4,6 +4,8 @@ import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Typograph
 
 import toast from "react-hot-toast";
 
+import dayjs from "dayjs";
+
 import { useTableExportQuery } from "../../hooks/tables";
 
 type TExportDialog = {
@@ -29,8 +31,10 @@ function ExportDialog({ onClose, open }: TExportDialog) {
 
             const a = document.createElement("a");
 
+            const date = new Date();
+
             a.href = url;
-            a.download = "Tables Data Management";
+            a.download = `odette_table_export_${dayjs(date).format("DDMMYYYY")}_${dayjs(date).format("HHmm")}`;
             a.click();
         } catch (e) {
             toast.error("Failed to export, something went wrong");
