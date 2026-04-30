@@ -2,11 +2,12 @@
 
 import type { ReactNode } from "react";
 
+import { useQueryParams } from "@ozanplanviu/planviu-core";
+
 import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types/screen-takeover";
 import { useScreenTakeoverInfiniteQuery } from "@/features/superuser/screen-takeover/hooks/screen-takeover";
 import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { AppConfig } from "@/configs/appConfig";
-import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 type TScreenTakeoverContainer = {
     content_type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
