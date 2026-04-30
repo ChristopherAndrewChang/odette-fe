@@ -23,7 +23,7 @@ function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAct
         <>
             {/* <p className="w-full text-end mb-2 text-gray-500">{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p> */}
             <div
-                className={classNames('bg-white p-6 rounded-lg border', {
+                className={classNames('bg-white max-h-[87vh] p-6 rounded-lg border flex flex-col', {
                     "!pb-0": isBottomFit,
                 })}
                 style={settings.mode === "dark" ? {
