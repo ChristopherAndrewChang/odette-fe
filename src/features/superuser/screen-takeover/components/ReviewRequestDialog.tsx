@@ -34,7 +34,7 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
         }
     });
 
-    const onSubmit = (type: "pending_payment" | "rejected") => {
+    const onSubmit = (type: "approved" | "rejected") => {
         mutate({
             method: "PATCH",
             id: id,
@@ -58,7 +58,7 @@ function ReviewRequestDialog({ onClose, open, id }: TReviewRequestDialog) {
                     </Button>
                     <Button
                         disabled={isPending}
-                        onClick={() => onSubmit("pending_payment")}
+                        onClick={() => onSubmit("approved")}
                         variant="contained"
                         color="success"
                     >
