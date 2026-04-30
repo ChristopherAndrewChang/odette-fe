@@ -57,3 +57,11 @@ export const postImportTable = (data: Record<any, any>) => {
         }
     });
 }
+
+export const getExportTable = (): Promise<ResponseWrapper<Blob>> => {
+    return api({
+        method: "GET",
+        urlKey: API_URL.TABLES.EXPORT,
+        responseType: "blob"
+    });
+}

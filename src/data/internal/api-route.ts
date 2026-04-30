@@ -30,6 +30,7 @@ export const API_URL = {
         INDEX: "/tables/",
         DETAIL: "/tables/:id/",
         IMPORT: "/tables/import/",
+        EXPORT: "/tables/export/",
         CLOSE_NIGHT: "/tables/close-night/",
         OPEN_NIGHT: "/tables/open-night/",
         BULK: "/tables/bulk/",

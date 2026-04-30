@@ -18,7 +18,8 @@ export const QUERY_KEY = {
         INDEX: "my-song-request"
     },
     TABLES: {
-        INDEX: "tables"
+        INDEX: "tables",
+        EXPORT: "tabler-export"
     },
     MENUS: {
         INDEX: "menus",

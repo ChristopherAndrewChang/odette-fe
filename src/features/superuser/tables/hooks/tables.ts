@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import { createTable, createTableBulk, deleteTable, getAllTables, postImportTable, updateTable } from "../services/tables";
+import { createTable, createTableBulk, deleteTable, getAllTables, getExportTable, postImportTable, updateTable } from "../services/tables";
 import type { ResponseWrapper } from "@/types/api";
 import type { TTables } from "../types/tables";
 
@@ -16,6 +16,15 @@ export const useTablesQuery = (params?: Record<any, any>) => {
         placeholderData: data => data
     });
 }
+
+export const useTableExportQuery = () => {
+    return useQuery<ResponseWrapper<Blob>>({
+        queryKey: [QUERY_KEY.TABLES.EXPORT],
+        queryFn: () => getExportTable(),
+        enabled: false,
+        refetchOnWindowFocus: false
+    });
+};
 
 export const useTablesInfiniteQuery = (params?: Record<any, any>) => {
     return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TTables[]>>>({
