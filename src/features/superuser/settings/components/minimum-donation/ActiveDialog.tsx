@@ -40,7 +40,7 @@ function ActiveDialog({ onClose, open, id }: TActiveDialog) {
             <DialogContent>
                 <Typography className="mb-4">Are you sure?</Typography>
                 <div className="flex gap-2">
-                    <Button variant="outlined" color="inherit">No</Button>
+                    <Button variant="outlined" color="inherit" onClick={onClose}>No</Button>
                     <Button variant="contained" onClick={() => {
                         mutate({
                             method: "PATCH",
