@@ -124,6 +124,7 @@ function ScreenTakeoverPage() {
             />
             <AppLayout
                 title="Screen Takeover"
+                withMaxH
                 renderAction={(
                     <Button onClick={onReload} variant="tonal" color="secondary">
                         <i className="tabler-reload text-base"></i>

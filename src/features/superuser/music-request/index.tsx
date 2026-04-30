@@ -29,6 +29,7 @@ function MusicRequestManagement() {
         <AppLayout
             title="Song Request"
             isBottomFit
+            withMaxH
             renderAction={(
                 <Button onClick={onReload} variant="tonal" color="secondary">
                     <i className="tabler-reload text-base"></i>
@@ -40,6 +41,9 @@ function MusicRequestManagement() {
                 <SessionFilter />
             </div>
 
+            <div>
+
+            </div>
             {/* <MusicStats /> */}
             <KanbanContainer
                 dj={<WithDJ />}

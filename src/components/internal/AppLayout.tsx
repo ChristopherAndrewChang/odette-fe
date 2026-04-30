@@ -14,17 +14,19 @@ type TAppLayout = {
     renderAction?: ReactNode;
     renderMiddleAction?: ReactNode;
     isBottomFit?: boolean;
+    withMaxH?: boolean;
 }
 
-function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAction }: TAppLayout) {
+function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAction, withMaxH }: TAppLayout) {
     const { settings } = useSettings();
 
     return (
         <>
             {/* <p className="w-full text-end mb-2 text-gray-500">{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p> */}
             <div
-                className={classNames('bg-white max-h-[87vh] p-6 rounded-lg border flex flex-col', {
+                className={classNames('bg-white overflow-y-auto p-6 rounded-lg border flex flex-col', {
                     "!pb-0": isBottomFit,
+                    "max-h-[85vh]": withMaxH
                 })}
                 style={settings.mode === "dark" ? {
                     backgroundColor: colors.DARKBLUE
