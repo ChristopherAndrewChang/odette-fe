@@ -34,9 +34,16 @@ function MusicRequestManagement() {
                     <i className="tabler-reload text-base"></i>
                 </Button>
             )}
+            renderMiddleAction={(
+                <div className="hidden md:block">
+                    <SessionFilter />
+                </div>
+            )}
         >
             {/* <main className="max-h-[75vh] overflow-y-auto"> */}
-            <SessionFilter />
+            <div className="md:hidden">
+                <SessionFilter />
+            </div>
 
             {/* <MusicStats /> */}
             <KanbanContainer

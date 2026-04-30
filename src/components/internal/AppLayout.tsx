@@ -12,10 +12,11 @@ type TAppLayout = {
     title: string;
     children: ReactNode;
     renderAction?: ReactNode;
+    renderMiddleAction?: ReactNode;
     isBottomFit?: boolean;
 }
 
-function AppLayout({ title, children, renderAction, isBottomFit }: TAppLayout) {
+function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAction }: TAppLayout) {
     const { settings } = useSettings();
 
     return (
@@ -35,6 +36,7 @@ function AppLayout({ title, children, renderAction, isBottomFit }: TAppLayout) {
                             "!text-white": settings.mode === "dark"
                         })}
                     >{title}</Typography>
+                    {renderMiddleAction}
                     <div className="flex gap-2 items-center">
                         {renderAction}
                         {/* <div className="flex items-center gap-2 bg-green-50 px-2 py-1 rounded-lg border border-green-300">
