@@ -2,16 +2,31 @@
 
 import { useState } from "react";
 
-import { CircularProgress, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
+
+import classNames from "classnames";
 
 import { useMinimumDonationSettingsQuery } from "../../hooks/minimum-donation";
 import UpdateDataDialog from "./UpdateDataDialog";
-import type { TMinimumDonation } from "../../types/minimum-donation";
+import AddNewDialog from "./AddNewDialog";
+import ActiveDialog from "./ActiveDialog";
 
 function MinimumDonationSetting() {
-    const [updateState, setUpdateState] = useState<{ day_type: string; request_type: string; cond: boolean; min_amount: string; }>({
-        day_type: "",
-        request_type: "",
+    const [openCreate, setOpenCreate] = useState(false);
+
+    const [activate, setActve] = useState<{ cond: boolean; id: string }>({
+        cond: false,
+        id: ""
+    })
+
+    const [updateState, setUpdateState] = useState<{
+        id: string;
+        name: string;
+        cond: boolean;
+        min_amount: string;
+    }>({
+        id: "",
+        name: "",
         cond: false,
         min_amount: ""
     });
@@ -19,21 +34,7 @@ function MinimumDonationSetting() {
     const { data, isFetching } = useMinimumDonationSettingsQuery();
 
     const dataGrouped = () => {
-        const weekdays: TMinimumDonation[] = [];
-        const weekend: TMinimumDonation[] = [];
-
-        data?.data?.forEach(_data => {
-            if (_data.day_type === "weekday") {
-                weekdays.push(_data);
-            } else {
-                weekend.push(_data);
-            }
-        });
-
-        return ({
-            weekdays: weekdays,
-            weekend: weekend
-        })
+        return data?.data;
     }
 
     if (isFetching) {
@@ -46,79 +47,82 @@ function MinimumDonationSetting() {
         <>
             <UpdateDataDialog
                 data={({
-                    day_type: updateState.day_type,
-                    request_type: updateState.request_type,
+                    id: updateState.id,
+                    name: updateState.name,
                     min_amount: updateState.min_amount
                 })}
                 open={updateState.cond}
                 onClose={() => {
                     setUpdateState({
+                        id: "",
                         cond: false,
-                        day_type: "",
-                        request_type: "",
+                        name: "",
                         min_amount: ""
                     });
                 }}
             />
-            <main className="grid grid-cols-1 lg:grid-cols-2">
-                {/* weekdays */}
-                <section className="border-r">
-                    <Typography className="mb-4 text-xl font-semibold">Weekdays</Typography>
-                    {dataGrouped().weekdays.map(_data => (
+
+            <AddNewDialog
+                onClose={() => {
+                    setOpenCreate(false);
+                }}
+                open={openCreate}
+            />
+
+            <ActiveDialog
+                id={activate.id}
+                onClose={() => {
+                    setActve({
+                        cond: false,
+                        id: ""
+                    });
+                }}
+                open={activate.cond}
+            />
+
+            <Button variant="contained" className="w-fit mb-4" fullWidth={false} onClick={() => {
+                setOpenCreate(true);
+            }}>Add New</Button>
+            <section>
+                {dataGrouped()?.map(_data => (
+                    <div
+                        key={_data?.id}
+                        className={classNames("flex items-center gap-2 px-2 py-4 border-b")}
+                    >
+                        <Typography className={classNames({
+                            "!text-green-700": _data.is_active
+                        })}>{_data?.request_type.replace("_", " ")} ({_data?.name})</Typography>
+                        <Typography>:</Typography>
+                        <Typography>{`Rp${_data?.min_amount?.toLocaleString()}`}</Typography>
+
                         <div
-                            key={_data?.id}
-                            className="flex items-center gap-2 px-2 py-4 border-b"
+                            onClick={() => {
+                                setUpdateState({
+                                    cond: true,
+                                    id: _data?.id?.toString(),
+                                    name: _data?.name,
+                                    min_amount: _data?.min_amount?.toString()
+                                });
+                            }}
+                            className="px-4 py-1 text-sm bg-blue-500 rounded-xl text-white cursor-pointer transition-all hover:bg-blue-600 ml-2"
                         >
-                            <Typography>{_data?.request_type.replace("_", " ")} ({_data?.day_type})</Typography>
-                            <Typography>:</Typography>
-                            <Typography>{`Rp${_data?.min_amount?.toLocaleString()}`}</Typography>
-
-                            <div
-                                onClick={() => {
-                                    setUpdateState({
-                                        cond: true,
-                                        day_type: _data.day_type,
-                                        request_type: _data.request_type,
-                                        min_amount: _data?.min_amount?.toString()
-                                    });
-                                }}
-                                className="px-4 py-1 text-sm bg-blue-500 rounded-xl text-white cursor-pointer transition-all hover:bg-blue-600 ml-2"
-                            >
-                                Change
-                            </div>
+                            Change
                         </div>
-                    ))}
-                </section>
 
-                {/* weekend */}
-                <section>
-                    <Typography className="mb-4 text-xl font-semibold mt-4 lg:mt-0 lg:pl-6">Weekend</Typography>
-                    {dataGrouped().weekend.map(_data => (
                         <div
-                            key={_data?.id}
-                            className="flex items-center gap-2 px-2 lg:!pl-6 py-4 border-b"
+                            onClick={() => {
+                                setActve({
+                                    cond: true,
+                                    id: _data?.id?.toString()
+                                });
+                            }}
+                            className="px-4 py-1 text-sm bg-green-600 rounded-xl text-white cursor-pointer transition-all hover:bg-green-700 ml-2"
                         >
-                            <Typography>{_data?.request_type.replace("_", " ")} ({_data?.day_type})</Typography>
-                            <Typography>:</Typography>
-                            <Typography>{`Rp${_data?.min_amount?.toLocaleString()}`}</Typography>
-
-                            <div
-                                onClick={() => {
-                                    setUpdateState({
-                                        cond: true,
-                                        day_type: _data.day_type,
-                                        request_type: _data.request_type,
-                                        min_amount: _data?.min_amount?.toString()
-                                    });
-                                }}
-                                className="px-4 py-1 text-sm bg-blue-500 rounded-xl text-white cursor-pointer transition-all hover:bg-blue-600 ml-2"
-                            >
-                                Change
-                            </div>
+                            Activate
                         </div>
-                    ))}
-                </section>
-            </main>
+                    </div>
+                ))}
+            </section>
         </>
     )
 }

@@ -1,7 +1,8 @@
 export type TMinimumDonation = {
     id: number;
-    day_type: string;
     request_type: string;
+    name: string;
     min_amount: number;
-    updated_at: string;
+    is_active: boolean;
+    created_at: string;
 }

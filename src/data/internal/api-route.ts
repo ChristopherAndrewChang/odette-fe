@@ -8,6 +8,8 @@ export const API_URL = {
     },
     SETTINGS_DONATION: {
         INDEX: "/core/settings/donation/admin/",
+        DETAIL: "/core/settings/donation/admin/:id/",
+        ACTIVE: "/core/settings/donation/admin/:id/activate/",
         PUBLIC: "/core/settings/donation/"
     },
     SETTINGS_BAD_WORDS: {

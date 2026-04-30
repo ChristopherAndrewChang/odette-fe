@@ -37,7 +37,7 @@ function ReviewRequestDialogV2({ onClose, open, type, id }: T_ReviewRequestDialo
     const onSubmit = () => {
         mutate({
             method: "POST",
-            type: type === "approved" ? "pending_payment" : "rejected",
+            type: type === "approved" ? "approved" : "rejected",
             id: id
         });
     };

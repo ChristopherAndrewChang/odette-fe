@@ -16,21 +16,22 @@ type TUpdateDataDialog = {
     open: boolean;
     onClose: () => void;
     data: {
-        day_type: string;
-        request_type: string;
+        id: string;
         min_amount: string;
+        name: string;
     }
 }
 
 type TRequest = {
     min_amount: string;
+    name: string;
 };
 
 function UpdateDataDialog({ open, data, onClose }: TUpdateDataDialog) {
     const queryClient = useQueryClient();
 
     const { control, reset, handleSubmit, watch } = useForm<TRequest>({
-        defaultValues: { min_amount: "" }
+        defaultValues: { min_amount: "", name: "" }
     });
 
     const { mutate, isPending } = useMinimumDonationSettingsMutation({
@@ -49,16 +50,19 @@ function UpdateDataDialog({ open, data, onClose }: TUpdateDataDialog) {
     const onSubmit = (_data: TRequest) => {
         mutate({
             method: "PATCH",
+            id: data?.id,
             data: {
-                day_type: data.day_type,
-                request_type: data.request_type,
+                name: _data.name,
                 min_amount: _data.min_amount
             }
         });
     }
 
     useEffect(() => {
-        reset({ min_amount: data.min_amount });
+        reset({
+            min_amount: data.min_amount,
+            name: data.name
+        });
     }, [open]);
 
     return (
@@ -80,6 +84,18 @@ function UpdateDataDialog({ open, data, onClose }: TUpdateDataDialog) {
                         />
                         <p className="text-xs italic text-gray-600 mt-2">Formatted: Rp{Number(watch("min_amount"))?.toLocaleString()}</p>
                     </div>
+
+                    <PvInput
+                        control={control}
+                        label="Name"
+                        name="name"
+                        rules={{
+                            required: {
+                                value: true,
+                                message: "This field is required"
+                            }
+                        }}
+                    />
 
                     <PvButtonForm
                         variant="modal"
