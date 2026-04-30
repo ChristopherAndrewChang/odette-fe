@@ -46,3 +46,14 @@ export const createTableBulk = (data?: Record<any, any>) => {
         urlKey: API_URL.TABLES.BULK
     });
 }
+
+export const postImportTable = (data: Record<any, any>) => {
+    return api({
+        method: "POST",
+        data: data,
+        urlKey: API_URL.TABLES.IMPORT,
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    });
+}

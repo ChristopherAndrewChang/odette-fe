@@ -3,6 +3,7 @@ import type { Theme } from '@mui/material/styles'
 
 // Type Imports
 import type { Skin } from '@core/types'
+import { colors } from '@/hooks/color'
 
 const colorSchemes = (skin: Skin): Theme['colorSchemes'] => {
   return {
@@ -235,9 +236,10 @@ const colorSchemes = (skin: Skin): Theme['colorSchemes'] => {
         divider: `rgb(var(--mui-mainColorChannels-dark) / 0.12)`,
         dividerChannel: 'var(--mui-mainColorChannels-dark)',
         background: {
-          default: skin === 'bordered' ? '#2F3349' : '#25293C',
-          paper: '#2F3349',
-          paperChannel: '47 51 73'
+          // fzn:ubahbg
+          default: skin === 'bordered' ? '#2F3349' : colors.DARKBLUE,
+          paper: colors.DARKBLUE,
+          paperChannel: '23 23 35'
         },
         action: {
           active: `rgb(var(--mui-mainColorChannels-dark) / 0.6)`,

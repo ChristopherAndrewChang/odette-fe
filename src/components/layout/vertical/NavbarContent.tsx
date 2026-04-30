@@ -14,6 +14,7 @@ import UserDropdown from '@components/layout/shared/UserDropdown'
 // Util Imports
 import { verticalLayoutClasses } from '@layouts/utils/layoutClasses'
 import type { ResponseWrapper } from '@/types/api'
+import ModeDropdown from '../shared/ModeDropdown'
 
 
 const useGetIpQuery = () => {
@@ -34,7 +35,7 @@ const NavbarContent = () => {
         <NavToggle />
         <p className='text-gray-500 text-sm truncate max-w-[20ch]'>{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p>
         {/* for now it is removed */}
-        {/* <ModeDropdown /> */}
+        <ModeDropdown />
       </div>
       <div className='flex items-center'>
         <UserDropdown />

@@ -5,6 +5,9 @@ import { type ReactNode } from "react";
 import { Typography } from "@mui/material"
 import classNames from "classnames";
 
+import { useSettings } from "@/@core/hooks/useSettings";
+import { colors } from "@/hooks/color";
+
 type TAppLayout = {
     title: string;
     children: ReactNode;
@@ -13,14 +16,25 @@ type TAppLayout = {
 }
 
 function AppLayout({ title, children, renderAction, isBottomFit }: TAppLayout) {
+    const { settings } = useSettings();
+
     return (
         <>
             {/* <p className="w-full text-end mb-2 text-gray-500">{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p> */}
-            <div className={classNames('bg-white p-6 rounded-lg border', {
-                "!pb-0": isBottomFit
-            })}>
+            <div
+                className={classNames('bg-white p-6 rounded-lg border', {
+                    "!pb-0": isBottomFit,
+                })}
+                style={settings.mode === "dark" ? {
+                    backgroundColor: colors.DARKBLUE
+                } : {}}
+            >
                 <div className="flex justify-between items-center mb-6">
-                    <Typography className="text-xl font-poppins text-black">{title}</Typography>
+                    <Typography
+                        className={classNames("text-xl font-poppins text-black", {
+                            "!text-white": settings.mode === "dark"
+                        })}
+                    >{title}</Typography>
                     <div className="flex gap-2 items-center">
                         {renderAction}
                         {/* <div className="flex items-center gap-2 bg-green-50 px-2 py-1 rounded-lg border border-green-300">

@@ -19,12 +19,15 @@ import GenerateBulkQRDialog from "./components/qr/GenerateBulkQRDialog";
 import EditTableDialog from "./components/edit/EditTableDialog";
 import AppLayout from "@/components/internal/AppLayout";
 import type { TTables } from "./types/tables";
+import ImportTablesDialog from "./components/import/ImportTablesDialog";
 
 function TablesManagement() {
     const [openCloseNightDialog, setOpenCloseNightDialog] = useState(false);
     const [openOpenNightDialog, setOpenOpenNightDialog] = useState(false);
 
     const [openBulkGenerateTableQR, setOpenBulkGenerateTableQR] = useState(false);
+
+    const [openImportTableDialog, setOpenImportTableDialog] = useState(false);
 
     const [tableModifyDialog, setTableModifyDialog] = useState<{ cond: boolean; id: number; }>({
         cond: false,
@@ -78,6 +81,12 @@ function TablesManagement() {
                 onClose={() => {
                     setOpenOpenNightDialog(false);
                 }}
+            />
+            <ImportTablesDialog
+                onClose={() => {
+                    setOpenImportTableDialog(false);
+                }}
+                open={openImportTableDialog}
             />
             <GenerateSingleQRDialog
                 onClose={() => {
@@ -212,6 +221,17 @@ function TablesManagement() {
                     //     ]
                     // }}
                     additionalMenu={[
+                        {
+                            renderMenu: (
+                                <Button
+                                    onClick={() => {
+                                        setOpenImportTableDialog(true);
+                                    }}
+                                    variant="outlined"
+                                    startIcon={<i className="tabler-file-import"></i>}
+                                >Import Table Data</Button>
+                            ),
+                        },
                         {
                             renderMenu: (
                                 <Button
