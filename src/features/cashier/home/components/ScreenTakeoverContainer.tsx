@@ -19,7 +19,7 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
 
     const { data, isFetching, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: content_type,
-        status: "paid",
+        status: "paid,played",
         date: getParam("date"),
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
     });
