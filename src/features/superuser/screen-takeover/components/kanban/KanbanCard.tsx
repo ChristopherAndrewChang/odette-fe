@@ -2,6 +2,8 @@
 
 import classNames from "classnames";
 
+import { useColorScheme } from "@mui/material";
+
 import { AppConfig } from "@/configs/appConfig";
 
 type TKanbanCard = {
@@ -35,38 +37,61 @@ const getFileTitle = (url: string) => {
 }
 
 function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent, videoContent, status, donationAmount, table, user, time, onMarkPlayed, onShowImage }: TKanbanCard) {
+    const { mode } = useColorScheme();
+
     const Content = {
         text: (
-            <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
-                <p className="text-black font-medium">{textContent?.content || ""}</p>
+            <div className={classNames("bg-white p-2 border-l-2 border-gray-300 mb-4", {
+                "!bg-gray-700 !border-gray-500": mode === "dark"
+            })}>
+                <p className={classNames("text-black font-medium", {
+                    "!text-white": mode === "dark"
+                })}>{textContent?.content || ""}</p>
             </div>
         ),
         video: (
-            <div className="bg-white p-2 border-l-2 border-gray-300 mb-4">
-                <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className="text-black block font-medium">{getFileTitle(videoContent?.title || "") || ""}</a>
+            <div className={classNames("bg-white p-2 border-l-2 border-gray-300 mb-4", {
+                "!bg-gray-700 !border-gray-500": mode === "dark"
+            })}>
+                <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className={classNames("text-black block font-medium", {
+                    "text-white": mode === "dark"
+                })}>{getFileTitle(videoContent?.title || "") || ""}</a>
             </div>
         ),
         image: (
             <div
                 onClick={() => onShowImage && onShowImage(`${AppConfig.mediaUrl}${imageContent?.image || ""}`)}
-                className="bg-white p-2 border-l-2 border-gray-300 mb-4 cursor-pointer">
-                <p className="text-black block font-medium">{getFileTitle(imageContent?.title || "") || ""}</p>
+                className={classNames("bg-white p-2 border-l-2 border-gray-300 mb-4 cursor-pointer", {
+                    "!bg-gray-700 !border-gray-500": mode === "dark"
+                })}>
+                <p className={classNames("text-black block font-medium", {
+                    "!text-white": mode === "dark"
+                })}>{getFileTitle(imageContent?.title || "") || ""}</p>
             </div>
         )
     }
 
     return (
-        <div className="px-4 py-2 bg-gray-50 rounded-lg border min-w-96">
+        <div className={classNames("px-4 py-2 bg-gray-50 rounded-lg border min-w-96", {
+            "!bg-gray-800": mode === "dark"
+        })}>
             <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-2">
-                    <p className="text-black">{textContent?.content}</p>
+                    <p className={classNames("text-black", {
+                        "!text-white": mode === "dark"
+                    })}>{textContent?.content}</p>
 
                     {/* status */}
-                    <div className={classNames("bg-gray-100 px-2 py-1 rounded-lg border text-xs", {
-                        "border-red-200 !bg-red-100 !text-red-500": status === "rejected",
-                        "border-yellow-200 !bg-yellow-50 !text-yellow-600": status === "pending_payment",
-                        "border-green-200 !bg-green-50 text-green-600": status === "paid",
-                        "border-blue-200 !bg-blue-50 text-blue-600": status === "played"
+                    <div className={classNames("px-2 py-1 rounded-lg border text-xs", {
+                        "border-red-200 !bg-red-100 !text-red-500": status === "rejected" && mode === "light",
+                        "border-yellow-200 !bg-yellow-50 !text-yellow-600": status === "pending_payment" && mode === "light",
+                        "border-green-200 !bg-green-50 text-green-600": status === "paid" && mode === "light",
+                        "border-blue-200 !bg-blue-50 text-blue-600": status === "played" && mode === "light",
+
+                        "border-red-700 !bg-red-800 !text-white": status === "rejected" && mode === "dark",
+                        "border-yellow-700 !bg-yellow-800 !text-white": status === "pending_payment" && mode === "dark",
+                        "border-green-700 !bg-green-800 !text-white": status === "paid" && mode === "dark",
+                        "border-blue-700 !bg-blue-800 !text-white": status === "played" && mode === "dark",
                     })}>
                         {status?.replace("_", " ")?.toUpperCase()}
                     </div>
@@ -75,7 +100,9 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             </div>
 
             <div className="flex gap-2 items-center mb-4">
-                <div className="px-2 py-1 bg-white rounded-lg border">
+                <div className={classNames("px-2 py-1 bg-white rounded-lg border", {
+                    "!bg-gray-700": mode === "dark"
+                })}>
                     <p className="text-xs">Table {table}</p>
                 </div>
 
@@ -90,7 +117,9 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             {status === "paid" ? (
                 <div
                     onClick={onMarkPlayed}
-                    className="w-full px-4 py-2 flex items-center justify-center transition-all cursor-pointer bg-blue-100 border border-blue-200 rounded-lg text-blue-500 hover:bg-blue-200"
+                    className={classNames("w-full px-4 py-2 flex items-center justify-center transition-all cursor-pointer bg-blue-100 border border-blue-200 rounded-lg text-blue-500 hover:bg-blue-200", {
+                        "!bg-blue-800 hover:!bg-blue-900 !border-blue-700 !text-white": mode === "dark"
+                    })}
                 >
                     Mark as Played
                 </div>
@@ -101,13 +130,17 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                     {/* action */}
                     <div className="flex gap-4">
                         {!!onReject ? (
-                            <div onClick={onReject} className="px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200">
+                            <div onClick={onReject} className={classNames("px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200", {
+                                "!bg-red-800 hover:!bg-red-900": mode === "dark"
+                            })}>
                                 <p>Reject</p>
                             </div>
                         ) : null}
 
                         {!!onAccept ? (
-                            <div onClick={onAccept} className="px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200">
+                            <div onClick={onAccept} className={classNames("px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200", {
+                                "!bg-green-700 hover:!bg-green-800": mode === "dark"
+                            })}>
                                 <p>Accept</p>
                             </div>
                         ) : null}

@@ -8,7 +8,7 @@ import { useTopLoader } from "nextjs-toploader";
 
 import { useQueryParams } from "@ozanplanviu/planviu-core";
 
-import { Button } from "@mui/material";
+import { Button, useColorScheme } from "@mui/material";
 
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -31,6 +31,8 @@ function ScreenTakeoverPage() {
     const queryClient = useQueryClient();
     const loader = useTopLoader();
     const { updateParams } = useQueryParams();
+
+    const { mode } = useColorScheme();
 
     const [markPlayed, setMarkPlayed] = useState<{ cond: boolean; id: string; }>({
         cond: false,
@@ -131,7 +133,7 @@ function ScreenTakeoverPage() {
                     </Button>
                 )}
             >
-                <SessionFilter />
+                <SessionFilter darkMode={mode === "dark"} />
                 {/* <StatsCards /> */}
                 <KanbanScreenTakeover
                     runningTextSlot={{

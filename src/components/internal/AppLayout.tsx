@@ -2,10 +2,9 @@
 
 import { type ReactNode } from "react";
 
-import { Typography } from "@mui/material"
+import { Typography, useColorScheme } from "@mui/material"
 import classNames from "classnames";
 
-import { useSettings } from "@/@core/hooks/useSettings";
 import { colors } from "@/hooks/color";
 
 type TAppLayout = {
@@ -18,7 +17,7 @@ type TAppLayout = {
 }
 
 function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAction, withMaxH }: TAppLayout) {
-    const { settings } = useSettings();
+    const { mode } = useColorScheme();
 
     return (
         <>
@@ -28,14 +27,14 @@ function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAct
                     "!pb-0": isBottomFit,
                     "max-h-[85vh]": withMaxH
                 })}
-                style={settings.mode === "dark" ? {
+                style={mode === "dark" ? {
                     backgroundColor: colors.DARKBLUE
                 } : {}}
             >
                 <div className="flex justify-between items-center mb-6">
                     <Typography
                         className={classNames("text-xl font-poppins text-black", {
-                            "!text-white": settings.mode === "dark"
+                            "!text-white": mode === "dark"
                         })}
                     >{title}</Typography>
                     {renderMiddleAction}
