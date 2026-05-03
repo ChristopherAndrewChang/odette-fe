@@ -20,7 +20,7 @@ function RunningTextSlot({ onMarkBilled }: TRunningTextSlot) {
                         donation_amount={Number(screen?.donation_amount)?.toLocaleString()}
                         status={screen?.status}
                         table={screen?.table_number?.toString()}
-                        time={dayjs(screen.created_at).format("HH:mm A")}
+                        time={dayjs(screen.created_at).format("DD/MM/YYYY HH:mm A")}
                         title={screen?.message}
                         type="running_text"
                         user={screen?.customer_name}

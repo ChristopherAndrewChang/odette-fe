@@ -54,7 +54,7 @@ function SongRequest({ setMarkBilled }: TSongRequest) {
                             donation_amount={Number(song?.donation_amount)?.toLocaleString()}
                             table={song?.table_number || ""}
                             title={song?.song_title || ""}
-                            time={dayjs(song?.created_at).format("HH:mm A")}
+                            time={dayjs(song?.created_at).format("DD/MM/YYYY HH:mm A")}
                             user={song?.customer_name || ""}
                             onMarkBilled={() => {
                                 setMarkBilled({
