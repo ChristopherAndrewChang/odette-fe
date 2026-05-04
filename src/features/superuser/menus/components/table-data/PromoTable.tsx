@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
+import { useColorScheme } from "@mui/material";
+
 import { usePromosQuery } from "../../hooks/promos";
 import { columns } from "../../columns";
 import { MenuMapper } from "../../mapper";
@@ -18,6 +20,8 @@ type TPromoTable = {
 }
 
 function PromoTable({ onAdd }: TPromoTable) {
+    const { mode } = useColorScheme();
+
     const [pagination, setPagination] = useState<GridPaginationModel>({
         page: 0,
         pageSize: 10
@@ -35,9 +39,13 @@ function PromoTable({ onAdd }: TPromoTable) {
 
     return (
         <PvTable
-            columns={columns({ type: "promo" })}
+            columns={columns({
+                type: "promo",
+                darkMode: mode === "dark"
+            })}
             rowCount={data?.data?.count || 0}
             rows={MenuMapper(data?.data?.results || [])}
+            darkMode={true}
             loading={isFetching}
             pagination={{
                 paginationModel: pagination,

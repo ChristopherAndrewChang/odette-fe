@@ -8,6 +8,8 @@ import type { GridPaginationModel } from "@mui/x-data-grid";
 
 import toast from "react-hot-toast";
 
+import { useColorScheme } from "@mui/material";
+
 import { MenuMapper } from "../../mapper";
 import { useMenuMutation, useMenusQuery } from "../../hooks/menus";
 import { columns } from "../../columns";
@@ -17,6 +19,8 @@ type TMenuTable = {
 }
 
 function MenuTable({ onAdd }: TMenuTable) {
+    const { mode } = useColorScheme();
+
     const [pagination, setPagination] = useState<GridPaginationModel>({
         page: 0,
         pageSize: 10
@@ -34,9 +38,13 @@ function MenuTable({ onAdd }: TMenuTable) {
 
     return (
         <PvTable
-            columns={columns({ type: "menu" })}
+            columns={columns({
+                type: "menu",
+                darkMode: mode === "dark"
+            })}
             rowCount={data?.data?.count || 0}
             rows={MenuMapper(data?.data?.results || []) || []}
+            darkMode={true}
             loading={isFetching}
             pagination={{
                 paginationModel: pagination,

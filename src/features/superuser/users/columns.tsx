@@ -6,7 +6,7 @@ import ColumnSwitch from "@/components/internal/ColumnSwitch";
 import { useUsersMutation } from "./hooks/users";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 
-export const columns: GridColDef[] = [
+export const columns = ({ darkMode }: { darkMode?: boolean }): GridColDef[] => [
     {
         field: "username",
         headerName: "Username",
@@ -27,6 +27,7 @@ export const columns: GridColDef[] = [
         renderCell: ({ value }) => (
             <ColumnStatus
                 status={value}
+                darkMode={darkMode}
                 color={(value === "admin") ? "info" : (value === "dj") ? "success" : "secondary"}
             />
         )

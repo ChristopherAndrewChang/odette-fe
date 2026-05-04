@@ -1,7 +1,7 @@
 import type { GridColDef } from "@mui/x-data-grid";
 import { ColumnStatus } from "@ozanplanviu/planviu-core";
 
-export const columns: GridColDef[] = [
+export const columns = ({ darkMode }: { darkMode?: boolean }): GridColDef[] => [
     {
         field: "number",
         headerName: "Number",
@@ -17,7 +17,7 @@ export const columns: GridColDef[] = [
         field: "is_open",
         headerName: "Is Open",
         minWidth: 150,
-        renderCell: ({ value }) => <ColumnStatus status={value} />
+        renderCell: ({ value }) => <ColumnStatus status={value} darkMode={darkMode} />
     },
 
     // {

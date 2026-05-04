@@ -7,9 +7,10 @@ import { QUERY_KEY } from "@/data/internal/query-keys";
 
 type Tcolumns = {
     type: "menu" | "promo";
+    darkMode?: boolean;
 }
 
-export const columns = ({ type }: Tcolumns): GridColDef[] => [
+export const columns = ({ type, darkMode }: Tcolumns): GridColDef[] => [
     {
         field: "pdf_type",
         headerName: "PDF type",
@@ -20,7 +21,7 @@ export const columns = ({ type }: Tcolumns): GridColDef[] => [
         headerName: "File",
         flex: 1,
         minWidth: 350,
-        renderCell: ({ value }) => <ColumnFile value={value} />
+        renderCell: ({ value }) => <ColumnFile value={value} darkMode={darkMode} />
     },
     {
         field: "is_active",

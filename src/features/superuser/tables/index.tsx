@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { Button } from "@mui/material";
+import { Button, useColorScheme } from "@mui/material";
 import { PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
@@ -23,6 +23,8 @@ import ImportTablesDialog from "./components/import/ImportTablesDialog";
 import ExportDialog from "./components/export/ExportDialog";
 
 function TablesManagement() {
+    const { mode } = useColorScheme();
+
     const [openCloseNightDialog, setOpenCloseNightDialog] = useState(false);
     const [openOpenNightDialog, setOpenOpenNightDialog] = useState(false);
 
@@ -145,9 +147,10 @@ function TablesManagement() {
             <AppLayout title="Table Management">
                 <PvTable
                     loading={isFetching}
-                    columns={columns || []}
+                    columns={columns({ darkMode: mode === "dark" }) || []}
                     rowCount={data?.data?.count || 0}
                     rows={TablesMapper(TablesData)}
+                    darkMode={true}
                     containerProps={{
                         variant: "outlined"
                     }}

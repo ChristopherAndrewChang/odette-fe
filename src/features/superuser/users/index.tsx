@@ -6,6 +6,8 @@ import { PvTable } from "@ozanplanviu/planviu-core";
 
 import type { GridPaginationModel } from "@mui/x-data-grid";
 
+import { useColorScheme } from "@mui/material";
+
 import AppLayout from "@/components/internal/AppLayout";
 import { columns } from "./columns";
 import { useUsersQuery } from "./hooks/users";
@@ -16,6 +18,8 @@ import { getRoleFromJWT } from "@/utils/auth";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 
 function UsersPage() {
+    const { mode } = useColorScheme();
+
     const [openCreateUser, setOpenCreateUser] = useState(false);
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
@@ -45,9 +49,12 @@ function UsersPage() {
             />
             <AppLayout title="Users Management">
                 <PvTable
-                    columns={columns}
+                    columns={columns({
+                        darkMode: mode === "dark"
+                    })}
                     rowCount={data?.data?.count || 0}
                     rows={data?.data?.results || []}
+                    darkMode={true}
                     loading={isFetching}
                     onSearch={(value) => {
                         setSearch(value);
