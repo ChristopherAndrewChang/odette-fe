@@ -2,7 +2,7 @@
 
 // React Imports
 import type { ReactNode } from 'react'
-import { createContext, useMemo, useState } from 'react'
+import { createContext, useEffect, useMemo, useState } from 'react'
 
 // Type Imports
 import type { Mode, Skin, Layout, LayoutComponentWidth } from '@core/types'
@@ -60,7 +60,7 @@ export const SettingsProvider = (props: Props) => {
     navbarContentWidth: themeConfig.navbar.contentWidth,
     contentWidth: themeConfig.contentWidth,
     footerContentWidth: themeConfig.footer.contentWidth,
-    primaryColor: primaryColorConfig[0].main
+    primaryColor: (themeConfig.mode === "dark") ? primaryColorConfig[0].dark : primaryColorConfig[0].main
   }
 
   const updatedInitialSettings = {
@@ -120,6 +120,19 @@ export const SettingsProvider = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [_settingsState]
   )
+
+  // fzn: ini buat update warna primary ketika dark mode
+  useEffect(() => {
+    const newPrimary =
+      _settingsState.mode === "dark"
+        ? primaryColorConfig[0].dark
+        : primaryColorConfig[0].main
+
+    _updateSettingsState(prev => ({
+      ...prev,
+      primaryColor: newPrimary
+    }))
+  }, [_settingsState.mode])
 
   return (
     <SettingsContext.Provider

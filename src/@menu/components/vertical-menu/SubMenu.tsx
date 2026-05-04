@@ -105,14 +105,14 @@ const StyledSubMenu = styled.li<StyledSubMenuProps>`
 
   > .${menuClasses.button} {
     ${({ level, disabled, active, children, isCollapsed, isPopoutWhenCollapsed }) =>
-      menuButtonStyles({
-        level,
-        active,
-        disabled,
-        children,
-        isCollapsed,
-        isPopoutWhenCollapsed
-      })};
+    menuButtonStyles({
+      level,
+      active,
+      disabled,
+      children,
+      isCollapsed,
+      isPopoutWhenCollapsed
+    })};
     ${({ buttonStyles }) => buttonStyles};
   }
 `
