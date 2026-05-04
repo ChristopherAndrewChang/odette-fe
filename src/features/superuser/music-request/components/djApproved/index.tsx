@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 
 import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
 
+import { useColorScheme } from "@mui/material";
+
 import { useAllSongRequestsInfiniteQuery } from "../../hooks/song-request";
 import KanbanCard from "../KanbanCard";
 import { useDebounce } from "@/@pv/hooks/use-debounce";
@@ -15,6 +17,8 @@ import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
 
 function DjApproved() {
+    const { mode } = useColorScheme();
+
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
     const { getParam } = useQueryParams();
@@ -55,7 +59,7 @@ function DjApproved() {
                         table={djApproved?.table_number?.toString()}
                         title={djApproved?.song_title}
                         renderComponent={(
-                            <div className="mt-4 border w-fit px-2 py-1 text-xs rounded-lg" style={STATUS_COLOR_DATA[djApproved.status]}>
+                            <div className="mt-4 border w-fit px-2 py-1 text-xs rounded-lg" style={STATUS_COLOR_DATA({ darkMode: mode === "dark" })[djApproved.status]}>
                                 {djApproved?.status_display}
                             </div>
                         )}

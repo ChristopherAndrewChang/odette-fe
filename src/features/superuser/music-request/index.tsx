@@ -2,7 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import { Button } from "@mui/material";
+import { Button, useColorScheme } from "@mui/material";
 
 import AppLayout from "@/components/internal/AppLayout";
 import KanbanContainer from "./components/KanbanContainer";
@@ -14,6 +14,7 @@ import SessionFilter from "../shared/components/filter/SessionFilter";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 
 function MusicRequestManagement() {
+    const { mode } = useColorScheme();
     const queryClient = useQueryClient();
 
     const onReload = () => {
@@ -38,7 +39,9 @@ function MusicRequestManagement() {
         >
             {/* <main className="max-h-[75vh] overflow-y-auto"> */}
             <div className="mb-4">
-                <SessionFilter />
+                <SessionFilter
+                    darkMode={mode === "dark"}
+                />
             </div>
 
             <div>
