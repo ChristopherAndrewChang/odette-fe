@@ -124,6 +124,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
                         <CircularProgress size={18} />
                     </div>
                 ) : null}
+
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6 max-h-96 overflow-y-auto">
                     {TablesData?.map((tableData, i) => (
                         <>

@@ -21,7 +21,7 @@ function SongRequest({ setMarkBilled }: TSongRequest) {
     const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         date: getParam("date"),
-        status: "dj_approved"
+        status: "admin_approved"
     });
 
     const songRequest = data?.pages?.flatMap(_data => _data?.data?.results) || [];

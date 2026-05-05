@@ -59,7 +59,7 @@ function SongRequest() {
 
     const { mutate, isPending } = useSongRequestMutation({
         onSuccess: () => {
-            toast.success("Success");
+            toast.success("Song requested! Keep an eye on your history for updates.");
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX]
             });
