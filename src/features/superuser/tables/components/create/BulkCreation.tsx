@@ -8,7 +8,9 @@ import toast from "react-hot-toast";
 
 import { useQueryClient } from "@tanstack/react-query";
 
-import { Typography } from "@mui/material";
+import { Typography, useColorScheme } from "@mui/material";
+
+import classNames from "classnames";
 
 import InputCustomized from "@/@pv/components/form/InputCustomized";
 import { useTablesMutation } from "../../hooks/tables";
@@ -24,6 +26,7 @@ type TBulkCreation = {
 
 function BulkCreation({ onClose }: TBulkCreation) {
     const queryClient = useQueryClient();
+    const { mode } = useColorScheme();
 
     const { control, handleSubmit, reset } = useForm<TRequest>({
         defaultValues: { numbers: "" }
@@ -100,7 +103,9 @@ function BulkCreation({ onClose }: TBulkCreation) {
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* helper */}
-                <div className="p-4 border border-blue-300 bg-blue-50 rounded-xl mb-4">
+                <div className={classNames("p-4 border border-blue-300 bg-blue-50 rounded-xl mb-4", {
+                    "!bg-gray-900 !border-gray-800": mode === "dark"
+                })}>
                     <Typography className="font-font-poppins text-blue-800 font-semibold mb-2">
                         Filling Instructions
                     </Typography>

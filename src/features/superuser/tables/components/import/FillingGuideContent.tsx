@@ -1,12 +1,15 @@
 "use client";
 
-import { Divider, Typography } from "@mui/material";
+import { Divider, Typography, useColorScheme } from "@mui/material";
+import classNames from "classnames";
 
 type TFillingGuideContent = {
     onBack: () => void;
 }
 
 function FillingGuideContent({ onBack }: TFillingGuideContent) {
+    const { mode } = useColorScheme();
+
     return (
         <section>
             {/* back button */}
@@ -16,7 +19,9 @@ function FillingGuideContent({ onBack }: TFillingGuideContent) {
 
             {/* content */}
             <div>
-                <Typography className="text-lg font-medium text-black mb-2">1. Adding New Tables</Typography>
+                <Typography className={classNames("text-lg font-medium text-black mb-2", {
+                    "!text-white": mode === "dark"
+                })}>1. Adding New Tables</Typography>
                 <Typography className="mb-2">To add new tables, enter <b>NEW</b> in the <b>number</b> field and the desired table name in the <b>new_number</b> field. For example</Typography>
                 <div className="grid grid-cols-2 border">
                     <Typography className="p-2 border">number</Typography>
@@ -29,7 +34,9 @@ function FillingGuideContent({ onBack }: TFillingGuideContent) {
                 <Divider className="my-2" />
 
                 {/* UPDATING */}
-                <Typography className="text-lg font-medium text-black mb-2">2. Updating Table</Typography>
+                <Typography className={classNames("text-lg font-medium text-black mb-2", {
+                    "!text-white": mode === "dark"
+                })}>2. Updating Table</Typography>
                 <Typography className="mb-2">To update existing tables, enter the current table number in the <b>number</b> field and the new table name in the <b>new_number</b> field.</Typography>
                 <div className="grid grid-cols-2 border">
                     <Typography className="p-2 border">number</Typography>
@@ -42,7 +49,9 @@ function FillingGuideContent({ onBack }: TFillingGuideContent) {
                 <Divider className="my-2" />
 
                 {/* SKIP */}
-                <Typography className="text-lg font-medium text-black mb-2">3. Skipping Table</Typography>
+                <Typography className={classNames("text-lg font-medium text-black mb-2", {
+                    "!text-white": mode === "dark"
+                })}>3. Skipping Table</Typography>
                 <Typography className="mb-2">If you only want to update certain tables, you can skip others. Leave the <b>number</b> field empty for the tables you want to skip.</Typography>
                 <div className="grid grid-cols-2 border">
                     <Typography className="p-2 border">number</Typography>

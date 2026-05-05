@@ -2,13 +2,15 @@
 
 import { useRef, useState } from "react";
 
-import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Typography, useColorScheme } from "@mui/material";
 import { getErrorMessage, PvButtonForm } from "@ozanplanviu/planviu-core";
 import { useForm } from "react-hook-form";
 
 import toast from "react-hot-toast";
 
 import { useQueryClient } from "@tanstack/react-query";
+
+import classNames from "classnames";
 
 import { useTableImportMutation } from "../../hooks/tables";
 import DownloadTemplate from "./DownloadTemplate";
@@ -22,6 +24,8 @@ type TImportTablesDialog = {
 }
 
 function ImportTablesDialog({ onClose, open }: TImportTablesDialog) {
+    const { mode } = useColorScheme();
+
     const queryClient = useQueryClient();
     const inputRef = useRef<HTMLInputElement>(null);
     const { handleSubmit } = useForm<{}>();
@@ -117,9 +121,11 @@ function ImportTablesDialog({ onClose, open }: TImportTablesDialog) {
 
                                 {/* file uploaded */}
                                 {!!fileUploaded ? (
-                                    <div className="px-2 py-1 border rounded-lg flex items-center gap-2 mt-2 bg-blue-50 border-blue-200">
+                                    <div className={classNames("px-2 py-1 border rounded-lg flex items-center gap-2 mt-2 bg-blue-50 border-blue-200", {
+                                        "!bg-gray-900 !border-gray-800": mode === "dark"
+                                    })}>
                                         <Typography>Uploaded</Typography>
-                                        <Typography className="text-black font-medium">{fileUploaded?.name} ({fileUploaded?.size})</Typography>
+                                        <Typography className={classNames("text-black font-medium", { "!text-white": mode === "dark" })}>{fileUploaded?.name} ({fileUploaded?.size})</Typography>
                                         <i
                                             onClick={onRemoveFile}
                                             className="tabler-trash text-lg text-error cursor-pointer hover:text-red-600"

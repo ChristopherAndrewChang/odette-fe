@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Switch, Typography } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Switch, Typography, useColorScheme } from "@mui/material";
 
 import classNames from "classnames";
 
@@ -23,6 +23,8 @@ type TGenerateBulkQRDialog = {
 }
 
 function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
+    const { mode } = useColorScheme();
+
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
 
@@ -133,8 +135,11 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
                                     }
                                 }}
                                 className={classNames("p-4 border border-blue-100 flex items-center justify-center rounded-lg cursor-pointer hover:border-blue-300 transition-all", {
-                                    "!bg-gray-200 !border-gray-200 !cursor-not-allowed": !tableData?.is_active || !!isAllTables,
-                                    "!bg-blue-100": isTableSelected(tableData.id)
+                                    "!bg-gray-200 !border-gray-200 !cursor-not-allowed": (!tableData?.is_active || !!isAllTables) && (mode === "light"),
+                                    "!bg-gray-700 !border-gray-600 !cursor-not-allowed": (!tableData?.is_active || !!isAllTables) && (mode === "dark"),
+
+                                    "!bg-blue-100": isTableSelected(tableData.id) && mode === "light",
+                                    "!bg-blue-900": isTableSelected(tableData.id) && mode === "dark"
                                 })}
                             >
                                 <Typography>{tableData?.number} {!tableData?.is_active ? "(inactive)" : ""}</Typography>
