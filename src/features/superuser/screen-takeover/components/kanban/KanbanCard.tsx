@@ -4,6 +4,8 @@ import classNames from "classnames";
 
 import { useColorScheme } from "@mui/material";
 
+import toast from "react-hot-toast";
+
 import { AppConfig } from "@/configs/appConfig";
 
 type TKanbanCard = {
@@ -42,9 +44,14 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
 
     const Content = {
         text: (
-            <div className={classNames("bg-white p-2 border-l-2 border-gray-300", {
-                "!bg-gray-700 !border-gray-500": mode === "dark"
-            })}>
+            <div
+                onClick={() => {
+                    toast.success("Copied");
+                    navigator.clipboard.writeText(textContent?.content || "");
+                }}
+                className={classNames("bg-white p-2 border-l-2 cursor-pointer border-gray-300", {
+                    "!bg-gray-700 !border-gray-500": mode === "dark"
+                })}>
                 <p className={classNames("text-black font-medium", {
                     "!text-white": mode === "dark",
                     "!text-sm !font-normal": compact
