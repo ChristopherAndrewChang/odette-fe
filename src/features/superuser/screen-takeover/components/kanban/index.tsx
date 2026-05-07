@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 
-import { CustomTextField } from "@ozanplanviu/planviu-core";
 import { useColorScheme } from "@mui/material";
 import classNames from "classnames";
 
@@ -39,14 +38,14 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 <p className={classNames("font-poppins text-black font-semibold", {
                     "!text-white": mode === "dark"
                 })}>RUNNING TEXT</p>
-                <CustomTextField
+                {/* <CustomTextField
                     placeholder="Search"
                     className="my-2"
                     value={runningTextSlot?.searchValue}
                     onChange={(e) => {
                         runningTextSlot?.onSearch && runningTextSlot?.onSearch(e.target.value);
                     }}
-                />
+                /> */}
                 {runningTextSlot?.content || null}
             </div>
 
@@ -54,14 +53,14 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 <p className={classNames("font-poppins text-black font-semibold", {
                     "!text-white": mode === "dark"
                 })}>VTRON TEXT</p>
-                <CustomTextField
+                {/* <CustomTextField
                     placeholder="Search"
                     className="my-2"
                     value={vtronTextSlot?.searchValue}
                     onChange={(e) => {
                         vtronTextSlot?.onSearch && vtronTextSlot?.onSearch(e.target.value);
                     }}
-                />
+                /> */}
                 {vtronTextSlot?.content || null}
             </div>
 
@@ -69,14 +68,14 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 <p className={classNames("font-poppins text-black font-semibold", {
                     "!text-white": mode === "dark"
                 })}>VTRON IMAGE</p>
-                <CustomTextField
+                {/* <CustomTextField
                     placeholder="Search"
                     className="my-2"
                     value={vtronImageSlot?.searchValue}
                     onChange={(e) => {
                         vtronImageSlot?.onSearch && vtronImageSlot?.onSearch(e.target.value);
                     }}
-                />
+                /> */}
                 {vtronImageSlot?.content || null}
             </div>
 
@@ -84,14 +83,14 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 <p className={classNames("font-poppins text-black font-semibold", {
                     "!text-white": mode === "dark"
                 })}>VTRON VIDEO</p>
-                <CustomTextField
+                {/* <CustomTextField
                     placeholder="Search"
                     className="my-2"
                     value={vtronVideoSlot?.searchValue}
                     onChange={(e) => {
                         vtronVideoSlot?.onSearch && vtronVideoSlot?.onSearch(e.target.value);
                     }}
-                />
+                /> */}
                 {vtronVideoSlot?.content || null}
             </div>
         </div>

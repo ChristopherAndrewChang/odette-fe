@@ -2,6 +2,8 @@
 
 import dayjs from "dayjs";
 
+import { CustomTextField } from "@ozanplanviu/planviu-core";
+
 import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 
@@ -16,6 +18,16 @@ function VTronTextKanban({ compact, onAccept, onReject, onMarkPlayed }: TVTronTe
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_text"
+            SearchComponent={(search, setSearch) => (
+                <CustomTextField
+                    placeholder="Search"
+                    className="my-2"
+                    value={search}
+                    onChange={(e) => {
+                        setSearch(e.target.value);
+                    }}
+                />
+            )}
             CardComponent={(data) => (
                 <KanbanCard
                     contentType="text"
