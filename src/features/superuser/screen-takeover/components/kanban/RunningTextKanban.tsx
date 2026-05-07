@@ -6,12 +6,13 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 
 type TRunningTextKanban = {
+    compact?: boolean;
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
     onMarkPlayed: (id: string) => void;
 }
 
-function RunningTextKanban({ onAccept, onReject, onMarkPlayed }: TRunningTextKanban) {
+function RunningTextKanban({ onAccept, onReject, onMarkPlayed, compact }: TRunningTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="running_text"
@@ -20,6 +21,7 @@ function RunningTextKanban({ onAccept, onReject, onMarkPlayed }: TRunningTextKan
             CardComponent={(_data) => (
                 <KanbanCard
                     key={_data?.id || ""}
+                    compact={compact}
                     contentType="text"
                     donationAmount={Number(_data?.donation_amount)?.toLocaleString()}
                     status={_data.status as any} // TODO: adjust any ini

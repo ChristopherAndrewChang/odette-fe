@@ -16,16 +16,10 @@ import AppLayout from "@/components/internal/AppLayout";
 
 import DateFilter from "../shared/components/DateFilter";
 import SessionFilter from "../shared/components/filter/SessionFilter";
-import KanbanScreenTakeover from "./components/kanban";
-import RunningTextKanban from "./components/kanban/RunningTextKanban";
-import VTronTextKanban from "./components/kanban/VTronTextKanban";
-import VtronImage from "./components/kanban/VtronImage";
-import VTronVideo from "./components/kanban/VtronVideo";
-import ReviewRequestDialogV2 from "./components/ReviewRequestDialogV2";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import MarkPlayedDialog from "./components/MarkPlayedDialog";
-import ShowMediaDialog from "./components/ShowMediaDialog";
+import FullScreenScreenTakeover from "./components/fullscreen";
+import ScreenTakeoverContent from "./components/content";
 
 function ScreenTakeoverPage() {
     const queryClient = useQueryClient();
@@ -34,29 +28,18 @@ function ScreenTakeoverPage() {
 
     const { mode } = useColorScheme();
 
-    const [markPlayed, setMarkPlayed] = useState<{ cond: boolean; id: string; }>({
-        cond: false,
-        id: ""
-    });
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
     const [dateOpen, setDateOpen] = useState(false);
-
-    const [openApproval, setOpenApproval] = useState<{ cond: boolean; id: string; type: "approved" | "rejected" }>({
-        cond: false,
-        id: "",
-        type: "approved"
-    });
-
-    const [showMedia, setShowMedia] = useState<{ cond: boolean; media: string; type: "video" | "photo"; }>({
-        cond: false,
-        media: "",
-        type: "photo"
-    });
 
     const onReload = () => {
         queryClient.invalidateQueries({
             queryKey: [QUERY_KEY.SCREEN_TAKEOVER.INDEX]
         });
+    }
+
+    const onExpand = () => {
+        setIsFullScreen(true);
     }
 
     useEffect(() => {
@@ -90,171 +73,30 @@ function ScreenTakeoverPage() {
                 }}
             /> */}
 
-            <ReviewRequestDialogV2
+            <FullScreenScreenTakeover
                 onClose={() => {
-                    setOpenApproval({
-                        cond: false,
-                        id: "",
-                        type: "approved"
-                    });
+                    setIsFullScreen(false);
                 }}
-                open={openApproval.cond}
-                type={openApproval.type}
-                id={openApproval.id}
+                open={isFullScreen}
             />
-            <MarkPlayedDialog
-                id={markPlayed.id}
-                open={markPlayed.cond}
-                onClose={() => {
-                    setMarkPlayed({
-                        cond: false,
-                        id: ""
-                    });
-                }}
-            />
-            <ShowMediaDialog
-                mediaUrl={showMedia.media}
-                open={showMedia.cond}
-                type={showMedia.type}
-                onClose={() => {
-                    setShowMedia({
-                        cond: false,
-                        media: "",
-                        type: "photo"
-                    });
-                }}
-            />
+
             <AppLayout
                 title="Screen Takeover"
                 withMaxH
                 renderAction={(
-                    <Button onClick={onReload} variant="tonal" color="secondary">
-                        <i className="tabler-reload text-base"></i>
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button onClick={onExpand} variant="outlined" color="primary">
+                            <i className="tabler-arrows-maximize text-base"></i>
+                        </Button>
+                        <Button onClick={onReload} variant="outlined" color="primary">
+                            <i className="tabler-reload text-base"></i>
+                        </Button>
+                    </div>
                 )}
             >
                 <SessionFilter darkMode={mode === "dark"} />
                 {/* <StatsCards /> */}
-                <KanbanScreenTakeover
-                    runningTextSlot={{
-                        content: (
-                            <RunningTextKanban
-                                onMarkPlayed={(id) => {
-                                    setMarkPlayed({
-                                        cond: true,
-                                        id: id
-                                    });
-                                }}
-                                onAccept={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "approved"
-                                    });
-                                }}
-                                onReject={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "rejected"
-                                    })
-                                }}
-                            />
-                        )
-                    }}
-                    vtronImageSlot={{
-                        content: (
-                            <VtronImage
-                                onMarkPlayed={(id) => {
-                                    setMarkPlayed({
-                                        cond: true,
-                                        id: id
-                                    });
-                                }}
-                                onShowMedia={(media) => {
-                                    setShowMedia({
-                                        cond: true,
-                                        media: media,
-                                        type: "photo"
-                                    });
-                                }}
-                                onAccept={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "approved"
-                                    });
-                                }}
-                                onReject={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "rejected"
-                                    });
-                                }}
-                            />
-                        )
-                    }}
-                    vtronTextSlot={{
-                        content: (
-                            <VTronTextKanban
-                                onMarkPlayed={(id) => {
-                                    setMarkPlayed({
-                                        cond: true,
-                                        id: id
-                                    });
-                                }}
-                                onAccept={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "approved"
-                                    });
-                                }}
-                                onReject={(id: string) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "rejected"
-                                    });
-                                }}
-                            />
-                        )
-                    }}
-                    vtronVideoSlot={{
-                        content: (
-                            <VTronVideo
-                                onMarkPlayed={(id) => {
-                                    setMarkPlayed({
-                                        cond: true,
-                                        id: id
-                                    });
-                                }}
-                                onShowMedia={(media) => {
-                                    setShowMedia({
-                                        cond: true,
-                                        media: media,
-                                        type: "video"
-                                    })
-                                }}
-                                onAccept={(id) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "approved"
-                                    });
-                                }}
-                                onReject={(id: string) => {
-                                    setOpenApproval({
-                                        cond: true,
-                                        id: id,
-                                        type: "rejected"
-                                    });
-                                }}
-                            />
-                        )
-                    }}
-                />
+                <ScreenTakeoverContent />
             </AppLayout>
         </>
     )

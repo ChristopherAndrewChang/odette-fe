@@ -33,7 +33,7 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
     const { mode } = useColorScheme();
 
     return (
-        <div className="flex flex-1 mt-6 overflow-x-auto">
+        <div className="flex flex-1 overflow-x-auto">
             {/* card */}
             <div className="border-x border-b-2 p-6 flex flex-col gap-2 w-fit">
                 <p className={classNames("font-poppins text-black font-semibold", {

@@ -6,13 +6,14 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 
 type TVTronVideo = {
+    compact?: boolean;
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
     onMarkPlayed: (id: string) => void;
     onShowMedia: (media: string) => void;
 }
 
-function VTronVideo({ onAccept, onReject, onMarkPlayed, onShowMedia }: TVTronVideo) {
+function VTronVideo({ compact, onAccept, onReject, onMarkPlayed, onShowMedia }: TVTronVideo) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_video"
@@ -21,6 +22,7 @@ function VTronVideo({ onAccept, onReject, onMarkPlayed, onShowMedia }: TVTronVid
             CardComponent={(data) => (
                 <KanbanCard
                     contentType="video"
+                    compact={compact}
                     donationAmount={Number(data?.donation_amount)?.toLocaleString() || ""}
                     status={data.status as any} // TODO: make the data.status type for enum, not string
                     table={data?.table_number?.toString()}

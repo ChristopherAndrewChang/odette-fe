@@ -6,18 +6,20 @@ import KanbanCard from "./KanbanCard";
 import KanbanScreenTakeoverContainer from "./KanbanScreenTakeoverContainer";
 
 type TVTronTextKanban = {
+    compact?: boolean;
     onAccept: (id: string) => void;
     onReject: (id: string) => void;
     onMarkPlayed: (id: string) => void;
 }
 
-function VTronTextKanban({ onAccept, onReject, onMarkPlayed }: TVTronTextKanban) {
+function VTronTextKanban({ compact, onAccept, onReject, onMarkPlayed }: TVTronTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
             type="vtron_text"
             CardComponent={(data) => (
                 <KanbanCard
                     contentType="text"
+                    compact={compact}
                     donationAmount={Number(data?.donation_amount)?.toLocaleString() || ""}
                     status={data.status as any} // TODO: make the data.status type for enum, not string
                     table={data?.table_number?.toString()}
