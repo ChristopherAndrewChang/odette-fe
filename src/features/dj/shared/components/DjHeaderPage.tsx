@@ -15,10 +15,10 @@ function DjHeaderPage({ pageActive }: TDjHeaderPage) {
     const loader = useTopLoader();
     const router = useRouter();
 
-    const onHistoryClicked = () => {
-        router.push(APP_URL.DJ_HISTORY.INDEX);
-        loader.start();
-    };
+    // const onHistoryClicked = () => {
+    //     router.push(APP_URL.DJ_HISTORY.INDEX);
+    //     loader.start();
+    // };
 
     const onHomeClicked = () => {
         router.push(APP_URL.DJ_HOME.INDEX);
