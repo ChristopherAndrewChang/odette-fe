@@ -16,7 +16,11 @@ import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
 
-function DjApproved() {
+type TDjApproved = {
+    compact?: boolean;
+}
+
+function DjApproved({ compact }: TDjApproved) {
     const { mode } = useColorScheme();
 
     const [search, setSearch] = useState("");
@@ -53,6 +57,7 @@ function DjApproved() {
                 <>
                     <KanbanCard
                         key={djApproved?.id}
+                        compact={compact}
                         artist={djApproved?.artist || ""}
                         created={dayjs(djApproved?.created_at).format("DD/MM/YYYY HH:mm A")}
                         price={Number(djApproved?.donation_amount)?.toLocaleString()}

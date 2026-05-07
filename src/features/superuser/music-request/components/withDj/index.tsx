@@ -16,7 +16,11 @@ import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
 
-function WithDJ() {
+type TWithDJ = {
+    compact?: boolean;
+}
+
+function WithDJ({ compact }: TWithDJ) {
     const { mode } = useColorScheme();
 
     const [search, setSearch] = useState("");
@@ -53,6 +57,7 @@ function WithDJ() {
                 <>
                     <KanbanCard
                         key={withDj?.id}
+                        compact={compact}
                         artist={withDj?.artist || ""}
                         created={dayjs(withDj?.created_at).format("DD/MM/YYYY HH:mm A")}
                         price={Number(withDj?.donation_amount)?.toLocaleString()}

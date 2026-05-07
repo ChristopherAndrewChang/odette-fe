@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Button, useColorScheme } from "@mui/material";
@@ -12,10 +14,13 @@ import DjApproved from "./components/djApproved";
 import SessionFilter from "../shared/components/filter/SessionFilter";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
+import FullScreenMusicRequest from "./components/fullscreen";
 
 function MusicRequestManagement() {
     const { mode } = useColorScheme();
     const queryClient = useQueryClient();
+
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
     const onReload = () => {
         queryClient.invalidateQueries({
@@ -26,35 +31,52 @@ function MusicRequestManagement() {
         });
     }
 
+    const onExpand = () => {
+        setIsFullScreen(true);
+    }
+
     return (
-        <AppLayout
-            title="Song Request"
-            isBottomFit
-            withMaxH
-            renderAction={(
-                <Button onClick={onReload} variant="tonal" color="secondary">
-                    <i className="tabler-reload text-base"></i>
-                </Button>
-            )}
-        >
-            {/* <main className="max-h-[75vh] overflow-y-auto"> */}
-            <div className="mb-4">
-                <SessionFilter
-                    darkMode={mode === "dark"}
-                />
-            </div>
-
-            <div>
-
-            </div>
-            {/* <MusicStats /> */}
-            <KanbanContainer
-                dj={<WithDJ />}
-                djApproveds={<DjApproved />}
-                pending={<PendingPage />}
+        <>
+            <FullScreenMusicRequest
+                onClose={() => {
+                    setIsFullScreen(false);
+                }}
+                open={isFullScreen}
             />
-            {/* </main> */}
-        </AppLayout>
+            <AppLayout
+                title="Song Request"
+                isBottomFit
+                withMaxH
+                renderAction={(
+                    <div className="flex items-center gap-2">
+                        <Button onClick={onExpand} variant="outlined" color="primary">
+                            <i className="tabler-arrows-maximize text-base"></i>
+                        </Button>
+                        <Button onClick={onReload} variant="outlined" color="primary">
+                            <i className="tabler-reload text-base"></i>
+                        </Button>
+                    </div>
+                )}
+            >
+                {/* <main className="max-h-[75vh] overflow-y-auto"> */}
+                <div className="mb-4">
+                    <SessionFilter
+                        darkMode={mode === "dark"}
+                    />
+                </div>
+
+                <div>
+
+                </div>
+                {/* <MusicStats /> */}
+                <KanbanContainer
+                    dj={<WithDJ />}
+                    djApproveds={<DjApproved />}
+                    pending={<PendingPage />}
+                />
+                {/* </main> */}
+            </AppLayout>
+        </>
     )
 }
 

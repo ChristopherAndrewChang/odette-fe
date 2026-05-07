@@ -17,7 +17,11 @@ import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
 
-function PendingPage() {
+type TPendingPage = {
+    compact?: boolean;
+}
+
+function PendingPage({ compact }: TPendingPage) {
     const { mode } = useColorScheme();
 
     const [search, setSearch] = useState("");
@@ -72,6 +76,7 @@ function PendingPage() {
                 <>
                     <KanbanCard
                         key={pendingItem?.id}
+                        compact={compact}
                         artist={pendingItem?.artist || ""}
                         created={dayjs(pendingItem?.created_at).format("DD/MM/YYYY HH:mm A")}
                         price={Number(pendingItem?.donation_amount)?.toLocaleString()}

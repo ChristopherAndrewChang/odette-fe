@@ -14,22 +14,27 @@ type TKanbanCard = {
     onAccept?: () => void;
     onReject?: () => void;
     renderComponent?: ReactNode;
+    compact?: boolean;
 }
 
-function KanbanCard({ artist, created, price, table, title, onAccept, onReject, renderComponent }: TKanbanCard) {
+function KanbanCard({ artist, created, price, table, title, onAccept, onReject, renderComponent, compact }: TKanbanCard) {
     const { mode } = useColorScheme();
 
     return (
         <div className={classNames("bg-gray-50 p-4 rounded-lg border min-w-72 lg:min-w-96", {
-            "!bg-gray-800": mode === "dark"
+            "!bg-gray-800": mode === "dark",
+            "!py-2 !px-4": compact
         })}>
-            <div className="flex justify-between gap-4">
+            <div className={classNames("flex justify-between gap-4", { "!mb-2": compact })}>
                 <p className={classNames("font-medium text-black", {
                     "!text-white": mode === "dark"
-                })}>{title}</p>
+                })}>{title} {compact ? `(${artist})` : ""}</p>
                 <p className="text-green-600">Rp{price}</p>
             </div>
-            <p className="text-sm mb-4">{artist}</p>
+
+            {!compact ? (
+                <p className="text-sm mb-4">{artist}</p>
+            ) : null}
 
             {/* table identity */}
             <div className="flex items-center gap-2">
