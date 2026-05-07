@@ -48,9 +48,9 @@ function DjHeaderPage({ pageActive }: TDjHeaderPage) {
             ) : (
                 <>
                     {/* history action */}
-                    <div onClick={onHistoryClicked} className="transition-all py-1 px-4 border border-blue-500 w-fit rounded-lg mb-6 cursor-pointer bg-blue-950 hover:bg-blue-900">
+                    {/* <div onClick={onHistoryClicked} className="transition-all py-1 px-4 border border-blue-500 w-fit rounded-lg mb-6 cursor-pointer bg-blue-950 hover:bg-blue-900">
                         <p className="text-white text-lg">History</p>
-                    </div>
+                    </div> */}
                     {/* end of history action */}
                 </>
             )}

@@ -13,6 +13,8 @@ import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import ApprovalDialog from "./components/ApprovalDialog";
 import DjHeaderPage from "../shared/components/DjHeaderPage";
 import CardItem from "../shared/components/CardItem";
+import History from "./components/History";
+import { AppConfig } from "@/configs/appConfig";
 
 function DjMusicRequest() {
     const { GOLD } = useColor();
@@ -23,7 +25,8 @@ function DjMusicRequest() {
     });
 
     const { data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage, dataUpdatedAt } = useAllSongRequestsInfiniteQuery({
-        date: dayjs(new Date()).format("YYYY-MM-DD")
+        date: dayjs(new Date()).format("YYYY-MM-DD"),
+        ...(AppConfig.appMode === "development" ? { all: true } : {}),
     }, 3000);
 
     const songRequestData = data?.pages?.flatMap(_data => _data?.data?.results);
@@ -59,48 +62,53 @@ function DjMusicRequest() {
 
                 <p className="font-poppins text-white text-xl">Hello <span>FauzanDj 👋</span></p>
                 <Divider className="my-4 border-gray-700" />
-                <div className="flex flex-col gap-2">
-                    <p className="font-poppins text-xl font-medium" style={{ color: GOLD }}>Song Request</p>
-                    <p className="mb-4 text-gray-300 text-lg">You can see the song request list below, click the card to take an action</p>
 
-                    <p className="text-gray-400 italic my-2">Last Updated At: {dayjs(dataUpdatedAt).format("DD MMM YYYY, HH:mm:ss A")}
-                        {
-                            isFetching ? <CircularProgress size={14} /> : null
-                        }
-                    </p>
+                <main className="grid grid-cols-1 sm:grid-cols-2 items-start gap-2">
+                    <section className="flex flex-col gap-2">
+                        <p className="font-poppins text-xl font-medium" style={{ color: GOLD }}>Song Request</p>
+                        <p className="mb-4 text-gray-300 text-lg">You can see the song request list below, click the card to take an action</p>
 
-                    <div className="p-4 bg-[#1A1406] border border-[#FACC1570] rounded-lg mb-4">
-                        <p className="font-poppins text-white">⚠️ Warning </p>
-                        <p className="text-white">Once you approve or reject, the song will be removed from the list</p>
-                    </div>
+                        <p className="text-gray-400 italic my-2">Last Updated At: {dayjs(dataUpdatedAt).format("DD MMM YYYY, HH:mm:ss A")}
+                            {
+                                isFetching ? <CircularProgress size={14} /> : null
+                            }
+                        </p>
 
-                    {isLoading ? renderLoading : (
-                        null
-                    )}
+                        <div className="p-4 bg-[#1A1406] border border-[#FACC1570] rounded-lg mb-4">
+                            <p className="font-poppins text-white">⚠️ Warning </p>
+                            <p className="text-white">Once you approve or reject, the song will be removed from the list</p>
+                        </div>
 
-                    <>
-                        {songRequestData?.map((songReq, i) => (
-                            <>
-                                <CardItem
-                                    artist={songReq?.artist || ""}
-                                    songTitle={songReq?.song_title || ""}
-                                    onClick={() => {
-                                        setApprovalState({
-                                            cond: true,
-                                            id: songReq?.id?.toString()
-                                        });
-                                    }}
-                                />
+                        {isLoading ? renderLoading : (
+                            null
+                        )}
 
-                                {(((i + 1) === songRequestData?.length) && hasNextPage) ? (
-                                    <div ref={lastElementRef}>
-                                        {nextPageFetchingIndicator}
-                                    </div>
-                                ) : null}
-                            </>
-                        ))}
-                    </>
-                </div>
+                        <>
+                            {songRequestData?.map((songReq, i) => (
+                                <>
+                                    <CardItem
+                                        artist={songReq?.artist || ""}
+                                        songTitle={songReq?.song_title || ""}
+                                        onClick={() => {
+                                            setApprovalState({
+                                                cond: true,
+                                                id: songReq?.id?.toString()
+                                            });
+                                        }}
+                                    />
+
+                                    {(((i + 1) === songRequestData?.length) && hasNextPage) ? (
+                                        <div ref={lastElementRef}>
+                                            {nextPageFetchingIndicator}
+                                        </div>
+                                    ) : null}
+                                </>
+                            ))}
+                        </>
+                    </section>
+
+                    <History />
+                </main>
             </UserContainer>
         </>
     )

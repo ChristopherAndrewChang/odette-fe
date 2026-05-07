@@ -54,7 +54,9 @@ function UserContainer({ children, isDj }: TUserContainer) {
         // <div className="w-full h-screen fixed overflow-y-auto bg-gradient-to-tr from-[#110232] via-[#110232] to-[#2B1840] p-6 max-w-4xl md:left-1/2 md:right-1/2 md:-translate-x-1/2 scroll-smooth">
         //     {children}
         // </div>
-        <div className="mx-auto p-6 max-w-4xl scroll-smooth mb-20" style={{
+        <div className={classNames("mx-auto p-6 max-w-4xl scroll-smooth mb-20", {
+            "!max-w-5xl": isDj
+        })} style={{
             backgroundColor: DARKBG
         }}>
             <main>
