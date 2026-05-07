@@ -20,12 +20,12 @@ export const columns = ({ darkMode }: { darkMode?: boolean }): GridColDef[] => [
         renderCell: ({ value }) => <ColumnStatus status={value} darkMode={darkMode} />
     },
 
-    // {
-    //     field: "is_active",
-    //     headerName: "Is Active",
-    //     minWidth: 150,
-    //     renderCell: ({ value }) => <ColumnStatus status={value} />
-    // },
+    {
+        field: "is_active",
+        headerName: "Is Active",
+        minWidth: 150,
+        renderCell: ({ value }) => <ColumnStatus status={value} />
+    },
 
     // {
     //     field: "active_sessions",
