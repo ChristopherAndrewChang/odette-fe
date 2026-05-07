@@ -49,8 +49,8 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                     toast.success("Copied");
                     navigator.clipboard.writeText(textContent?.content || "");
                 }}
-                className={classNames("bg-white p-2 border-l-2 cursor-pointer border-gray-300", {
-                    "!bg-gray-700 !border-gray-500": mode === "dark"
+                className={classNames("bg-white p-2 border-l-2 cursor-pointer transition-all hover:!border-gray-500 border-gray-300", {
+                    "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
                 })}>
                 <p className={classNames("text-black font-medium", {
                     "!text-white": mode === "dark",
@@ -59,8 +59,8 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             </div>
         ),
         video: (
-            <div className={classNames("bg-white p-2 border-l-2 border-gray-300", {
-                "!bg-gray-700 !border-gray-500": mode === "dark"
+            <div className={classNames("bg-white p-2 border-l-2 cursor-pointer transition-all border-gray-300 hover:!border-gray-500", {
+                "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
             })}>
                 <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className={classNames("text-black block font-medium", {
                     "text-white": mode === "dark",
@@ -71,8 +71,8 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
         image: (
             <div
                 onClick={() => onShowImage && onShowImage(`${AppConfig.mediaUrl}${imageContent?.image || ""}`)}
-                className={classNames("bg-white p-2 border-l-2 border-gray-300 cursor-pointer", {
-                    "!bg-gray-700 !border-gray-500": mode === "dark"
+                className={classNames("bg-white p-2 border-l-2 border-gray-300 cursor-pointer transition-all hover:!border-gray-500", {
+                    "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
                 })}>
                 <p className={classNames("text-black block font-medium", {
                     "!text-white": mode === "dark",
