@@ -49,10 +49,24 @@ function SongRequest() {
 
     const { data: donations, isFetching: donationsFetching } = useDonationSettingsPublicQuery();
 
-    const getDonationsList = () => {
+    const getAdderMultiple = (multiple: number): number[] => {
+        const arr = [];
+
+        for (let i = 0; i < 9; i++) {
+            arr.push(i * multiple);
+        }
+
+        return arr;
+    }
+
+    const getDonationsList = (useTemporary?: boolean, multiple?: number) => {
         if (!donations) return [];
 
-        const arrAdder = [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
+        let arrAdder = !!multiple ? getAdderMultiple(multiple) : [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
+
+        if (useTemporary) {
+            arrAdder = [0, 50_000, 150_000, 250_000, 350_000, 450_000, 550_000, 650_000, 750_000];
+        }
 
         return arrAdder.map(adder => adder + donations?.data?.song_request);
     }
@@ -215,7 +229,7 @@ function SongRequest() {
                         <div className="mb-4">
                             <GroupTitle title="Tip Amount" />
                             <div className="grid grid-cols-3 gap-4 mb-4">
-                                {getDonationsList().map(num => (
+                                {getDonationsList(true).map(num => (
                                     <div
                                         key={num}
                                         onClick={() => {

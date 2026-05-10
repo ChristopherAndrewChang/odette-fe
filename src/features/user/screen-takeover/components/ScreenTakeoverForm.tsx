@@ -62,10 +62,20 @@ function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
 
     const { data: donations, isFetching: fetchingDonation } = useDonationSettingsPublicQuery();
 
-    const getDonationsList = (content: TCONTENT_TYPE) => {
+    const getAdderMultiple = (multiple: number): number[] => {
+        const arr = [];
+
+        for (let i = 0; i < 9; i++) {
+            arr.push(i * multiple);
+        }
+
+        return arr;
+    }
+
+    const getDonationsList = (content: TCONTENT_TYPE, adderMultiple?: number) => {
         if (fetchingDonation) return [];
 
-        const adderValues = [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
+        const adderValues = adderMultiple ? getAdderMultiple(adderMultiple) : [0, 10_000, 20_000, 30_000, 40_000, 50_000, 60_000, 70_000, 80_000];
 
         return adderValues.map(adder => (donations?.data?.[content] || 0) + adder);
     }
