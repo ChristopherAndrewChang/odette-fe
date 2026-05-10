@@ -320,7 +320,7 @@ function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
                 {isPending ? <CircularProgress size={18} className="text-black" /> : "Send and Pay"}
             </Button>
 
-            <p className="text-gray-400 text-sm text-center">Min tip Rp10.000 - Subject to approval</p>
+            <p className="text-gray-400 text-sm text-center">Min tip Rp{`${donations?.data?.[watch("content_type")]?.toLocaleString() || "0"}`} - Subject to approval</p>
         </form>
     )
 }

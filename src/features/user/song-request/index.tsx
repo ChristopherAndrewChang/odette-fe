@@ -301,7 +301,7 @@ function SongRequest() {
                         {isPending ? <CircularProgress size={20} className="text-white" /> : "Send and Pay"}
                     </Button>
 
-                    <p className="text-gray-400 text-sm text-center">Min tip Rp10.000 - Subject to approval</p>
+                    <p className="text-gray-400 text-sm text-center">Min tip Rp{donations?.data?.song_request?.toLocaleString() || "0"} - Subject to approval</p>
                 </form>
 
                 {/* <main className="flex flex-col gap-4">
