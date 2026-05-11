@@ -101,7 +101,8 @@ function AddNewDialog({ onClose, open }: TAddNewDialog) {
                             { label: "Running Text", value: "running_text" },
                             { label: "Vtron Text", value: "vtron_text" },
                             { label: "Vtron Photo", value: "vtron_photo" },
-                            { label: "Vtron Video", value: "vtron_video" },
+
+                            // { label: "Vtron Video", value: "vtron_video" },
                         ]}
                         rules={{
                             required: { value: true, message: "This field is required" }

@@ -48,7 +48,8 @@ function MinimumDonationSetting() {
         "running_text",
         "vtron_text",
         "vtron_photo",
-        "vtron_video",
+
+        // "vtron_video",
     ];
 
     // 👉 Grouped data (memo biar gak recompute terus)

@@ -28,7 +28,7 @@ type TKanbanScreenTakeover = {
     };
 }
 
-function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, vtronVideoSlot }: TKanbanScreenTakeover) {
+function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot }: TKanbanScreenTakeover) {
     const { mode } = useColorScheme();
 
     return (
@@ -79,20 +79,13 @@ function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot, 
                 {vtronImageSlot?.content || null}
             </div>
 
-            <div className="border-x border-b-2 p-6 flex flex-col gap-2 w-fit">
+            {/* VIDEO HIDE */}
+            {/* <div className="border-x border-b-2 p-6 flex flex-col gap-2 w-fit">
                 <p className={classNames("font-poppins text-black font-semibold", {
                     "!text-white": mode === "dark"
                 })}>VTRON VIDEO</p>
-                {/* <CustomTextField
-                    placeholder="Search"
-                    className="my-2"
-                    value={vtronVideoSlot?.searchValue}
-                    onChange={(e) => {
-                        vtronVideoSlot?.onSearch && vtronVideoSlot?.onSearch(e.target.value);
-                    }}
-                /> */}
                 {vtronVideoSlot?.content || null}
-            </div>
+            </div> */}
         </div>
     )
 }

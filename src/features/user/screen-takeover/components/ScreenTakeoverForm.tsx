@@ -21,13 +21,15 @@ import { useReqScreenTakeoverMutation } from "../hooks/screen-takeover";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import { useDonationSettingsPublicQuery } from "../../shared/hooks/donation-settings";
 
-type TCONTENT_TYPE = "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
+// type TCONTENT_TYPE = "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
+type TCONTENT_TYPE = "running_text" | "vtron_text" | "vtron_photo";
 
 const CONTENT_TYPE_DATA: { label: string; icon: string; key: TCONTENT_TYPE; }[] = [
     { key: "running_text", label: "Running Text", icon: "tabler-message" },
     { key: "vtron_text", label: "Vtron Text", icon: "tabler-message" },
     { key: "vtron_photo", label: "Vtron Image", icon: "tabler-photo" },
-    { key: "vtron_video", label: "Vtron Video", icon: "tabler-video" }
+
+    // { key: "vtron_video", label: "Vtron Video", icon: "tabler-video" }
 ]
 
 type TRequest = {
@@ -155,7 +157,7 @@ function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
             {/* content type */}
             <div className="mb-8">
                 <GroupTitle title="Content Type" />
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     {CONTENT_TYPE_DATA.map((contentType) => (
                         <div
                             key={contentType.key}
@@ -178,7 +180,8 @@ function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
             </div>
 
             {/* media */}
-            {((watch("content_type") === "vtron_photo") || (watch("content_type") === "vtron_video")) ? (
+            {/* {((watch("content_type") === "vtron_photo") || (watch("content_type") === "vtron_video")) ? ( */}
+            {((watch("content_type") === "vtron_photo")) ? (
                 <div className="mb-8">
                     <input
                         ref={fileRef}
