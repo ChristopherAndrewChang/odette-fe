@@ -252,7 +252,7 @@ function ScreenTakeoverForm({ setOpenSuccessDialog }: TScreenTakeoverForm) {
                     </div>
                 ) : (
                     <div className="grid grid-cols-3 gap-4 mb-4">
-                        {getDonationsList(watch("content_type"))?.map(num => (
+                        {getDonationsList(watch("content_type"), 50_000)?.map(num => (
                             <div
                                 key={num}
                                 onClick={() => {
