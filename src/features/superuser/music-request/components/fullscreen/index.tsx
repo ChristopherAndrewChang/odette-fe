@@ -74,7 +74,6 @@ function FullScreenMusicRequest({ onClose, open }: TFullScreenMusicRequest) {
                     ) : null}
 
                     <KanbanContainer
-                        compact={actions.cardType === "compact"}
                         dj={<WithDJ compact={actions.cardType === "compact"} />}
                         djApproveds={<DjApproved compact={actions.cardType === "compact"} />}
                         pending={<PendingPage compact={actions.cardType === "compact"} />}

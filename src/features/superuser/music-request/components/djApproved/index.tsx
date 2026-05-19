@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import dayjs from "dayjs";
 
-import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import { useColorScheme } from "@mui/material";
 
@@ -15,6 +15,7 @@ import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
+import KanbanSection from "../KanbanSection";
 
 type TDjApproved = {
     compact?: boolean;
@@ -27,7 +28,7 @@ function DjApproved({ compact }: TDjApproved) {
     const searchDebounced = useDebounce(search, 500);
     const { getParam } = useQueryParams();
 
-    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage, isFetching } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "dj_approved",
         search: searchDebounced,
@@ -38,8 +39,6 @@ function DjApproved({ compact }: TDjApproved) {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-
-            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -48,12 +47,13 @@ function DjApproved({ compact }: TDjApproved) {
     const djApproveds = data?.pages?.flatMap(_data => _data?.data?.results) || [];
 
     return (
-        <>
-            <CustomTextField
-                placeholder="Search here"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-            />
+        <KanbanSection
+            count={data?.pages?.[0].data?.count || 0}
+            title="DJ APPROVED"
+            loading={isFetching && !isFetchingNextPage}
+            search={search}
+            onSearch={(value) => setSearch(value)}
+        >
             {(djApproveds.length > 0) ? djApproveds?.map((djApproved, i) => (
                 <>
                     <KanbanCard
@@ -80,7 +80,7 @@ function DjApproved({ compact }: TDjApproved) {
             )) : (
                 <NoDataCard />
             )}
-        </>
+        </KanbanSection>
     )
 }
 

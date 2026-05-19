@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import dayjs from "dayjs";
 
-import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import { useColorScheme } from "@mui/material";
 
@@ -16,6 +16,7 @@ import ReviewRequestDialog from "../ReviewRequestDialog";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
+import KanbanSection from "../KanbanSection";
 
 type TPendingPage = {
     compact?: boolean;
@@ -34,7 +35,7 @@ function PendingPage({ compact }: TPendingPage) {
         type: "admin_approved",
     });
 
-    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage, isFetching } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "pending,admin_rejected",
         search: searchDebounced,
@@ -55,7 +56,13 @@ function PendingPage({ compact }: TPendingPage) {
     const pendingsItem = data?.pages?.flatMap(_data => _data?.data?.results) || [];
 
     return (
-        <>
+        <KanbanSection
+            count={data?.pages?.[0]?.data?.count || 0}
+            title="PENDING"
+            loading={isFetching && !isFetchingNextPage}
+            search={search}
+            onSearch={(value) => setSearch(value)}
+        >
             <ReviewRequestDialog
                 id={openReview?.id}
                 onClose={() => {
@@ -67,11 +74,6 @@ function PendingPage({ compact }: TPendingPage) {
                 }}
                 open={openReview?.open}
                 type={openReview.type}
-            />
-            <CustomTextField
-                placeholder="Search here"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
             />
             {(pendingsItem.length > 0) ? pendingsItem?.map((pendingItem, i) => (
                 <React.Fragment key={pendingItem.id}>
@@ -112,7 +114,7 @@ function PendingPage({ compact }: TPendingPage) {
             )) : (
                 <NoDataCard />
             )}
-        </>
+        </KanbanSection>
     )
 }
 

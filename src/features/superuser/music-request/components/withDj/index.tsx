@@ -95,7 +95,7 @@
 import React, { useState } from "react";
 
 import dayjs from "dayjs";
-import { CustomTextField, useQueryParams } from "@ozanplanviu/planviu-core";
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 import { useColorScheme } from "@mui/material";
 
 import { useAllSongRequestsInfiniteQuery } from "../../hooks/song-request";
@@ -105,6 +105,7 @@ import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
 import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
 import { AppConfig } from "@/configs/appConfig";
 import NoDataCard from "../NoDataCard";
+import KanbanSection from "../KanbanSection";
 
 type TWithDJ = {
     compact?: boolean;
@@ -117,7 +118,7 @@ function WithDJ({ compact }: TWithDJ) {
     const searchDebounced = useDebounce(search, 500);
     const { getParam } = useQueryParams();
 
-    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage, isFetching } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "admin_approved,dj_rejected",
         search: searchDebounced,
@@ -136,12 +137,13 @@ function WithDJ({ compact }: TWithDJ) {
     const withDjs = data?.pages?.flatMap(_data => _data?.data?.results) || [];
 
     return (
-        <>
-            <CustomTextField
-                placeholder="Search here"
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-            />
+        <KanbanSection
+            title="WITH DJ"
+            count={data?.pages[0]?.data?.count || 0}
+            loading={isFetching && !isFetchingNextPage}
+            search={search}
+            onSearch={(val) => setSearch(val)}
+        >
             {(withDjs.length > 0) ? withDjs?.map((withDj, i) => (
                 <React.Fragment key={withDj?.id}>
                     <KanbanCard
@@ -167,7 +169,7 @@ function WithDJ({ compact }: TWithDJ) {
             )) : (
                 <NoDataCard />
             )}
-        </>
+        </KanbanSection>
     )
 }
 
