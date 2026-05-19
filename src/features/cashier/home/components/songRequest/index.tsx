@@ -18,7 +18,7 @@ type TSongRequest = {
 function SongRequest({ setMarkBilled }: TSongRequest) {
     const { getParam } = useQueryParams();
 
-    const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useAllSongRequestsInfiniteQuery({
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         date: getParam("date"),
         status: "dj_approved"
@@ -30,7 +30,8 @@ function SongRequest({ setMarkBilled }: TSongRequest) {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -70,7 +71,7 @@ function SongRequest({ setMarkBilled }: TSongRequest) {
                         {(
                             ((i + 1) === songRequest?.length) && hasNextPage
                         ) ? (
-                            <div ref={lastElementRef}>
+                            <div ref={lastElementRef} className="flex items-center justify-center p-4 min-h-[40px]">
                                 {nextPageFetchingIndicator}
                             </div>
                         ) : null}

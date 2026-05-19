@@ -1,15 +1,18 @@
 "use client";
 
-import { Button, CircularProgress, Dialog, DialogContent } from "@mui/material";
+import type { ReactNode } from "react";
+
+import { Dialog, DialogContent } from "@mui/material";
 
 import { useColor } from "@/hooks/color";
 
 type TPaymentDialog = {
     open: boolean;
     onClose: () => void;
+    renderButton: ReactNode;
 }
 
-function PaymentDialog({ onClose, open }: TPaymentDialog) {
+function PaymentDialog({ onClose, open, renderButton }: TPaymentDialog) {
     const { DARKBLUE, DARKGRAY } = useColor();
 
     const _onClose = () => {
@@ -23,9 +26,9 @@ function PaymentDialog({ onClose, open }: TPaymentDialog) {
 
                 <div style={{ backgroundColor: DARKGRAY }} className="p-4 rounded-lg flex flex-col gap-2 border border-gray-700 mb-4">
                     <p className="text-gray-400 font-outfit font-semibold">Payment Instruction</p>
-                    <p className="text-gray-300">Step 1</p>
-                    <p className="text-gray-300">Step 1</p>
-                    <p className="text-gray-300">Step 1</p>
+                    <p className="text-gray-300">{"> Scan the QRIS code below using GoPay, OVO, DANA, or your mobile banking app"}</p>
+                    <p className="text-gray-300">{"> "}Please make sure the payment amount matches exactly: <span className="font-semibold text-white">Rp</span></p>
+                    <p className="text-gray-300"><span className="font-semibold text-white">{"> "}Required: Include the payment note/reference</span> with [Table Number] [Name] [Request Type]</p>
                 </div>
 
                 <div style={{ backgroundColor: DARKGRAY }} className="p-4 rounded-lg border border-gray-700 mb-4">
@@ -38,7 +41,7 @@ function PaymentDialog({ onClose, open }: TPaymentDialog) {
 
                             <div className="flex flex-wrap gap-1 border-t border-gray-800 pt-2">
                                 <div className="border border-gray-600 rounded-lg px-2 py-1 text-gray-500 text-xs">
-                                    BCA
+                                    M-Banking
                                 </div>
 
                                 <div className="border border-gray-600 rounded-lg px-2 py-1 text-gray-500 text-xs">
@@ -66,11 +69,11 @@ function PaymentDialog({ onClose, open }: TPaymentDialog) {
                         </div>
                     </div>
 
-                    <p className="text-gray-400 font-outfit font-semibold mb-2">Kamu wajib ngasih catatan di catatan / berita acara saat transfer</p>
+                    <p className="text-gray-400 font-outfit font-semibold mb-2">You are required to include a payment note/reference when making the transfer</p>
                     <div className="p-4 border rounded-lg border-gray-600">
                         <p className="text-gray-400 font-outfit font-semibold">Contoh</p>
-                        <p className="text-gray-100 font-outfit font-semibold text-lg">Meja A1 - Dea - Running Text</p>
-                        <p className="text-gray-400 font-outfit">[Nomor Meja] [Nama] [Nomor Request]</p>
+                        <p className="text-gray-100 font-outfit font-semibold text-lg">Table A1 - Dea - Running Text</p>
+                        <p className="text-gray-400 font-outfit">[Table Number] [Name] [Request Type]</p>
                     </div>
 
                     {/* <input
@@ -87,19 +90,7 @@ function PaymentDialog({ onClose, open }: TPaymentDialog) {
                     /> */}
                 </div>
 
-                <Button
-                    type="submit"
-
-                    // color="warning"
-                    size="large"
-                    variant="contained"
-                    fullWidth
-                    className="text-white my-3 bg-purple-950"
-                    style={{
-                        // backgroundImage: `linear-gradient(to right, ${GOLD}, ${GOLD},${GOLD}, ${GOLD}, ${GOLD},${GOLD}90)`
-                    }}>
-                    {false ? <CircularProgress size={20} className="text-white" /> : "Send and Pay"}
-                </Button>
+                {renderButton}
             </DialogContent>
         </Dialog>
     )

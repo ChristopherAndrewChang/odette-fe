@@ -34,7 +34,7 @@ export const useSummarySongRequest = (params?: Record<any, any>, interval?: numb
 
 export const useAllSongRequestsInfiniteQuery = (params?: Record<any, any>, refetchInterval?: number) => {
     return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TMySongReq[]>>>({
-        getNextPageParam: (lastPage, allPages) => lastPage?.data?.next ? (allPages.length + 1) : undefined,
+        getNextPageParam: (lastPage, allPages) => !!lastPage?.data?.next ? (allPages.length + 1) : undefined,
         initialPageParam: 1,
         queryKey: [QUERY_KEY.SONG_REQUEST.INDEX, params],
         queryFn: ({ pageParam }) => {

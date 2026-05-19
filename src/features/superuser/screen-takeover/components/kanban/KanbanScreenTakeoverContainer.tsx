@@ -42,7 +42,8 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -70,7 +71,7 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
                             {(
                                 ((i + 1) === datas?.length) && hasNextPage
                             ) ? (
-                                <div ref={lastElementRef}>
+                                <div ref={lastElementRef} className="min-h-[40px] p-4 flex items-center justify-center">
                                     {nextPageFetchingIndicator}
                                 </div>
                             ) : null}

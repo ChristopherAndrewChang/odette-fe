@@ -35,7 +35,6 @@ function DjMusicRequest() {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -98,7 +97,7 @@ function DjMusicRequest() {
                                     />
 
                                     {(((i + 1) === songRequestData?.length) && hasNextPage) ? (
-                                        <div ref={lastElementRef}>
+                                        <div ref={lastElementRef} className="flex items-center justify-center min-h-[40px] p-4">
                                             {nextPageFetchingIndicator}
                                         </div>
                                     ) : null}

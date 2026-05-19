@@ -17,7 +17,7 @@ type TScreenTakeoverContainer = {
 function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeoverContainer) {
     const { getParam } = useQueryParams();
 
-    const { data, isFetching, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
+    const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
         request_type: content_type,
         status: "paid,played",
         date: getParam("date"),
@@ -28,7 +28,6 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -55,7 +54,7 @@ function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeove
                     <div key={`${content_type}-${i}`}>
                         {CardComponent(_screen)}
                         {hasNextPage && ((i + 1) === screenTakeover?.length) ? (
-                            <div ref={lastElementRef}>
+                            <div ref={lastElementRef} className="flex items-center justify-center min-h-[40px] p-4">
                                 {nextPageFetchingIndicator}
                             </div>
                         ) : null}

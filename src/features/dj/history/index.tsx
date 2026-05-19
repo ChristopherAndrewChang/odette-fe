@@ -13,7 +13,7 @@ import CardItem from "../shared/components/CardItem";
 function DjHistoryPage() {
     const [tabActive, setTabActive] = useState<"dj_rejected" | "dj_approved" | "">("");
 
-    const { data, isFetching, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useAllSongRequestsInfiniteQuery({
         status: "dj_rejected"
     });
 
@@ -21,7 +21,8 @@ function DjHistoryPage() {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -56,7 +57,7 @@ function DjHistoryPage() {
                         />
 
                         {(((i + 1) === songsHistory?.length) && hasNextPage) ? (
-                            <div ref={lastElementRef}>
+                            <div ref={lastElementRef} className="flex items-center justify-center p-4 min-h-[40px]">
                                 {nextPageFetchingIndicator}
                             </div>
                         ) : null}

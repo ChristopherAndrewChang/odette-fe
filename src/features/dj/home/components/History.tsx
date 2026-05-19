@@ -12,7 +12,7 @@ import { AppConfig } from "@/configs/appConfig";
 function History() {
     const [tabActive, setTabActive] = useState<"dj_rejected" | "dj_approved">("dj_approved");
 
-    const { data, isFetching, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useAllSongRequestsInfiniteQuery({
         status: tabActive,
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
     });
@@ -21,7 +21,8 @@ function History() {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -70,7 +71,7 @@ function History() {
                         />
 
                         {(((i + 1) === songsHistory?.length) && hasNextPage) ? (
-                            <div ref={lastElementRef}>
+                            <div ref={lastElementRef} className="flex items-center justify-center min-h-[40px] p-4">
                                 {nextPageFetchingIndicator}
                             </div>
                         ) : null}

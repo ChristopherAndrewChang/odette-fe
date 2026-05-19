@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 import dayjs from "dayjs";
 
@@ -34,7 +34,7 @@ function PendingPage({ compact }: TPendingPage) {
         type: "admin_approved",
     });
 
-    const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "pending,admin_rejected",
         search: searchDebounced,
@@ -45,7 +45,8 @@ function PendingPage({ compact }: TPendingPage) {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -73,9 +74,8 @@ function PendingPage({ compact }: TPendingPage) {
                 onChange={e => setSearch(e.target.value)}
             />
             {(pendingsItem.length > 0) ? pendingsItem?.map((pendingItem, i) => (
-                <>
+                <React.Fragment key={pendingItem.id}>
                     <KanbanCard
-                        key={pendingItem?.id}
                         compact={compact}
                         artist={pendingItem?.artist || ""}
                         created={dayjs(pendingItem?.created_at).format("DD/MM/YYYY HH:mm A")}
@@ -104,11 +104,11 @@ function PendingPage({ compact }: TPendingPage) {
                     />
 
                     {((pendingsItem.length === (i + 1)) && hasNextPage) ? (
-                        <div ref={lastElementRef} className="flex justify-center">
+                        <div ref={lastElementRef} className="flex justify-center min-h-[40px] py-4">
                             {nextPageFetchingIndicator}
                         </div>
                     ) : null}
-                </>
+                </React.Fragment>
             )) : (
                 <NoDataCard />
             )}

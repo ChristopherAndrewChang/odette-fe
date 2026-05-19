@@ -93,7 +93,7 @@ function GenerateBulkQRDialog({ onClose, open }: TGenerateBulkQRDialog) {
     const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
         onNextPage: fetchNextPage,
         props: {
-            isFetching: isFetching,
+            // isFetching: isFetching,
             hasNextPage: hasNextPage,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading

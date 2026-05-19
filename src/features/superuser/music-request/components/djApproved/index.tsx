@@ -27,7 +27,7 @@ function DjApproved({ compact }: TDjApproved) {
     const searchDebounced = useDebounce(search, 500);
     const { getParam } = useQueryParams();
 
-    const { data, isFetching, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
+    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } = useAllSongRequestsInfiniteQuery({
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
         status: "dj_approved",
         search: searchDebounced,
@@ -38,7 +38,8 @@ function DjApproved({ compact }: TDjApproved) {
         onNextPage: fetchNextPage,
         props: {
             hasNextPage: hasNextPage,
-            isFetching: isFetching,
+
+            // isFetching: isFetching,
             isFetchingNextPage: isFetchingNextPage,
             isLoading: isLoading
         }
@@ -71,7 +72,7 @@ function DjApproved({ compact }: TDjApproved) {
                     />
 
                     {((djApproveds?.length === (i + 1)) && hasNextPage) ? (
-                        <div ref={lastElementRef} className="flex justify-center">
+                        <div ref={lastElementRef} className="flex justify-center min-h-[40px] p-4">
                             {nextPageFetchingIndicator}
                         </div>
                     ) : null}
