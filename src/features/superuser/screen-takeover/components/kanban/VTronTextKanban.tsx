@@ -17,6 +17,7 @@ type TVTronTextKanban = {
 function VTronTextKanban({ compact, onAccept, onReject, onMarkPlayed }: TVTronTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
+            title="VTRON TEXT"
             type="vtron_text"
             SearchComponent={(search, setSearch) => (
                 <CustomTextField

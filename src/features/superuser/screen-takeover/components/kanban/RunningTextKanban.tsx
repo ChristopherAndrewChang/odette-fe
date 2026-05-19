@@ -17,6 +17,7 @@ type TRunningTextKanban = {
 function RunningTextKanban({ onAccept, onReject, onMarkPlayed, compact }: TRunningTextKanban) {
     return (
         <KanbanScreenTakeoverContainer
+            title="RUNNING TEXT"
             type="running_text"
 
             SearchComponent={(search, setSearch) => (

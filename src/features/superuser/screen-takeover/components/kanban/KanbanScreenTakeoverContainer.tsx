@@ -4,9 +4,11 @@ import type { ReactNode, Dispatch, SetStateAction } from "react";
 
 import { useState } from "react";
 
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, useColorScheme } from "@mui/material";
 
 import { useQueryParams } from "@ozanplanviu/planviu-core";
+
+import classNames from "classnames";
 
 import { useScreenTakeoverInfiniteQuery } from "../../hooks/screen-takeover";
 import type { TScreenTakeover } from "../../types/screen-takeover";
@@ -17,6 +19,7 @@ import NoDataCard from "@/features/superuser/music-request/components/NoDataCard
 import { useDebounce } from "@/@pv/hooks/use-debounce";
 
 type TKanbanScreenTakeoverContainer = {
+    title: string;
     type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
     CardComponent: (data: TScreenTakeover) => ReactNode;
     SearchComponent: (searchValue: string, setSearch: Dispatch<SetStateAction<string>>) => ReactNode;
@@ -25,8 +28,10 @@ type TKanbanScreenTakeoverContainer = {
     onSearch?: () => void;
 }
 
-function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData, SearchComponent }: TKanbanScreenTakeoverContainer) {
+function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData, SearchComponent, title }: TKanbanScreenTakeoverContainer) {
     const { getParam } = useQueryParams();
+
+    const { mode } = useColorScheme();
 
     const [search, setSearch] = useState("");
     const searchDebounced = useDebounce(search, 500);
@@ -53,21 +58,28 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
 
     return (
         <>
-            {SearchComponent(search, setSearch)}
+            <div className="flex items-center gap-2">
+                <p className={classNames("font-poppins text-black font-semibold", {
+                    "!text-white": mode === "dark"
+                })}>{title} ({data?.pages?.[0]?.data?.count || 0})</p>
 
-            {(isFetching && !isFetchingNextPage) ? (
-                <div className="flex justify-center min-w-96">
-                    <CircularProgress size={18} />
-                </div>
-            ) : null}
+                {(isFetching && !isFetchingNextPage) ? (
+                    <CircularProgress size={14} />
+                ) : null}
+            </div>
+            {SearchComponent(search, setSearch)}
 
             {(!isFetching && !datas?.length) ? <NoDataCard /> : null}
 
             <div className="max-h-full overflow-y-auto flex flex-col gap-2">
-                {!!externalData ? externalData?.map(_data => CardComponent(_data)) : (
+                {!!externalData ? externalData?.map(_data => CardComponent(
+                    _data,
+                )) : (
                     datas?.map((_data, i) => (
                         <>
-                            {CardComponent(_data)}
+                            {CardComponent(
+                                _data,
+                            )}
                             {(
                                 ((i + 1) === datas?.length) && hasNextPage
                             ) ? (

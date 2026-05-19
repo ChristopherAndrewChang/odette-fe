@@ -18,6 +18,7 @@ type TVTronVideo = {
 function VTronVideo({ compact, onAccept, onReject, onMarkPlayed, onShowMedia }: TVTronVideo) {
     return (
         <KanbanScreenTakeoverContainer
+            title="VTRON VIDEO"
             type="vtron_video"
 
             SearchComponent={(search, setSearch) => (

@@ -18,6 +18,7 @@ type TVtronImage = {
 function VtronImage({ compact, onAccept, onReject, onMarkPlayed, onShowMedia }: TVtronImage) {
     return (
         <KanbanScreenTakeoverContainer
+            title="VTRON PHOTO"
             type="vtron_photo"
 
             SearchComponent={(search, setSearch) => (
