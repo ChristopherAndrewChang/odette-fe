@@ -15,6 +15,7 @@ import DjHeaderPage from "../shared/components/DjHeaderPage";
 import CardItem from "../shared/components/CardItem";
 import History from "./components/History";
 import { AppConfig } from "@/configs/appConfig";
+import { getSessionDate } from "@/utils/date";
 
 function DjMusicRequest() {
     const { GOLD } = useColor();
@@ -25,7 +26,7 @@ function DjMusicRequest() {
     });
 
     const { data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage, dataUpdatedAt } = useAllSongRequestsInfiniteQuery({
-        date: dayjs(new Date()).format("YYYY-MM-DD"),
+        date: getSessionDate(),
         ...(AppConfig.appMode === "development" ? { all: true } : {}),
     }, 3000);
 

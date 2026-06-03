@@ -45,12 +45,26 @@ function ScreenTakeoverPage() {
     useEffect(() => {
         loader.done();
 
+        const now = dayjs();
+
+        const sessionDate =
+            now.hour() < 4
+                ? now.subtract(1, "day").format("YYYY-MM-DD")
+                : now.format("YYYY-MM-DD");
+
         updateParams({
             remove: ["date"],
             add: {
-                date: dayjs(new Date()).format("YYYY-MM-DD")
+                date: sessionDate
             }
         });
+
+        // updateParams({
+        //     remove: ["date"],
+        //     add: {
+        //         date: dayjs(new Date()).format("YYYY-MM-DD")
+        //     }
+        // });
     }, []);
 
     return (

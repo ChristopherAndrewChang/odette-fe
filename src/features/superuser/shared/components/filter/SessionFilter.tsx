@@ -25,13 +25,20 @@ function SessionFilter({ darkMode }: TSessionFilter) {
     }
 
     const onJumpToTonight = () => {
+        const now = dayjs();
+
+        const sessionDate =
+            now.hour() < 4
+                ? now.subtract(1, "day").format("YYYY-MM-DD")
+                : now.format("YYYY-MM-DD");
+
         updateParams({
             remove: ["date"],
             add: {
-                date: dayjs(new Date()).format("YYYY-MM-DD")
+                date: sessionDate
             }
         });
-    }
+    };
 
     const onNextNight = () => {
         const activeNight = dayjs(getParam("date") || dayjs(new Date()).format("YYYY-MM-DD"));
@@ -56,6 +63,14 @@ function SessionFilter({ darkMode }: TSessionFilter) {
             }
         });
     }
+
+    const getSessionDate = () => {
+        const now = dayjs();
+
+        return now.hour() < 4
+            ? now.subtract(1, "day").format("YYYY-MM-DD")
+            : now.format("YYYY-MM-DD");
+    };
 
     const formatDateIntoSession = (date: string) => {
         // _date adalah date dan fallback jika queryparams belum diload oleh useEffect parent (menghindari invalid date)
@@ -92,7 +107,7 @@ function SessionFilter({ darkMode }: TSessionFilter) {
                     "!bg-gray-800 !border-gray-700 !text-white": darkMode
                 })}>
                     <p className="font-semibold text-sm">{formatDateIntoSession(getParam("date") || "")}</p>
-                    {(!getParam("date") || (getParam("date") === dayjs(new Date()).format("YYYY-MM-DD"))) ? (
+                    {(!getParam("date") || (getParam("date") === getSessionDate())) ? (
                         <div className="bg-blue-200 rounded-lg border border-blue-400 px-2 py-1 text-xs text-blue-700">Tonight</div>
                     ) : null}
                 </div>

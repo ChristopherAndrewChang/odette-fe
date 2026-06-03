@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
 import { Button, useColorScheme } from "@mui/material";
+
+import { useTopLoader } from "nextjs-toploader";
+
+import dayjs from "dayjs";
+
+import { useQueryParams } from "@ozanplanviu/planviu-core";
 
 import AppLayout from "@/components/internal/AppLayout";
 import KanbanContainer from "./components/KanbanContainer";
@@ -17,6 +23,10 @@ import { QUERY_KEY } from "@/data/internal/query-keys";
 import FullScreenMusicRequest from "./components/fullscreen";
 
 function MusicRequestManagement() {
+    const loader = useTopLoader();
+
+    const { updateParams } = useQueryParams();
+
     const { mode } = useColorScheme();
     const queryClient = useQueryClient();
 
@@ -34,6 +44,31 @@ function MusicRequestManagement() {
     const onExpand = () => {
         setIsFullScreen(true);
     }
+
+    useEffect(() => {
+        loader.done();
+
+        const now = dayjs();
+
+        const sessionDate =
+            now.hour() < 4
+                ? now.subtract(1, "day").format("YYYY-MM-DD")
+                : now.format("YYYY-MM-DD");
+
+        updateParams({
+            remove: ["date"],
+            add: {
+                date: sessionDate
+            }
+        });
+
+        // updateParams({
+        //     remove: ["date"],
+        //     add: {
+        //         date: dayjs(new Date()).format("YYYY-MM-DD")
+        //     }
+        // });
+    }, []);
 
     return (
         <>
