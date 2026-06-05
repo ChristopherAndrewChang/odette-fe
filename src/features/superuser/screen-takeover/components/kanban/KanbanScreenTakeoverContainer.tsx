@@ -56,38 +56,76 @@ function KanbanScreenTakeoverContainer({ type, CardComponent, data: externalData
 
     const datas = data?.pages?.flatMap(_data => _data?.data?.results);
 
+    // return (
+    //     <>
+    //         <div className="flex items-center gap-2">
+    //             <p className={classNames("font-poppins text-black font-semibold", {
+    //                 "!text-white": mode === "dark"
+    //             })}>{title} ({data?.pages?.[0]?.data?.count || 0})</p>
+
+    //             {(isFetching && !isFetchingNextPage) ? (
+    //                 <CircularProgress size={14} />
+    //             ) : null}
+    //         </div>
+    //         {SearchComponent(search, setSearch)}
+
+    //         {(!isFetching && !datas?.length) ? <NoDataCard /> : null}
+
+    //         <div className="flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2">
+    //             {!!externalData ? externalData?.map(_data => CardComponent(
+    //                 _data,
+    //             )) : (
+    //                 datas?.map((_data, i) => (
+    //                     <>
+    //                         {CardComponent(
+    //                             _data,
+    //                         )}
+    //                         {(
+    //                             ((i + 1) === datas?.length) && hasNextPage
+    //                         ) ? (
+    //                             <div ref={lastElementRef} className="min-h-[40px] p-4 flex items-center justify-center">
+    //                                 {nextPageFetchingIndicator}
+    //                             </div>
+    //                         ) : null}
+    //                     </>
+    //                 ))
+    //             )}
+    //         </div>
+    //     </>
+    // )
+
     return (
         <>
-            <div className="flex items-center gap-2">
-                <p className={classNames("font-poppins text-black font-semibold", {
+            <div className="flex items-center gap-2 min-w-0">
+                <p className={classNames("font-poppins text-black font-semibold break-words min-w-0", {
                     "!text-white": mode === "dark"
-                })}>{title} ({data?.pages?.[0]?.data?.count || 0})</p>
+                })}>
+                    {title} ({data?.pages?.[0]?.data?.count || 0})
+                </p>
 
                 {(isFetching && !isFetchingNextPage) ? (
                     <CircularProgress size={14} />
                 ) : null}
             </div>
-            {SearchComponent(search, setSearch)}
+
+            <div className="w-full min-w-0">
+                {SearchComponent(search, setSearch)}
+            </div>
 
             {(!isFetching && !datas?.length) ? <NoDataCard /> : null}
 
-            <div className="max-h-full overflow-y-auto flex flex-col gap-2">
-                {!!externalData ? externalData?.map(_data => CardComponent(
-                    _data,
-                )) : (
+            <div className="flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden flex flex-col gap-2">
+                {!!externalData ? externalData?.map(_data => CardComponent(_data)) : (
                     datas?.map((_data, i) => (
-                        <>
-                            {CardComponent(
-                                _data,
-                            )}
-                            {(
-                                ((i + 1) === datas?.length) && hasNextPage
-                            ) ? (
+                        <div key={_data?.id || i}>
+                            {CardComponent(_data)}
+
+                            {((i + 1) === datas?.length) && hasNextPage ? (
                                 <div ref={lastElementRef} className="min-h-[40px] p-4 flex items-center justify-center">
                                     {nextPageFetchingIndicator}
                                 </div>
                             ) : null}
-                        </>
+                        </div>
                     ))
                 )}
             </div>

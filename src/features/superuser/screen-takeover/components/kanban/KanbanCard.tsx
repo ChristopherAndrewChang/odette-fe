@@ -52,7 +52,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                 className={classNames("bg-white p-2 border-l-2 cursor-pointer transition-all hover:!border-gray-500 border-gray-300", {
                     "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
                 })}>
-                <p className={classNames("text-black font-medium", {
+                <p className={classNames("text-black font-medium break-words", {
                     "!text-white": mode === "dark",
                     "!text-sm !font-normal": compact
                 })}>{textContent?.content || ""}</p>
@@ -62,7 +62,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
             <div className={classNames("bg-white p-2 border-l-2 cursor-pointer transition-all border-gray-300 hover:!border-gray-500", {
                 "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
             })}>
-                <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className={classNames("text-black block font-medium", {
+                <a href={`${AppConfig.mediaUrl}${videoContent?.video}`} target="_blank" className={classNames("text-black block font-medium break-all", {
                     "text-white": mode === "dark",
                     "!text-xs": compact
                 })}>{getFileTitle(videoContent?.title || "") || ""}</a>
@@ -74,7 +74,7 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                 className={classNames("bg-white p-2 border-l-2 border-gray-300 cursor-pointer transition-all hover:!border-gray-500", {
                     "!bg-gray-700 !border-gray-500 hover:!border-gray-300": mode === "dark"
                 })}>
-                <p className={classNames("text-black block font-medium", {
+                <p className={classNames("text-black block font-medium break-all", {
                     "!text-white": mode === "dark",
                     "!text-xs": compact
                 })}>{getFileTitle(imageContent?.title || "") || ""}</p>
@@ -83,13 +83,13 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
     }
 
     return (
-        <div className={classNames("px-4 py-2 bg-gray-50 rounded-lg border min-w-96", {
+        <div className={classNames("px-4 py-2 bg-gray-50 rounded-lg border w-full min-w-0 max-w-full", {
             "!bg-gray-800": mode === "dark",
         })}>
-            <div className="flex justify-between items-start mb-2">
-                <div className="flex items-center gap-2">
+            <div className="flex justify-between items-start gap-2 mb-2 min-w-0">
+                <div className="flex items-center gap-2 min-w-0 flex-wrap">
                     {compact && (contentType === "text") ? null : (
-                        <p className={classNames("text-black", {
+                        <p className={classNames("text-black break-all", {
                             "!text-white": mode === "dark"
                         })}>{textContent?.content}</p>
                     )}
@@ -109,10 +109,11 @@ function KanbanCard({ contentType, imageContent, onAccept, onReject, textContent
                         {status?.replace("_", " ")?.toUpperCase()}
                     </div>
                 </div>
-                <p className="text-green-600 text-sm">Rp{donationAmount}</p>
+                {/* <p className="text-green-600 text-sm">Rp{donationAmount}</p> */}
+                <p className="text-green-600 text-sm shrink-0">Rp{donationAmount}</p>
             </div>
 
-            <div className={classNames("flex gap-2 items-center mb-4", {
+            <div className={classNames("flex gap-2 items-center mb-4 flex-wrap min-w-0", {
                 "!mb-2": compact
             })}>
                 <div className={classNames("px-2 py-1 bg-white rounded-lg border", {

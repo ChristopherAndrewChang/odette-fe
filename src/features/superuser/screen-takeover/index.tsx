@@ -94,7 +94,7 @@ function ScreenTakeoverPage() {
                 open={isFullScreen}
             />
 
-            <AppLayout
+            {/* <AppLayout
                 title="Screen Takeover"
                 withMaxH
                 renderAction={(
@@ -109,7 +109,27 @@ function ScreenTakeoverPage() {
                 )}
             >
                 <SessionFilter darkMode={mode === "dark"} />
-                {/* <StatsCards /> */}
+                <ScreenTakeoverContent />
+            </AppLayout> */}
+
+            <AppLayout
+                title="Screen Takeover"
+                withMaxH
+                renderAction={(
+                    <div className="flex items-center gap-2 shrink-0">
+                        <Button onClick={onExpand} variant="outlined" color="primary">
+                            <i className="tabler-arrows-maximize text-base"></i>
+                        </Button>
+                        <Button onClick={onReload} variant="outlined" color="primary">
+                            <i className="tabler-reload text-base"></i>
+                        </Button>
+                    </div>
+                )}
+            >
+                <div className="w-full min-w-0">
+                    <SessionFilter darkMode={mode === "dark"} />
+                </div>
+
                 <ScreenTakeoverContent />
             </AppLayout>
         </>

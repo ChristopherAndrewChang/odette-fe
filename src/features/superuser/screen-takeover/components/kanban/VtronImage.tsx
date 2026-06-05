@@ -24,7 +24,7 @@ function VtronImage({ compact, onAccept, onReject, onMarkPlayed, onShowMedia }: 
             SearchComponent={(search, setSearch) => (
                 <CustomTextField
                     placeholder="Search"
-                    className="my-2"
+                    className="my-2 w-full"
                     value={search}
                     onChange={(e) => {
                         setSearch(e.target.value);
