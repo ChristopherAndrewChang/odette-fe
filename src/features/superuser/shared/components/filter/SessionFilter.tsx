@@ -88,12 +88,16 @@ function SessionFilter({ darkMode }: TSessionFilter) {
     }
 
     return (
-        <div className="flex flex-col sm:flex-row items-center gap-4">
+
+        // <div className="flex flex-col sm:flex-row items-center gap-4">
+        <div className="flex flex-col xl:flex-row xl:items-center gap-4 w-full min-w-0">
             <Typography className={classNames({
                 "text-black": !darkMode,
                 "text-white": darkMode
             })}>Session</Typography>
-            <div className="flex gap-2 pr-4 border-r">
+
+            {/* <div className="flex gap-2 pr-4 border-r"> */}
+            <div className="flex flex-wrap gap-2 xl:pr-4 xl:border-r w-full xl:w-auto min-w-0">
                 <div
                     onClick={onPrevNight}
                     className={classNames("px-4 py-1 border rounded-lg flex items-center justify-center cursor-pointer bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100", {
@@ -103,10 +107,13 @@ function SessionFilter({ darkMode }: TSessionFilter) {
                     <i className="tabler-arrow-left text-lg"></i>
                 </div>
 
-                <div className={classNames("bg-gray-50 px-4 py-1 rounded-lg border flex gap-2 items-center min-h-10", {
+                {/* <div className={classNames("bg-gray-50 px-4 py-1 rounded-lg border flex gap-2 items-center min-h-10", {
+                    "!bg-gray-800 !border-gray-700 !text-white": darkMode
+                })}> */}
+                <div className={classNames("bg-gray-50 px-4 py-1 rounded-lg border flex flex-wrap gap-2 items-center min-h-10 min-w-0", {
                     "!bg-gray-800 !border-gray-700 !text-white": darkMode
                 })}>
-                    <p className="font-semibold text-sm">{formatDateIntoSession(getParam("date") || "")}</p>
+                    <p className="font-semibold text-sm break-words">{formatDateIntoSession(getParam("date") || "")}</p>
                     {(!getParam("date") || (getParam("date") === getSessionDate())) ? (
                         <div className="bg-blue-200 rounded-lg border border-blue-400 px-2 py-1 text-xs text-blue-700">Tonight</div>
                     ) : null}
@@ -124,7 +131,8 @@ function SessionFilter({ darkMode }: TSessionFilter) {
             </div>
 
             {/* jump to section */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-fit">
+            {/* <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full sm:w-fit"> */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full xl:w-fit min-w-0">
                 <Typography className={classNames({
                     "text-black": !darkMode,
                     "text-white": darkMode

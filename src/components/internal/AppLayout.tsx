@@ -21,11 +21,16 @@ function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAct
 
     return (
         <>
-            {/* <p className="w-full text-end mb-2 text-gray-500">{isFetching ? "Fetching IP Data..." : `IP: ${data?.data?.ip}`}</p> */}
             <div
-                className={classNames('bg-white overflow-y-auto p-6 rounded-lg border flex flex-col', {
+
+                // className={classNames('bg-white overflow-y-auto p-6 rounded-lg border flex flex-col', {
+                //     "!pb-0": isBottomFit,
+                //     "max-h-[85vh]": withMaxH
+                // })}
+
+                className={classNames('bg-white overflow-hidden p-4 md:p-6 rounded-lg border flex flex-col w-full min-w-0', {
                     "!pb-0": isBottomFit,
-                    "max-h-[85vh]": withMaxH
+                    "h-[calc(100dvh-120px)]": withMaxH
                 })}
                 style={mode === "dark" ? {
                     backgroundColor: colors.DARKBLUE

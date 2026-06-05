@@ -20,7 +20,7 @@ function KanbanSection({ children, compact, title, count, loading, onSearch, sea
     const { mode } = useColorScheme();
 
     return (
-        <div className="border-x p-4 flex flex-col gap-2 w-full min-h-0">
+        <div className="border-x p-4 flex flex-col gap-2 w-full min-w-0 min-h-0">
             <div className="flex items-center gap-2 mb-4">
                 <p className={classNames("font-semibold text-black", {
                     "!text-white": mode === "dark"
@@ -38,7 +38,10 @@ function KanbanSection({ children, compact, title, count, loading, onSearch, sea
             />
 
             {/* scrollable area */}
-            <div className={classNames("overflow-y-auto flex-1 flex flex-col gap-4 min-h-0", {
+            {/* <div className={classNames("overflow-y-auto flex-1 flex flex-col gap-4 min-h-0", {
+                "!gap-2": compact
+            })}> */}
+            <div className={classNames("overflow-y-auto overflow-x-hidden flex-1 flex flex-col gap-4 min-h-0 min-w-0", {
                 "!gap-2": compact
             })}>
                 {children}

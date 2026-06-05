@@ -21,15 +21,29 @@ function KanbanCard({ artist, created, price, table, title, onAccept, onReject, 
     const { mode } = useColorScheme();
 
     return (
-        <div className={classNames("bg-gray-50 p-4 rounded-lg border min-w-72 lg:min-w-96", {
+
+        // <div className={classNames("bg-gray-50 p-4 rounded-lg border min-w-72 lg:min-w-96", {
+        //     "!bg-gray-800": mode === "dark",
+        //     "!py-2 !px-4": compact
+        // })}>
+        <div className={classNames("bg-gray-50 p-4 rounded-lg border w-full min-w-0", {
             "!bg-gray-800": mode === "dark",
             "!py-2 !px-4": compact
         })}>
-            <div className={classNames("flex justify-between gap-4", { "!mb-2": compact })}>
+            {/* <div className={classNames("flex justify-between gap-4", { "!mb-2": compact })}>
                 <p className={classNames("font-medium text-black", {
                     "!text-white": mode === "dark"
                 })}>{title} {compact ? `(${artist})` : ""}</p>
                 <p className="text-green-600">Rp{price}</p>
+            </div> */}
+            <div className={classNames("flex justify-between gap-4 min-w-0", { "!mb-2": compact })}>
+                <p className={classNames("font-medium text-black break-words min-w-0", {
+                    "!text-white": mode === "dark"
+                })}>
+                    {title} {compact ? `(${artist})` : ""}
+                </p>
+
+                <p className="text-green-600 shrink-0">Rp{price}</p>
             </div>
 
             {!compact ? (
@@ -37,7 +51,8 @@ function KanbanCard({ artist, created, price, table, title, onAccept, onReject, 
             ) : null}
 
             {/* table identity */}
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2"> */}
+            <div className="flex items-center gap-2 flex-wrap min-w-0">
                 <div className={classNames("px-4 py-1 flex items-center justify-center bg-gray-200 rounded-lg", {
                     "!bg-gray-600 border !border-gray-500 !text-white": mode === "dark"
                 })}>

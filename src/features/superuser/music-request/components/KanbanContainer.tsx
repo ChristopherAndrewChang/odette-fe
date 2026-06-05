@@ -76,15 +76,24 @@ type TKanbanContainer = {
 
 function KanbanContainer({ djApproveds, dj, pending }: TKanbanContainer) {
     return (
-        <div className="flex overflow-hidden border-t flex-1 min-h-0">
-            {/* section 1 */}
-            {pending}
 
-            {/* section 2 */}
-            {dj}
+        // <div className="flex overflow-hidden border-t flex-1 min-h-0">
+        //     {/* section 1 */}
+        //     {pending}
 
-            {/* section 3 */}
-            {djApproveds}
+        //     {/* section 2 */}
+        //     {dj}
+
+        //     {/* section 3 */}
+        //     {djApproveds}
+        // </div>
+
+        <div className="w-full max-w-full overflow-x-auto border-t flex-1 min-h-0">
+            <div className="grid grid-cols-3 min-w-[1100px] h-full">
+                {pending}
+                {dj}
+                {djApproveds}
+            </div>
         </div>
     )
 }
