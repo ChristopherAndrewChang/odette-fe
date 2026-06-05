@@ -81,19 +81,23 @@ type TKanbanScreenTakeover = {
     };
 }
 
-function KanbanScreenTakeover({ runningTextSlot, vtronImageSlot, vtronTextSlot }: TKanbanScreenTakeover) {
+function KanbanScreenTakeover({
+    runningTextSlot,
+    vtronImageSlot,
+    vtronTextSlot,
+}: TKanbanScreenTakeover) {
     return (
-        <div className="mt-4 w-full max-w-full overflow-x-auto border-t flex-1 min-h-0">
-            <div className="flex min-w-[1080px] h-full">
-                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 w-[360px] shrink-0 min-h-0">
+        <div className="mt-4 w-full max-w-full overflow-x-auto overflow-y-hidden border-t flex-1 min-h-0">
+            <div className="grid grid-cols-[repeat(3,minmax(360px,1fr))] min-w-[1080px] w-full h-full">
+                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 min-w-0 min-h-0">
                     {runningTextSlot?.content || null}
                 </div>
 
-                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 w-[360px] shrink-0 min-h-0">
+                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 min-w-0 min-h-0">
                     {vtronTextSlot?.content || null}
                 </div>
 
-                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 w-[360px] shrink-0 min-h-0">
+                <div className="border-x border-b-2 p-4 md:p-6 flex flex-col gap-2 min-w-0 min-h-0">
                     {vtronImageSlot?.content || null}
                 </div>
             </div>
