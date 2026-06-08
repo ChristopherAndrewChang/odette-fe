@@ -36,14 +36,14 @@ function AppLayout({ title, children, renderAction, isBottomFit, renderMiddleAct
                     backgroundColor: colors.DARKBLUE
                 } : {}}
             >
-                <div className="flex justify-between items-center mb-6">
+                <div className="mb-6 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
                     <Typography
                         className={classNames("text-xl font-poppins text-black", {
                             "!text-white": mode === "dark"
                         })}
                     >{title}</Typography>
                     {renderMiddleAction}
-                    <div className="flex gap-2 items-center">
+                    <div className="flex w-full items-center gap-2 xl:w-auto xl:justify-end">
                         {renderAction}
                         {/* <div className="flex items-center gap-2 bg-green-50 px-2 py-1 rounded-lg border border-green-300">
                             <div className="w-2 h-2 rounded-full bg-green-600" />

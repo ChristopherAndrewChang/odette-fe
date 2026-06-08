@@ -23,6 +23,14 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
     //     href: APP_URL.SUPERUSER_HOME.INDEX,
     // },
     {
+        label: "Report",
+        icon: "tabler-home",
+        href: APP_URL.SUPERUSER_REPORT.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_REPORT.INDEX,
+        onlyForSu: true
+    },
+    {
         label: "User",
         icon: "tabler-users",
         href: APP_URL.SUPERUSER_USERS.INDEX,

@@ -30,6 +30,9 @@ export const QUERY_KEY = {
     },
     SCREEN_TAKEOVER: {
         INDEX: "screen-takeover"
-    }
+    },
+    REPORTS: {
+        SUMMARY: "reports_summary"
+    },
 }
 

@@ -55,5 +55,8 @@ export const API_URL = {
         SUMMARY: "/songs/summary/",
         APPROVAL: "/songs/:id/admin-review/",
         MARK_BILLED: "/songs/:id/bill/"
-    }
+    },
+    REPORTS: {
+        SUMMARY: "/core/report/summary/"
+    },
 }
