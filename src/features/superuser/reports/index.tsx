@@ -12,11 +12,15 @@ import {
 } from "@mui/material";
 import classNames from "classnames";
 
+import CookieStore from "js-cookie";
+
 import dayjs from "dayjs";
 
 import AppLayout from "@/components/internal/AppLayout";
 import { useReportSummary } from "./hooks/useReportSummary";
 import type { NightlyData, ReportPeriod, ReportFilter } from "./types";
+import { STORAGE_KEY } from "@/data/internal/storage";
+import { getRoleFromJWT } from "@/utils/auth";
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -357,6 +361,14 @@ export default function ReportPage() {
         } : {}),
     };
 
+    if ((getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser")) {
+        return (
+            <AppLayout title="">
+                <p>You do not have a permission to access this page</p>
+            </AppLayout>
+        )
+    }
+
     return (
         <AppLayout
             title="Laporan Pendapatan"
@@ -405,7 +417,10 @@ export default function ReportPage() {
                 </div>
             }
         >
-            <div className="space-y-4">
+            {/* getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser" */}
+            <div className={classNames("space-y-4", {
+                "!hidden": (getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser")
+            })}>
                 {/* Period description */}
                 <p className={mutedClass(darkMode, "text-xs")}>{periodLabel}</p>
 
