@@ -24,7 +24,7 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
     // },
     {
         label: "Report",
-        icon: "tabler-home",
+        icon: "tabler-layout-grid",
         href: APP_URL.SUPERUSER_REPORT.INDEX,
         exactMatch: false,
         activeUrl: APP_URL.SUPERUSER_REPORT.INDEX,
