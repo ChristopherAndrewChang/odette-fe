@@ -17,6 +17,7 @@ export interface SongStatuses {
     admin_approved: number;
     admin_rejected: number;
     pending: number;
+    cancelled: number;
 }
 
 export interface ScreenStatuses {

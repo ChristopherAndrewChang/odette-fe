@@ -1,118 +1,137 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from '@tanstack/react-query'
 
-import { Button, useColorScheme } from "@mui/material";
+import { Button, useColorScheme } from '@mui/material'
 
-import { useTopLoader } from "nextjs-toploader";
+import { useTopLoader } from 'nextjs-toploader'
 
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 
-import { useQueryParams } from "@ozanplanviu/planviu-core";
+import { useQueryParams } from '@ozanplanviu/planviu-core'
 
-import AppLayout from "@/components/internal/AppLayout";
-import KanbanContainer from "./components/KanbanContainer";
-import PendingPage from "./components/pending";
-import WithDJ from "./components/withDj";
-import DjApproved from "./components/djApproved";
-import SessionFilter from "../shared/components/filter/SessionFilter";
+import AppLayout from '@/components/internal/AppLayout'
+import KanbanContainer from './components/KanbanContainer'
+import PendingPage from './components/pending'
+import WithDJ from './components/withDj'
+import DjApproved from './components/djApproved'
+import SessionFilter from '../shared/components/filter/SessionFilter'
 
-import { QUERY_KEY } from "@/data/internal/query-keys";
-import FullScreenMusicRequest from "./components/fullscreen";
+import { QUERY_KEY } from '@/data/internal/query-keys'
+import FullScreenMusicRequest from './components/fullscreen'
+import CancelDialog from './components/CancelDialog'
 
 function MusicRequestManagement() {
-    const loader = useTopLoader();
+  const loader = useTopLoader()
 
-    const { updateParams } = useQueryParams();
+  const { updateParams } = useQueryParams()
 
-    const { mode } = useColorScheme();
-    const queryClient = useQueryClient();
+  const { mode } = useColorScheme()
+  const queryClient = useQueryClient()
 
-    const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false)
 
-    const onReload = () => {
-        queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY.SONG_REQUEST.INDEX]
-        });
-        queryClient.invalidateQueries({
-            queryKey: [QUERY_KEY.SONG_REQUEST.SUMMARY]
-        });
-    }
+  const [openCancelDialog, setOpenCancelDialog] = useState<{ cond: boolean; id: string }>({
+    cond: false,
+    id: ''
+  })
 
-    const onExpand = () => {
-        setIsFullScreen(true);
-    }
+  const onReload = () => {
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.SONG_REQUEST.INDEX]
+    })
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.SONG_REQUEST.SUMMARY]
+    })
+  }
 
-    useEffect(() => {
-        loader.done();
+  const onExpand = () => {
+    setIsFullScreen(true)
+  }
 
-        const now = dayjs();
+  useEffect(() => {
+    loader.done()
 
-        const sessionDate =
-            now.hour() < 4
-                ? now.subtract(1, "day").format("YYYY-MM-DD")
-                : now.format("YYYY-MM-DD");
+    const now = dayjs()
 
-        updateParams({
-            remove: ["date"],
-            add: {
-                date: sessionDate
-            }
-        });
+    const sessionDate = now.hour() < 4 ? now.subtract(1, 'day').format('YYYY-MM-DD') : now.format('YYYY-MM-DD')
 
-        // updateParams({
-        //     remove: ["date"],
-        //     add: {
-        //         date: dayjs(new Date()).format("YYYY-MM-DD")
-        //     }
-        // });
-    }, []);
+    updateParams({
+      remove: ['date'],
+      add: {
+        date: sessionDate
+      }
+    })
 
-    return (
-        <>
-            <FullScreenMusicRequest
-                onClose={() => {
-                    setIsFullScreen(false);
-                }}
-                open={isFullScreen}
+    // updateParams({
+    //     remove: ["date"],
+    //     add: {
+    //         date: dayjs(new Date()).format("YYYY-MM-DD")
+    //     }
+    // });
+  }, [])
+
+  return (
+    <>
+      <FullScreenMusicRequest
+        onClose={() => {
+          setIsFullScreen(false)
+        }}
+        open={isFullScreen}
+      />
+      <CancelDialog
+        open={openCancelDialog.cond}
+        id={openCancelDialog.id}
+        onClose={() => {
+          setOpenCancelDialog({
+            cond: false,
+            id: ''
+          })
+        }}
+      />
+      <AppLayout
+        title='Song Request'
+        isBottomFit
+        withMaxH
+        renderAction={
+          <div className='flex items-center gap-2'>
+            <Button onClick={onExpand} variant='outlined' color='primary'>
+              <i className='tabler-arrows-maximize text-base'></i>
+            </Button>
+            <Button onClick={onReload} variant='outlined' color='primary'>
+              <i className='tabler-reload text-base'></i>
+            </Button>
+          </div>
+        }
+      >
+        {/* <main className="max-h-[75vh] overflow-y-auto"> */}
+        <div className='mb-4'>
+          <SessionFilter darkMode={mode === 'dark'} />
+        </div>
+
+        <div></div>
+        {/* <MusicStats /> */}
+        <KanbanContainer
+          dj={
+            <WithDJ
+
+            //   onCancel={id => {
+            //     setOpenCancelDialog({
+            //       cond: true,
+            //       id: id
+            //     })
+            //   }}
             />
-            <AppLayout
-                title="Song Request"
-                isBottomFit
-                withMaxH
-                renderAction={(
-                    <div className="flex items-center gap-2">
-                        <Button onClick={onExpand} variant="outlined" color="primary">
-                            <i className="tabler-arrows-maximize text-base"></i>
-                        </Button>
-                        <Button onClick={onReload} variant="outlined" color="primary">
-                            <i className="tabler-reload text-base"></i>
-                        </Button>
-                    </div>
-                )}
-            >
-                {/* <main className="max-h-[75vh] overflow-y-auto"> */}
-                <div className="mb-4">
-                    <SessionFilter
-                        darkMode={mode === "dark"}
-                    />
-                </div>
-
-                <div>
-
-                </div>
-                {/* <MusicStats /> */}
-                <KanbanContainer
-                    dj={<WithDJ />}
-                    djApproveds={<DjApproved />}
-                    pending={<PendingPage />}
-                />
-                {/* </main> */}
-            </AppLayout>
-        </>
-    )
+          }
+          djApproveds={<DjApproved />}
+          pending={<PendingPage />}
+        />
+        {/* </main> */}
+      </AppLayout>
+    </>
+  )
 }
 
-export default MusicRequestManagement;
+export default MusicRequestManagement

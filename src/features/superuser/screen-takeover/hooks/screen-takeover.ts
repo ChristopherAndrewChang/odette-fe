@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } from "@ozanplanviu/planviu-core";
 
 import { QUERY_KEY } from "@/data/internal/query-keys";
-import { getAllScreenTakeover, patchApprovalScreenTakeover, patchMarkAsPlayedScreenTakeover } from "../services/screen-takeover";
+import { getAllScreenTakeover, patchApprovalScreenTakeover, patchCancelRequestScreenTakeover, patchMarkAsPlayedScreenTakeover } from "../services/screen-takeover";
 import type { ResponseWrapper } from "@/types/api";
 import type { TScreenTakeover } from "../types/screen-takeover";
 
@@ -40,6 +40,16 @@ export const useScreenTakeoverApprovalMutation = ({ onSuccess, onError }: Mutati
             return patchApprovalScreenTakeover(id || "", {
                 status: type
             })
+        },
+        onSuccess: onSuccess,
+        onError: onError
+    });
+}
+
+export const useScreenTakeoverCancelMutation = ({ onError, onSuccess }: MutationFunctionType<unknown>) => {
+    return useMutation({
+        mutationFn: ({ id }: MutateParamsType) => {
+            return patchCancelRequestScreenTakeover(id || "");
         },
         onSuccess: onSuccess,
         onError: onError

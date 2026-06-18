@@ -27,3 +27,10 @@ export const patchMarkAsPlayedScreenTakeover = (id: string) => {
         urlKey: API_URL.SCREEN_TAKEOVER.MARK_PLAYED.replace(":id", id),
     });
 }
+
+export const patchCancelRequestScreenTakeover = (id: string) => {
+    return api({
+        method: "PATCH",
+        urlKey: API_URL.SCREEN_TAKEOVER.CANCEL.replace(":id", id),
+    });
+}

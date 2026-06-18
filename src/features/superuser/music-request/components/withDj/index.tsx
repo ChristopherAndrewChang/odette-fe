@@ -90,87 +90,102 @@
 
 // export default WithDJ;
 
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import dayjs from "dayjs";
-import { useQueryParams } from "@ozanplanviu/planviu-core";
-import { useColorScheme } from "@mui/material";
+import dayjs from 'dayjs'
+import { useQueryParams } from '@ozanplanviu/planviu-core'
+import { useColorScheme } from '@mui/material'
 
-import { useAllSongRequestsInfiniteQuery } from "../../hooks/song-request";
-import KanbanCard from "../KanbanCard";
-import { useDebounce } from "@/@pv/hooks/use-debounce";
-import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
-import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from "../../data";
-import { AppConfig } from "@/configs/appConfig";
-import NoDataCard from "../NoDataCard";
-import KanbanSection from "../KanbanSection";
+import { useAllSongRequestsInfiniteQuery } from '../../hooks/song-request'
+import KanbanCard from '../KanbanCard'
+import { useDebounce } from '@/@pv/hooks/use-debounce'
+import { useInfiniteScroll } from '@/@pv/hooks/use-infinite-scroll'
+import { ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL, STATUS_COLOR_DATA } from '../../data'
+import { AppConfig } from '@/configs/appConfig'
+import NoDataCard from '../NoDataCard'
+import KanbanSection from '../KanbanSection'
 
 type TWithDJ = {
-    compact?: boolean;
+  compact?: boolean
+  onCancel?: (id: string) => void
 }
 
-function WithDJ({ compact }: TWithDJ) {
-    const { mode } = useColorScheme();
+function WithDJ({ compact, onCancel }: TWithDJ) {
+  const { mode } = useColorScheme()
 
-    const [search, setSearch] = useState("");
-    const searchDebounced = useDebounce(search, 500);
-    const { getParam } = useQueryParams();
+  const [search, setSearch] = useState('')
+  const searchDebounced = useDebounce(search, 500)
+  const { getParam } = useQueryParams()
 
-    const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage, isFetching } = useAllSongRequestsInfiniteQuery({
-        ...(AppConfig.appMode === "development" ? { all: true } : {}),
-        status: "admin_approved,dj_rejected",
+  const { data, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage, isFetching } =
+    useAllSongRequestsInfiniteQuery(
+      {
+        ...(AppConfig.appMode === 'development' ? { all: true } : {}),
+        status: 'admin_approved,dj_rejected',
         search: searchDebounced,
-        date: getParam("date") || dayjs(new Date()).format("YYYY-MM-DD")
-    }, ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL);
-
-    const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
-        onNextPage: fetchNextPage,
-        props: {
-            hasNextPage: hasNextPage,
-            isFetchingNextPage: isFetchingNextPage,
-            isLoading: isLoading,
-        }
-    });
-
-    const withDjs = data?.pages?.flatMap(_data => _data?.data?.results) || [];
-
-    return (
-        <KanbanSection
-            title="WITH DJ"
-            count={data?.pages[0]?.data?.count || 0}
-            loading={isFetching && !isFetchingNextPage}
-            search={search}
-            onSearch={(val) => setSearch(val)}
-        >
-            {(withDjs.length > 0) ? withDjs?.map((withDj, i) => (
-                <React.Fragment key={withDj?.id}>
-                    <KanbanCard
-                        compact={compact}
-                        artist={withDj?.artist || ""}
-                        created={dayjs(withDj?.created_at).format("DD/MM/YYYY HH:mm A")}
-                        price={Number(withDj?.donation_amount)?.toLocaleString()}
-                        table={withDj?.table_number?.toString()}
-                        title={withDj?.song_title}
-                        renderComponent={(
-                            <div className="mt-4 border w-fit px-2 py-1 text-xs rounded-lg" style={STATUS_COLOR_DATA({ darkMode: mode === "dark" })[withDj.status]}>
-                                {withDj?.status_display}
-                            </div>
-                        )}
-                    />
-
-                    {((withDjs.length === (i + 1)) && hasNextPage) ? (
-                        <div ref={lastElementRef} className="flex justify-center py-4 min-h-[40px] p-4">
-                            {nextPageFetchingIndicator}
-                        </div>
-                    ) : null}
-                </React.Fragment>
-            )) : (
-                <NoDataCard />
-            )}
-        </KanbanSection>
+        date: getParam('date') || dayjs(new Date()).format('YYYY-MM-DD')
+      },
+      ADMIN_MUSIC_REQUEST_FETCHING_INTERVAL
     )
+
+  const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
+    onNextPage: fetchNextPage,
+    props: {
+      hasNextPage: hasNextPage,
+      isFetchingNextPage: isFetchingNextPage,
+      isLoading: isLoading
+    }
+  })
+
+  const withDjs = data?.pages?.flatMap(_data => _data?.data?.results) || []
+
+  return (
+    <KanbanSection
+      title='WITH DJ'
+      count={data?.pages[0]?.data?.count || 0}
+      loading={isFetching && !isFetchingNextPage}
+      search={search}
+      onSearch={val => setSearch(val)}
+    >
+      {withDjs.length > 0 ? (
+        withDjs?.map((withDj, i) => (
+          <React.Fragment key={withDj?.id}>
+            <KanbanCard
+              compact={compact}
+              artist={withDj?.artist || ''}
+              created={dayjs(withDj?.created_at).format('DD/MM/YYYY HH:mm A')}
+              price={Number(withDj?.donation_amount)?.toLocaleString()}
+              table={withDj?.table_number?.toString()}
+              title={withDj?.song_title}
+              renderComponent={
+                <div
+                  className='mt-4 border w-fit px-2 py-1 text-xs rounded-lg'
+                  style={STATUS_COLOR_DATA({ darkMode: mode === 'dark' })[withDj.status]}
+                >
+                  {withDj?.status_display}
+                </div>
+              }
+              {...(withDj?.status === 'admin_approved' && !!onCancel
+                ? {
+                    onCancel: () => onCancel(withDj?.id?.toString())
+                  }
+                : {})}
+            />
+
+            {withDjs.length === i + 1 && hasNextPage ? (
+              <div ref={lastElementRef} className='flex justify-center py-4 min-h-[40px] p-4'>
+                {nextPageFetchingIndicator}
+              </div>
+            ) : null}
+          </React.Fragment>
+        ))
+      ) : (
+        <NoDataCard />
+      )}
+    </KanbanSection>
+  )
 }
 
-export default WithDJ;
+export default WithDJ
