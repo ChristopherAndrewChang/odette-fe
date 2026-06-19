@@ -1,69 +1,69 @@
-"use client";
+'use client'
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
-import { useQueryParams } from "@ozanplanviu/planviu-core";
+import { useQueryParams } from '@ozanplanviu/planviu-core'
 
-import type { TScreenTakeover } from "@/features/superuser/screen-takeover/types/screen-takeover";
-import { useScreenTakeoverInfiniteQuery } from "@/features/superuser/screen-takeover/hooks/screen-takeover";
-import { useInfiniteScroll } from "@/@pv/hooks/use-infinite-scroll";
-import { AppConfig } from "@/configs/appConfig";
-import { getSessionDate } from "@/utils/date";
+import type { TScreenTakeover } from '@/features/superuser/screen-takeover/types/screen-takeover'
+import { useScreenTakeoverInfiniteQuery } from '@/features/superuser/screen-takeover/hooks/screen-takeover'
+import { useInfiniteScroll } from '@/@pv/hooks/use-infinite-scroll'
+import { AppConfig } from '@/configs/appConfig'
+import { getSessionDate } from '@/utils/date'
 
 type TScreenTakeoverContainer = {
-    content_type: "running_text" | "vtron_text" | "vtron_photo" | "vtron_video";
-    CardComponent: (data: TScreenTakeover) => ReactNode;
+  content_type: 'running_text' | 'vtron_text' | 'vtron_photo' | 'vtron_video'
+  CardComponent: (data: TScreenTakeover) => ReactNode
 }
 
 function ScreenTakeoverContainer({ CardComponent, content_type }: TScreenTakeoverContainer) {
-    const { getParam } = useQueryParams();
+  const { getParam } = useQueryParams()
 
-    const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery({
-        request_type: content_type,
-        status: "paid,played",
-        date: getParam("date") || getSessionDate(),
-        ...(AppConfig.appMode === "development" ? { all: true } : {}),
-    });
+  const { data, fetchNextPage, isLoading, hasNextPage, isFetchingNextPage } = useScreenTakeoverInfiniteQuery(
+    {
+      request_type: content_type,
+      status: 'paid,played',
+      date: getParam('date') || getSessionDate(),
+      ...(AppConfig.appMode === 'development' ? { all: true } : {})
+    },
+    10000
+  )
 
-    const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
-        onNextPage: fetchNextPage,
-        props: {
-            hasNextPage: hasNextPage,
-            isFetchingNextPage: isFetchingNextPage,
-            isLoading: isLoading
-        }
-    });
+  const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
+    onNextPage: fetchNextPage,
+    props: {
+      hasNextPage: hasNextPage,
+      isFetchingNextPage: isFetchingNextPage,
+      isLoading: isLoading
+    }
+  })
 
-    const screenTakeover = data?.pages?.flatMap(page => page?.data?.results) || [];
+  const screenTakeover = data?.pages?.flatMap(page => page?.data?.results) || []
 
-    return (
-        <>
-            <div className="mb-4 flex items-center gap-2">
-                <p className="text-white text-xl">
-                    {content_type
-                        ?.replace(/_/g, " ")
-                        .replace(/\w\S*/g, (txt) => txt[0].toUpperCase() + txt.slice(1).toLowerCase())
-                    }
-                </p>
-                <div className="px-2 py-1 bg-gray-800 rounded-lg border border-gray-700">
-                    <p className="text-white text-sm">{data?.pages?.[0]?.data?.count}</p>
-                </div>
-            </div>
+  return (
+    <>
+      <div className='mb-4 flex items-center gap-2'>
+        <p className='text-white text-xl'>
+          {content_type?.replace(/_/g, ' ').replace(/\w\S*/g, txt => txt[0].toUpperCase() + txt.slice(1).toLowerCase())}
+        </p>
+        <div className='px-2 py-1 bg-gray-800 rounded-lg border border-gray-700'>
+          <p className='text-white text-sm'>{data?.pages?.[0]?.data?.count}</p>
+        </div>
+      </div>
 
-            <div className="flex-1 flex flex-col gap-2 overflow-y-scroll scrollbar-hide">
-                {screenTakeover?.map((_screen, i) => (
-                    <div key={`${content_type}-${i}`}>
-                        {CardComponent(_screen)}
-                        {hasNextPage && ((i + 1) === screenTakeover?.length) ? (
-                            <div ref={lastElementRef} className="flex items-center justify-center min-h-[40px] p-4">
-                                {nextPageFetchingIndicator}
-                            </div>
-                        ) : null}
-                    </div>
-                ))}
-            </div>
-        </>
-    )
+      <div className='flex-1 flex flex-col gap-2 overflow-y-scroll scrollbar-hide'>
+        {screenTakeover?.map((_screen, i) => (
+          <div key={`${content_type}-${i}`}>
+            {CardComponent(_screen)}
+            {hasNextPage && i + 1 === screenTakeover?.length ? (
+              <div ref={lastElementRef} className='flex items-center justify-center min-h-[40px] p-4'>
+                {nextPageFetchingIndicator}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </>
+  )
 }
 
 export default ScreenTakeoverContainer
