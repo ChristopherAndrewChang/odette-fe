@@ -67,6 +67,13 @@ export const MenuDataSuperuser: VerticalMenuDataType[] = [
         activeUrl: APP_URL.SUPERUSER_SCREEN_TAKEOVER.INDEX
     },
     {
+        label: "Feedbacks",
+        icon: "tabler-message-dots",
+        href: APP_URL.SUPERUSER_FEEDBACKS.INDEX,
+        exactMatch: false,
+        activeUrl: APP_URL.SUPERUSER_FEEDBACKS.INDEX
+    },
+    {
         label: "Settings",
         icon: "tabler-settings",
         href: APP_URL.SUPERUSER_SETTINGS.INDEX,

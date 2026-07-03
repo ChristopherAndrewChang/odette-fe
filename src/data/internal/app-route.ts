@@ -49,5 +49,8 @@ export const APP_URL = {
     },
     SUPERUSER_SETTINGS: {
         INDEX: "/su/settings"
+    },
+    SUPERUSER_FEEDBACKS: {
+        INDEX: "/su/feedbacks"
     }
 }
