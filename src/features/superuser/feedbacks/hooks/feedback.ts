@@ -5,11 +5,12 @@ import type { MutateParamsType, MutationFunctionType, TPaginationResponseType } 
 import { getFeedbacksForStaff, patchFeedbackMarkAsRead } from "../services/feedback";
 import { QUERY_KEY } from "@/data/internal/query-keys";
 import type { TFeedbacks } from "../types/feedback";
+import type { ResponseWrapper } from "@/types/api";
 
 export const useFeedbacksForStaffInfiniteQuery = (params?: Record<any, any>) => {
-    return useInfiniteQuery<TPaginationResponseType<TFeedbacks[]>>({
+    return useInfiniteQuery<ResponseWrapper<TPaginationResponseType<TFeedbacks[]>>>({
         initialPageParam: 1,
-        getNextPageParam: (lastPage, allPages) => lastPage?.next ? allPages?.length + 1 : undefined,
+        getNextPageParam: (lastPage, allPages) => !!lastPage?.data?.next ? allPages?.length + 1 : undefined,
         queryKey: [QUERY_KEY.FEEDBACKS_STAFF.INDEX, params],
         queryFn: ({ pageParam }) => {
             return getFeedbacksForStaff({
@@ -17,6 +18,7 @@ export const useFeedbacksForStaffInfiniteQuery = (params?: Record<any, any>) => 
                 ...params
             })
         },
+        placeholderData: data => data
     });
 }
 

@@ -2,13 +2,24 @@
 
 import { useState } from 'react'
 
-import { Typography } from '@mui/material'
+import { CircularProgress, Typography } from '@mui/material'
+
+import { CustomTextField } from '@ozanplanviu/planviu-core'
 
 import AppLayout from '@/components/internal/AppLayout'
-import FeedbackCard from './components/FeedbackCard'
 import MarkAsReadDialog from './components/MarkAsReadDialog'
 import { useFeedbacksForStaffInfiniteQuery } from './hooks/feedback'
 import { useInfiniteScroll } from '@/@pv/hooks/use-infinite-scroll'
+import FeedbackCard from './components/FeedbackCard'
+import { useDebounce } from '@/@pv/hooks/use-debounce'
+
+const NoFeedback = () => {
+  return (
+    <div className='p-4 bg-gray-50 rounded-lg border'>
+      <Typography>No Feedback</Typography>
+    </div>
+  )
+}
 
 function FeedbacksManagementPage() {
   const [markAsReadState, setMarkAsReadState] = useState<{ id: string; cond: boolean }>({
@@ -16,9 +27,15 @@ function FeedbacksManagementPage() {
     id: ''
   })
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useFeedbacksForStaffInfiniteQuery()
+  const [search, setSearch] = useState('')
+  const searchDebounced = useDebounce(search, 500)
 
-  const feedbacks = data?.pages.flatMap(_data => _data.results)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isFetching } =
+    useFeedbacksForStaffInfiniteQuery({
+      search: searchDebounced
+    })
+
+  const feedbacks = data?.pages.flatMap(_data => _data?.data?.results)
 
   const { lastElementRef, nextPageFetchingIndicator } = useInfiniteScroll({
     onNextPage: fetchNextPage,
@@ -28,16 +45,6 @@ function FeedbacksManagementPage() {
       isLoading: isLoading
     }
   })
-
-  if (!data?.pages?.[0]?.count) {
-    return (
-      <AppLayout title='Feedbacks' withMaxH>
-        <div className='p-4 bg-gray-50 rounded-lg border'>
-          <Typography>No Feedback</Typography>
-        </div>
-      </AppLayout>
-    )
-  }
 
   return (
     <>
@@ -52,24 +59,42 @@ function FeedbacksManagementPage() {
         id={markAsReadState.id}
       />
       <AppLayout title='Feedbacks' withMaxH>
-        <div className='h-full w-full overflow-y-auto'>
-          {feedbacks?.map((feedback, i) => (
-            <>
-              <FeedbackCard
-                key={feedback?.id}
-                data={feedback}
-                onMarkAsRead={() => {
-                  setMarkAsReadState({ cond: true, id: feedback?.id?.toString() })
-                }}
-              />
-              {i + 1 === feedbacks?.length ? (
-                <div ref={lastElementRef} className='flex justify-center w-full'>
-                  {nextPageFetchingIndicator}
-                </div>
-              ) : null}
-            </>
-          ))}
-        </div>
+        <CustomTextField
+          fullWidth
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder='Search Here'
+          className='mb-6'
+        />
+
+        {isFetching && !isFetchingNextPage ? (
+          <div className='w-full flex items-center justify-center h-32'>
+            <CircularProgress />
+          </div>
+        ) : null}
+
+        {!isFetching && feedbacks?.length === 0 ? (
+          <NoFeedback />
+        ) : (
+          <div className='h-full w-full overflow-y-auto'>
+            {feedbacks?.map((feedback, i) => (
+              <div key={`${feedback.id}-${i}`}>
+                <FeedbackCard
+                  key={feedback?.id}
+                  data={feedback}
+                  onMarkAsRead={() => {
+                    setMarkAsReadState({ cond: true, id: feedback?.id?.toString() })
+                  }}
+                />
+                {i + 1 === feedbacks?.length ? (
+                  <div ref={lastElementRef} className='flex justify-center w-full my-6'>
+                    {nextPageFetchingIndicator}
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        )}
       </AppLayout>
     </>
   )

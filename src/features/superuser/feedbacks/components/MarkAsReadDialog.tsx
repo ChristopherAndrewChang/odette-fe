@@ -55,7 +55,7 @@ function MarkAsReadDialog({ onClose, open, id }: TMarkAsReadDialog) {
             <Button onClick={_onClose} variant='outlined' disabled={isPending}>
               Cancel
             </Button>
-            <Button variant='contained' color='primary' disabled={isPending}>
+            <Button variant='contained' color='primary' disabled={isPending} type='submit'>
               {isPending ? <CircularProgress size={18} className='text-white' /> : 'Proceed'}
             </Button>
           </div>
