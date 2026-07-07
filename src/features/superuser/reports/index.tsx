@@ -14,6 +14,7 @@ import { useReportSummary } from './hooks/useReportSummary'
 import type { NightlyData, ReportPeriod, ReportFilter } from './types'
 import { STORAGE_KEY } from '@/data/internal/storage'
 import { getRoleFromJWT } from '@/utils/auth'
+import ReportPin from './components/ReportPin'
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -333,6 +334,8 @@ function defaultSessionDate(): string {
 export default function ReportPage() {
   const [filter, setFilter] = useState<ReportFilter>({ type: 'period', period: '7d' })
   const [dateInput, setDateInput] = useState<string>(defaultSessionDate())
+  const [allowShow, setAllowShow] = useState(false)
+
   const { mode } = useColorScheme()
   const darkMode = mode === 'dark'
 
@@ -406,356 +409,372 @@ export default function ReportPage() {
     )
   }
 
+  if (!allowShow) {
+    return (
+      <AppLayout title=''>
+        <ReportPin setAllowShow={setAllowShow} />
+      </AppLayout>
+    )
+  }
+
   return (
-    <AppLayout
-      title='Laporan Pendapatan'
-      renderAction={
-        <div className='grid w-full grid-cols-1 gap-2 xl:w-auto xl:grid-cols-[auto_auto_auto] xl:items-center'>
-          {/* Session date picker */}
-          <div className='grid grid-cols-[minmax(0,1fr)_auto] gap-1 md:w-fit md:grid-cols-[160px_auto] xl:flex xl:w-auto xl:items-center'>
-            <TextField
-              type='date'
-              size='small'
-              value={dateInput}
-              className='!w-full'
-              onChange={e => setDateInput(e.target.value)}
-              inputProps={{ max: dayjs().format('YYYY-MM-DD') }}
-              sx={dateFieldSx}
-            />
-            <Button
-              size='small'
-              variant={filter.type === 'date' ? 'contained' : 'outlined'}
-              color='primary'
-              onClick={() => setFilter({ type: 'date', date: dateInput })}
-              sx={actionButtonSx}
-              className='whitespace-nowrap'
-            >
-              Cari sesi
-            </Button>
-          </div>
-
-          <span className={classNames('hidden text-sm xl:block', darkMode ? 'text-gray-600' : 'text-gray-300')}>|</span>
-
-          {/* Period presets */}
-          <div className='grid grid-cols-2 gap-1 min-[420px]:grid-cols-3 md:grid-cols-5 xl:flex xl:w-auto xl:items-center'>
-            {PERIODS.map(p => (
+    <>
+      <AppLayout
+        title='Laporan Pendapatan'
+        renderAction={
+          <div className='grid w-full grid-cols-1 gap-2 xl:w-auto xl:grid-cols-[auto_auto_auto] xl:items-center'>
+            {/* Session date picker */}
+            <div className='grid grid-cols-[minmax(0,1fr)_auto] gap-1 md:w-fit md:grid-cols-[160px_auto] xl:flex xl:w-auto xl:items-center'>
+              <TextField
+                type='date'
+                size='small'
+                value={dateInput}
+                className='!w-full'
+                onChange={e => setDateInput(e.target.value)}
+                inputProps={{ max: dayjs().format('YYYY-MM-DD') }}
+                sx={dateFieldSx}
+              />
               <Button
-                key={p.value}
-                onClick={() => setFilter({ type: 'period', period: p.value })}
-                variant={activePeriod === p.value ? 'contained' : 'outlined'}
+                size='small'
+                variant={filter.type === 'date' ? 'contained' : 'outlined'}
                 color='primary'
+                onClick={() => setFilter({ type: 'date', date: dateInput })}
                 sx={actionButtonSx}
-                className='min-w-0 whitespace-nowrap'
+                className='whitespace-nowrap'
               >
-                {p.label}
+                Cari sesi
               </Button>
-            ))}
+            </div>
+
+            <span className={classNames('hidden text-sm xl:block', darkMode ? 'text-gray-600' : 'text-gray-300')}>
+              |
+            </span>
+
+            {/* Period presets */}
+            <div className='grid grid-cols-2 gap-1 min-[420px]:grid-cols-3 md:grid-cols-5 xl:flex xl:w-auto xl:items-center'>
+              {PERIODS.map(p => (
+                <Button
+                  key={p.value}
+                  onClick={() => setFilter({ type: 'period', period: p.value })}
+                  variant={activePeriod === p.value ? 'contained' : 'outlined'}
+                  color='primary'
+                  sx={actionButtonSx}
+                  className='min-w-0 whitespace-nowrap'
+                >
+                  {p.label}
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
-      }
-    >
-      {/* getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser" */}
-      <div
-        className={classNames('space-y-4', {
-          '!hidden': getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || '') !== 'superuser'
-        })}
+        }
       >
-        {/* Period description */}
-        <p className={mutedClass(darkMode, 'text-xs')}>{periodLabel}</p>
+        {/* getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || "") !== "superuser" */}
+        <div
+          className={classNames('space-y-4', {
+            '!hidden': getRoleFromJWT(CookieStore.get(STORAGE_KEY.TOKEN) || '') !== 'superuser'
+          })}
+        >
+          {/* Period description */}
+          <p className={mutedClass(darkMode, 'text-xs')}>{periodLabel}</p>
 
-        {isError && (
-          <div
-            className={classNames(
-              'rounded-lg border p-4 text-sm',
-              darkMode ? 'border-red-900/80 bg-red-950/40 text-red-200' : 'border-red-200 bg-red-50 text-red-600'
-            )}
-          >
-            Gagal memuat data laporan. Coba refresh halaman.
-          </div>
-        )}
+          {isError && (
+            <div
+              className={classNames(
+                'rounded-lg border p-4 text-sm',
+                darkMode ? 'border-red-900/80 bg-red-950/40 text-red-200' : 'border-red-200 bg-red-50 text-red-600'
+              )}
+            >
+              Gagal memuat data laporan. Coba refresh halaman.
+            </div>
+          )}
 
-        {/* Insights */}
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
-          <InsightCard
-            icon='tabler-star'
-            label='Malam terbaik'
-            value={data?.best_night ? fmtLabel(nightlyLabel(data.best_night), groupBy) : '—'}
-            sub={data?.best_night ? rp(data.best_night.total) + ' pendapatan' : '—'}
-            color='#c9a84c'
-            darkMode={darkMode}
-          />
-          <InsightCard
-            icon='tabler-device-tv'
-            label='Tipe layar terlaris'
-            value={
-              data?.screen_types
-                ? Object.values(data.screen_types).reduce((b, c) => (c.count > b.count ? c : b), {
-                    name: '—',
-                    count: 0,
-                    revenue: 0
-                  }).name
-                : '—'
-            }
-            sub={
-              data?.screen_types
-                ? rp(
-                    Object.values(data.screen_types).reduce((b, c) => (c.count > b.count ? c : b), {
+          {/* Insights */}
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+            <InsightCard
+              icon='tabler-star'
+              label='Malam terbaik'
+              value={data?.best_night ? fmtLabel(nightlyLabel(data.best_night), groupBy) : '—'}
+              sub={data?.best_night ? rp(data.best_night.total) + ' pendapatan' : '—'}
+              color='#c9a84c'
+              darkMode={darkMode}
+            />
+            <InsightCard
+              icon='tabler-device-tv'
+              label='Tipe layar terlaris'
+              value={
+                data?.screen_types
+                  ? Object.values(data.screen_types).reduce((b, c) => (c.count > b.count ? c : b), {
                       name: '—',
                       count: 0,
                       revenue: 0
-                    }).revenue
-                  ) + ' pendapatan'
-                : '—'
-            }
-            color='#2357a8'
-            darkMode={darkMode}
-          />
-        </div>
-
-        {/* KPI cards */}
-        <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
-          <MetricCard
-            label='Total pendapatan'
-            value={data ? rp(data.total_revenue) : '—'}
-            sub={periodLabel}
-            barPct={100}
-            barColor='#c9a84c'
-            loading={isLoading}
-            darkMode={darkMode}
-          />
-          <MetricCard
-            label='Dari lagu'
-            value={data ? rp(data.song_revenue) : '—'}
-            sub={`${data?.song_requests.total ?? 0} masuk · ${data?.song_requests.dj_approved ?? 0} disetujui`}
-            barPct={data ? Math.round((data.song_revenue / (data.total_revenue || 1)) * 100) : 0}
-            barColor='#1d7a5a'
-            loading={isLoading}
-            darkMode={darkMode}
-          />
-          <MetricCard
-            label='Dari layar'
-            value={data ? rp(data.screen_revenue) : '—'}
-            sub={`${data?.screen_requests.total ?? 0} masuk · ${(data?.screen_requests.paid ?? 0) + (data?.screen_requests.played ?? 0)} terbayar`}
-            barPct={data ? Math.round((data.screen_revenue / (data.total_revenue || 1)) * 100) : 0}
-            barColor='#2357a8'
-            loading={isLoading}
-            darkMode={darkMode}
-          />
-          <MetricCard
-            label='Rata-rata per malam'
-            value={data ? rp(data.avg_per_night) : '—'}
-            sub={`dari ${data?.nights ?? 0} malam`}
-            barPct={70}
-            barColor='#c9a84c'
-            loading={isLoading}
-            darkMode={darkMode}
-          />
-        </div>
-
-        {/* Revenue chart + donut */}
-        <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
-          <div className={cardClass(darkMode, 'sm:col-span-2 p-5')}>
-            <p className={headingClass(darkMode, 'text-sm mb-1')}>Pendapatan</p>
-            <p className={mutedClass(darkMode, 'text-xs mb-4')}>
-              {groupBy === 'weekly'
-                ? 'Dikelompokkan per minggu'
-                : groupBy === 'monthly'
-                  ? 'Dikelompokkan per bulan'
-                  : 'Per malam'}
-              {' · hover untuk detail'}
-            </p>
-            {isLoading ? (
-              <Skeleton variant='rectangular' height={140} className='rounded-lg' />
-            ) : data?.nightly.length ? (
-              <RevenueChart nightly={data.nightly} groupBy={groupBy} darkMode={darkMode} />
-            ) : (
-              <div className={mutedClass(darkMode, 'text-xs text-center py-10')}>Belum ada data</div>
-            )}
+                    }).name
+                  : '—'
+              }
+              sub={
+                data?.screen_types
+                  ? rp(
+                      Object.values(data.screen_types).reduce((b, c) => (c.count > b.count ? c : b), {
+                        name: '—',
+                        count: 0,
+                        revenue: 0
+                      }).revenue
+                    ) + ' pendapatan'
+                  : '—'
+              }
+              color='#2357a8'
+              darkMode={darkMode}
+            />
           </div>
-          <div className={cardClass(darkMode, 'p-5')}>
-            <p className={headingClass(darkMode, 'text-sm mb-1')}>Porsi pendapatan</p>
-            <p className={mutedClass(darkMode, 'text-xs mb-4')}>Lagu vs layar</p>
-            {isLoading ? (
-              <Skeleton variant='circular' width={120} height={120} className='mx-auto' />
-            ) : (
-              <DonutChart songRev={data?.song_revenue ?? 0} screenRev={data?.screen_revenue ?? 0} darkMode={darkMode} />
-            )}
-          </div>
-        </div>
 
-        {/* Screen types */}
-        <div className='grid grid-cols-1 gap-4'>
-          <div className={cardClass(darkMode, 'p-5')}>
-            <p className={headingClass(darkMode, 'text-sm mb-1')}>Jenis request layar</p>
-            <p className={mutedClass(darkMode, 'text-xs mb-4')}>Berdasarkan yang sudah terbayar</p>
-            <div className='grid grid-cols-2 gap-2 mb-4'>
-              {data
-                ? Object.entries(data.screen_types).map(([key, t]) => (
-                    <div key={key} className='rounded-lg p-3' style={tintStyle(TYPE_COLORS[key], darkMode)}>
-                      <p className={bodyClass(darkMode, 'text-xs mb-1')}>
-                        <span
-                          className='inline-block w-2 h-2 rounded-full mr-1'
-                          style={{ background: TYPE_COLORS[key] }}
-                        />
-                        {t.name}
-                      </p>
-                      <p className={headingClass(darkMode, 'text-xl')}>{t.count}</p>
-                      <p className={mutedClass(darkMode, 'text-xs')}>{rp(t.revenue)}</p>
-                    </div>
-                  ))
-                : Array.from({ length: 4 }).map((_, i) => (
-                    <Skeleton key={i} variant='rectangular' height={72} className='rounded-lg' />
-                  ))}
+          {/* KPI cards */}
+          <div className='grid grid-cols-2 sm:grid-cols-4 gap-3'>
+            <MetricCard
+              label='Total pendapatan'
+              value={data ? rp(data.total_revenue) : '—'}
+              sub={periodLabel}
+              barPct={100}
+              barColor='#c9a84c'
+              loading={isLoading}
+              darkMode={darkMode}
+            />
+            <MetricCard
+              label='Dari lagu'
+              value={data ? rp(data.song_revenue) : '—'}
+              sub={`${data?.song_requests.total ?? 0} masuk · ${data?.song_requests.dj_approved ?? 0} disetujui`}
+              barPct={data ? Math.round((data.song_revenue / (data.total_revenue || 1)) * 100) : 0}
+              barColor='#1d7a5a'
+              loading={isLoading}
+              darkMode={darkMode}
+            />
+            <MetricCard
+              label='Dari layar'
+              value={data ? rp(data.screen_revenue) : '—'}
+              sub={`${data?.screen_requests.total ?? 0} masuk · ${(data?.screen_requests.paid ?? 0) + (data?.screen_requests.played ?? 0)} terbayar`}
+              barPct={data ? Math.round((data.screen_revenue / (data.total_revenue || 1)) * 100) : 0}
+              barColor='#2357a8'
+              loading={isLoading}
+              darkMode={darkMode}
+            />
+            <MetricCard
+              label='Rata-rata per malam'
+              value={data ? rp(data.avg_per_night) : '—'}
+              sub={`dari ${data?.nights ?? 0} malam`}
+              barPct={70}
+              barColor='#c9a84c'
+              loading={isLoading}
+              darkMode={darkMode}
+            />
+          </div>
+
+          {/* Revenue chart + donut */}
+          <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+            <div className={cardClass(darkMode, 'sm:col-span-2 p-5')}>
+              <p className={headingClass(darkMode, 'text-sm mb-1')}>Pendapatan</p>
+              <p className={mutedClass(darkMode, 'text-xs mb-4')}>
+                {groupBy === 'weekly'
+                  ? 'Dikelompokkan per minggu'
+                  : groupBy === 'monthly'
+                    ? 'Dikelompokkan per bulan'
+                    : 'Per malam'}
+                {' · hover untuk detail'}
+              </p>
+              {isLoading ? (
+                <Skeleton variant='rectangular' height={140} className='rounded-lg' />
+              ) : data?.nightly.length ? (
+                <RevenueChart nightly={data.nightly} groupBy={groupBy} darkMode={darkMode} />
+              ) : (
+                <div className={mutedClass(darkMode, 'text-xs text-center py-10')}>Belum ada data</div>
+              )}
             </div>
-            {data && (
-              <div className='space-y-2'>
-                {Object.entries(data.screen_types).map(([key, t]) => (
-                  <div key={key} className='flex items-center gap-2'>
-                    <span className={mutedClass(darkMode, 'text-xs w-24 truncate')}>{t.name}</span>
-                    <div className={trackClass(darkMode, 'flex-1 h-1.5 rounded-full')}>
-                      <div
-                        className='h-1.5 rounded-full transition-all duration-500'
-                        style={{
-                          width: `${Math.round((t.count / maxTypeCount) * 100)}%`,
-                          background: TYPE_COLORS[key]
-                        }}
-                      />
-                    </div>
-                    <span className={bodyClass(darkMode, 'text-xs w-6 text-right')}>{t.count}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <div className={cardClass(darkMode, 'p-5')}>
+              <p className={headingClass(darkMode, 'text-sm mb-1')}>Porsi pendapatan</p>
+              <p className={mutedClass(darkMode, 'text-xs mb-4')}>Lagu vs layar</p>
+              {isLoading ? (
+                <Skeleton variant='circular' width={120} height={120} className='mx-auto' />
+              ) : (
+                <DonutChart
+                  songRev={data?.song_revenue ?? 0}
+                  screenRev={data?.screen_revenue ?? 0}
+                  darkMode={darkMode}
+                />
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* Nightly table */}
-        <div className={cardClass(darkMode, 'p-5')}>
-          <p className={headingClass(darkMode, 'text-sm mb-1')}>
-            Detail per {groupBy === 'monthly' ? 'bulan' : groupBy === 'weekly' ? 'minggu' : 'malam'}
-          </p>
-          <p className={mutedClass(darkMode, 'text-xs mb-4')}>Rincian pendapatan dan request per periode</p>
-          <div className='overflow-x-auto'>
-            <table className='w-full text-sm'>
-              <thead>
-                <tr className={classNames('border-b', darkMode ? 'border-gray-700' : 'border-gray-100')}>
-                  <th className={mutedClass(darkMode, 'text-left text-xs font-medium pb-2 pr-4')}>Periode</th>
-                  <th className={mutedClass(darkMode, 'text-center text-xs font-medium pb-2 px-2')}>Request lagu</th>
-                  <th className={mutedClass(darkMode, 'text-center text-xs font-medium pb-2 px-2')}>Request layar</th>
-                  <th className={mutedClass(darkMode, 'text-right text-xs font-medium pb-2 pl-4')}>Pendapatan</th>
-                  <th className={mutedClass(darkMode, 'text-right text-xs font-medium pb-2 pl-4')}>Status</th>
-                </tr>
-              </thead>
-              <tbody className={classNames('divide-y', darkMode ? 'divide-gray-700' : 'divide-gray-50')}>
-                {isLoading
-                  ? Array.from({ length: 7 }).map((_, i) => (
-                      <tr key={i}>
-                        <td colSpan={5} className='py-2'>
-                          <Skeleton height={28} />
-                        </td>
-                      </tr>
+          {/* Screen types */}
+          <div className='grid grid-cols-1 gap-4'>
+            <div className={cardClass(darkMode, 'p-5')}>
+              <p className={headingClass(darkMode, 'text-sm mb-1')}>Jenis request layar</p>
+              <p className={mutedClass(darkMode, 'text-xs mb-4')}>Berdasarkan yang sudah terbayar</p>
+              <div className='grid grid-cols-2 gap-2 mb-4'>
+                {data
+                  ? Object.entries(data.screen_types).map(([key, t]) => (
+                      <div key={key} className='rounded-lg p-3' style={tintStyle(TYPE_COLORS[key], darkMode)}>
+                        <p className={bodyClass(darkMode, 'text-xs mb-1')}>
+                          <span
+                            className='inline-block w-2 h-2 rounded-full mr-1'
+                            style={{ background: TYPE_COLORS[key] }}
+                          />
+                          {t.name}
+                        </p>
+                        <p className={headingClass(darkMode, 'text-xl')}>{t.count}</p>
+                        <p className={mutedClass(darkMode, 'text-xs')}>{rp(t.revenue)}</p>
+                      </div>
                     ))
-                  : (data?.nightly ?? [])
-                      .slice()
-                      .reverse()
-                      .map((n, index) => {
-                        const label = nightlyLabel(n)
-                        const perfPct = Math.round((n.total / maxNightRev) * 100)
-
-                        return (
-                          <tr
-                            key={label || index}
-                            className={classNames(
-                              'transition-colors',
-                              darkMode ? 'hover:bg-gray-700/30' : 'hover:bg-gray-50'
-                            )}
-                          >
-                            <td className={bodyClass(darkMode, 'py-2.5 pr-4 text-xs whitespace-nowrap')}>
-                              {fmtLabel(label, groupBy)}
-                            </td>
-                            <td className='py-2.5 px-2 text-center'>
-                              <span className={bodyClass(darkMode, 'text-xs')}>{n.song_count} masuk</span>
-                              <span className={classNames('mx-1', darkMode ? 'text-gray-600' : 'text-gray-300')}>
-                                ·
-                              </span>
-                              <span className={classNames('text-xs', darkMode ? 'text-green-300' : 'text-green-600')}>
-                                {n.song_approved} ✓
-                              </span>
-                            </td>
-                            <td className='py-2.5 px-2 text-center'>
-                              <span className={bodyClass(darkMode, 'text-xs')}>{n.screen_count} masuk</span>
-                              <span className={classNames('mx-1', darkMode ? 'text-gray-600' : 'text-gray-300')}>
-                                ·
-                              </span>
-                              <span className={classNames('text-xs', darkMode ? 'text-blue-300' : 'text-blue-600')}>
-                                {n.screen_paid} ✓
-                              </span>
-                            </td>
-                            <td className='py-2.5 pl-4 text-right'>
-                              <div className='flex items-center justify-end gap-2'>
-                                <div className={trackClass(darkMode, 'w-16 h-1 rounded-full')}>
-                                  <div
-                                    className='h-1 rounded-full'
-                                    style={{ width: `${perfPct}%`, background: '#c9a84c' }}
-                                  />
-                                </div>
-                                <span className={headingClass(darkMode, 'text-xs whitespace-nowrap')}>
-                                  {rp(n.total)}
-                                </span>
-                              </div>
-                            </td>
-                            <td className='py-2.5 pl-4 text-right'>
-                              <Chip
-                                label={perfPct >= 70 ? 'Ramai' : perfPct >= 40 ? 'Normal' : 'Sepi'}
-                                size='small'
-                                color={perfPct >= 70 ? 'success' : perfPct >= 40 ? 'warning' : 'default'}
-                                sx={{
-                                  fontSize: 10,
-                                  height: 20,
-                                  ...(darkMode && {
-                                    color: '#f9fafb',
-                                    '&.MuiChip-colorDefault': {
-                                      backgroundColor: '#374151'
-                                    }
-                                  })
-                                }}
-                              />
-                            </td>
-                          </tr>
-                        )
-                      })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Song status */}
-        <div className={cardClass(darkMode, 'p-5')}>
-          <p className={headingClass(darkMode, 'text-sm mb-1')}>Status request lagu</p>
-          <p className={mutedClass(darkMode, 'text-xs mb-4')}>Dari total {songTotal} request masuk di periode ini</p>
-          <div className='grid grid-cols-2 sm:grid-cols-6 gap-3'>
-            {STATUS_CONFIG.map(s => {
-              const count = data?.song_requests?.[s.key] ?? 0
-
-              return (
-                <div key={s.key} className='text-center py-4 px-3 rounded-lg' style={tintStyle(s.color, darkMode)}>
-                  {isLoading ? (
-                    <Skeleton width={40} height={32} className='mx-auto' />
-                  ) : (
-                    <p className='text-2xl font-bold' style={{ color: s.color }}>
-                      {count}
-                    </p>
-                  )}
-                  <p className={mutedClass(darkMode, 'text-xs mt-1 leading-tight')}>{s.label}</p>
-                  <p className='text-xs font-medium mt-0.5' style={{ color: s.color }}>
-                    {pct(count, songTotal)}
-                  </p>
+                  : Array.from({ length: 4 }).map((_, i) => (
+                      <Skeleton key={i} variant='rectangular' height={72} className='rounded-lg' />
+                    ))}
+              </div>
+              {data && (
+                <div className='space-y-2'>
+                  {Object.entries(data.screen_types).map(([key, t]) => (
+                    <div key={key} className='flex items-center gap-2'>
+                      <span className={mutedClass(darkMode, 'text-xs w-24 truncate')}>{t.name}</span>
+                      <div className={trackClass(darkMode, 'flex-1 h-1.5 rounded-full')}>
+                        <div
+                          className='h-1.5 rounded-full transition-all duration-500'
+                          style={{
+                            width: `${Math.round((t.count / maxTypeCount) * 100)}%`,
+                            background: TYPE_COLORS[key]
+                          }}
+                        />
+                      </div>
+                      <span className={bodyClass(darkMode, 'text-xs w-6 text-right')}>{t.count}</span>
+                    </div>
+                  ))}
                 </div>
-              )
-            })}
+              )}
+            </div>
+          </div>
+
+          {/* Nightly table */}
+          <div className={cardClass(darkMode, 'p-5')}>
+            <p className={headingClass(darkMode, 'text-sm mb-1')}>
+              Detail per {groupBy === 'monthly' ? 'bulan' : groupBy === 'weekly' ? 'minggu' : 'malam'}
+            </p>
+            <p className={mutedClass(darkMode, 'text-xs mb-4')}>Rincian pendapatan dan request per periode</p>
+            <div className='overflow-x-auto'>
+              <table className='w-full text-sm'>
+                <thead>
+                  <tr className={classNames('border-b', darkMode ? 'border-gray-700' : 'border-gray-100')}>
+                    <th className={mutedClass(darkMode, 'text-left text-xs font-medium pb-2 pr-4')}>Periode</th>
+                    <th className={mutedClass(darkMode, 'text-center text-xs font-medium pb-2 px-2')}>Request lagu</th>
+                    <th className={mutedClass(darkMode, 'text-center text-xs font-medium pb-2 px-2')}>Request layar</th>
+                    <th className={mutedClass(darkMode, 'text-right text-xs font-medium pb-2 pl-4')}>Pendapatan</th>
+                    <th className={mutedClass(darkMode, 'text-right text-xs font-medium pb-2 pl-4')}>Status</th>
+                  </tr>
+                </thead>
+                <tbody className={classNames('divide-y', darkMode ? 'divide-gray-700' : 'divide-gray-50')}>
+                  {isLoading
+                    ? Array.from({ length: 7 }).map((_, i) => (
+                        <tr key={i}>
+                          <td colSpan={5} className='py-2'>
+                            <Skeleton height={28} />
+                          </td>
+                        </tr>
+                      ))
+                    : (data?.nightly ?? [])
+                        .slice()
+                        .reverse()
+                        .map((n, index) => {
+                          const label = nightlyLabel(n)
+                          const perfPct = Math.round((n.total / maxNightRev) * 100)
+
+                          return (
+                            <tr
+                              key={label || index}
+                              className={classNames(
+                                'transition-colors',
+                                darkMode ? 'hover:bg-gray-700/30' : 'hover:bg-gray-50'
+                              )}
+                            >
+                              <td className={bodyClass(darkMode, 'py-2.5 pr-4 text-xs whitespace-nowrap')}>
+                                {fmtLabel(label, groupBy)}
+                              </td>
+                              <td className='py-2.5 px-2 text-center'>
+                                <span className={bodyClass(darkMode, 'text-xs')}>{n.song_count} masuk</span>
+                                <span className={classNames('mx-1', darkMode ? 'text-gray-600' : 'text-gray-300')}>
+                                  ·
+                                </span>
+                                <span className={classNames('text-xs', darkMode ? 'text-green-300' : 'text-green-600')}>
+                                  {n.song_approved} ✓
+                                </span>
+                              </td>
+                              <td className='py-2.5 px-2 text-center'>
+                                <span className={bodyClass(darkMode, 'text-xs')}>{n.screen_count} masuk</span>
+                                <span className={classNames('mx-1', darkMode ? 'text-gray-600' : 'text-gray-300')}>
+                                  ·
+                                </span>
+                                <span className={classNames('text-xs', darkMode ? 'text-blue-300' : 'text-blue-600')}>
+                                  {n.screen_paid} ✓
+                                </span>
+                              </td>
+                              <td className='py-2.5 pl-4 text-right'>
+                                <div className='flex items-center justify-end gap-2'>
+                                  <div className={trackClass(darkMode, 'w-16 h-1 rounded-full')}>
+                                    <div
+                                      className='h-1 rounded-full'
+                                      style={{ width: `${perfPct}%`, background: '#c9a84c' }}
+                                    />
+                                  </div>
+                                  <span className={headingClass(darkMode, 'text-xs whitespace-nowrap')}>
+                                    {rp(n.total)}
+                                  </span>
+                                </div>
+                              </td>
+                              <td className='py-2.5 pl-4 text-right'>
+                                <Chip
+                                  label={perfPct >= 70 ? 'Ramai' : perfPct >= 40 ? 'Normal' : 'Sepi'}
+                                  size='small'
+                                  color={perfPct >= 70 ? 'success' : perfPct >= 40 ? 'warning' : 'default'}
+                                  sx={{
+                                    fontSize: 10,
+                                    height: 20,
+                                    ...(darkMode && {
+                                      color: '#f9fafb',
+                                      '&.MuiChip-colorDefault': {
+                                        backgroundColor: '#374151'
+                                      }
+                                    })
+                                  }}
+                                />
+                              </td>
+                            </tr>
+                          )
+                        })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Song status */}
+          <div className={cardClass(darkMode, 'p-5')}>
+            <p className={headingClass(darkMode, 'text-sm mb-1')}>Status request lagu</p>
+            <p className={mutedClass(darkMode, 'text-xs mb-4')}>Dari total {songTotal} request masuk di periode ini</p>
+            <div className='grid grid-cols-2 sm:grid-cols-6 gap-3'>
+              {STATUS_CONFIG.map(s => {
+                const count = data?.song_requests?.[s.key] ?? 0
+
+                return (
+                  <div key={s.key} className='text-center py-4 px-3 rounded-lg' style={tintStyle(s.color, darkMode)}>
+                    {isLoading ? (
+                      <Skeleton width={40} height={32} className='mx-auto' />
+                    ) : (
+                      <p className='text-2xl font-bold' style={{ color: s.color }}>
+                        {count}
+                      </p>
+                    )}
+                    <p className={mutedClass(darkMode, 'text-xs mt-1 leading-tight')}>{s.label}</p>
+                    <p className='text-xs font-medium mt-0.5' style={{ color: s.color }}>
+                      {pct(count, songTotal)}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
-      </div>
-    </AppLayout>
+      </AppLayout>
+    </>
   )
 }
