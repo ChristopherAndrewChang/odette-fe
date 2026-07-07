@@ -72,7 +72,7 @@
 
 'use client'
 
-import { Button, Typography } from '@mui/material'
+import { Button, Typography, useColorScheme } from '@mui/material'
 
 import classNames from 'classnames'
 
@@ -86,6 +86,8 @@ type TFeedbackCard = {
 }
 
 function FeedbackCard({ data, onMarkAsRead }: TFeedbackCard) {
+  const { mode } = useColorScheme()
+
   return (
     <div className='grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-2 border-b mb-6 pb-6'>
       <div className='col-span-1 sm:col-span-3 flex flex-wrap items-center gap-2 mb-2 sm:mb-4'>
@@ -101,7 +103,11 @@ function FeedbackCard({ data, onMarkAsRead }: TFeedbackCard) {
 
       {/* data personal */}
       <div className='col-span-1'>
-        <Typography className='font-semibold text-black text-base sm:text-lg mb-2 break-words'>
+        <Typography
+          className={classNames('font-semibold text-black text-base sm:text-lg mb-2 break-words', {
+            '!text-white': mode === 'dark'
+          })}
+        >
           {data?.customer_name}
         </Typography>
         <Typography className='text-sm break-all'>{data?.email}</Typography>
@@ -127,7 +133,8 @@ function FeedbackCard({ data, onMarkAsRead }: TFeedbackCard) {
       <div className='col-span-1 sm:col-span-2'>
         <Typography
           className={classNames('break-words', {
-            'text-black font-medium mb-4': !data?.is_read
+            'text-black font-medium mb-4': !data?.is_read,
+            '!text-white': mode === 'dark'
           })}
         >
           {data?.message}

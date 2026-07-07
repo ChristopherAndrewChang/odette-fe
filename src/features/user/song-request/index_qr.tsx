@@ -8,10 +8,6 @@ import { Button, CircularProgress, Typography } from '@mui/material'
 
 import toast from 'react-hot-toast'
 
-import { getErrorMessage } from '@ozanplanviu/planviu-core'
-
-import { useQueryClient } from '@tanstack/react-query'
-
 import { APP_URL } from '@/data/internal/app-route'
 import UserBackButton from '../shared/components/UserBackButton'
 import UserContainer from '../shared/components/UserContainer'
@@ -19,8 +15,6 @@ import { useColor } from '@/hooks/color'
 import GroupTitle from '../screen-takeover/components/GroupTitle'
 import HistoryButton from '../shared/components/HistoryButton'
 import ListRequestSongDrawer from './components/ListRequestSongDrawer'
-import { useSongRequestMutation } from './hooks/song-request'
-import { QUERY_KEY } from '@/data/internal/query-keys'
 import { useDonationSettingsPublicQuery } from '../shared/hooks/donation-settings'
 import SongPaymentDialog from './components/SongPaymentDialog'
 import type { TSongRequest } from './types/song-request'
@@ -32,8 +26,6 @@ function SongRequest() {
     song_title: '',
     donation: ''
   }
-
-  const queryClient = useQueryClient()
 
   const { DARKBLUE, GOLD, GRAY, PURPLE } = useColor()
 
@@ -66,19 +58,6 @@ function SongRequest() {
 
     return arrAdder.map(adder => adder + donations?.data?.song_request)
   }
-
-  const { mutate, isPending } = useSongRequestMutation({
-    onSuccess: () => {
-      toast.success('Song requested! Keep an eye on your history for updates.')
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.MY_SONG_REQUEST.INDEX]
-      })
-      reset(defaultValue)
-    },
-    onError: err => {
-      toast.error(getErrorMessage(err))
-    }
-  })
 
   // const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useMySongRequestInfiniteQuery();
   // const songs = data?.pages.flatMap(song => song?.data?.results);
@@ -120,13 +99,18 @@ function SongRequest() {
       return
     }
 
-    mutate({
-      method: 'POST',
-      data: {
-        ...data,
-        donation_amount: data?.donation === 'custom' ? data?.donation_amount : data?.donation
-      }
+    setPaymentDialogState({
+      cond: true,
+      data: data
     })
+
+    // mutate({
+    //   method: 'POST',
+    //   data: {
+    //     ...data,
+    //     donation_amount: data?.donation === 'custom' ? data?.donation_amount : data?.donation
+    //   }
+    // })
   }
 
   return (
@@ -139,6 +123,7 @@ function SongRequest() {
       <ListRequestSongDrawer
         open={openRequestSongList}
         onClose={() => {
+          reset(defaultValue)
           setOpenRequestSongList(false)
         }}
       />
@@ -302,13 +287,8 @@ function SongRequest() {
             fullWidth
             disabled={donationsFetching}
             className='text-white my-3 bg-purple-950'
-            style={
-              {
-                // backgroundImage: `linear-gradient(to right, ${GOLD}, ${GOLD},${GOLD}, ${GOLD}, ${GOLD},${GOLD}90)`
-              }
-            }
           >
-            {isPending ? <CircularProgress size={20} className='text-white' /> : 'Send and Pay'}
+            Send and Pay
           </Button>
 
           <p className='text-gray-400 text-sm text-center'>

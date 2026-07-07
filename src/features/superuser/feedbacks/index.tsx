@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 
-import { CircularProgress, Typography } from '@mui/material'
+import { CircularProgress, Typography, useColorScheme } from '@mui/material'
 
 import { CustomTextField } from '@ozanplanviu/planviu-core'
+
+import classNames from 'classnames'
 
 import AppLayout from '@/components/internal/AppLayout'
 import MarkAsReadDialog from './components/MarkAsReadDialog'
@@ -14,8 +16,14 @@ import FeedbackCard from './components/FeedbackCard'
 import { useDebounce } from '@/@pv/hooks/use-debounce'
 
 const NoFeedback = () => {
+  const { mode } = useColorScheme()
+
   return (
-    <div className='p-4 bg-gray-50 rounded-lg border'>
+    <div
+      className={classNames('p-4 bg-gray-50 rounded-lg border', {
+        '!bg-gray-800': mode === 'dark'
+      })}
+    >
       <Typography>No Feedback</Typography>
     </div>
   )
