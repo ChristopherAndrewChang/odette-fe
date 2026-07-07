@@ -34,5 +34,8 @@ export const QUERY_KEY = {
     REPORTS: {
         SUMMARY: "reports_summary"
     },
+    FEEDBACKS_STAFF: {
+        INDEX: "FEEDBACKS_STAFF"
+    }
 }
 

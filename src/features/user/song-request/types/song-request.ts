@@ -13,3 +13,10 @@ export type TMySongReq = {
     billed_at: null | string;
     created_at: string;
 }
+
+export type TSongRequest = {
+    song_title: string
+    artist: string
+    donation_amount: string
+    donation: string
+}

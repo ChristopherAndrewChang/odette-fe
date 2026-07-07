@@ -1,11 +1,9 @@
 import React from 'react'
 
-import SongRequest from '@/features/user/song-request'
+import SongRequest from '@/features/user/song-request/index'
 
 function page() {
-    return (
-        <SongRequest />
-    )
+  return <SongRequest />
 }
 
 export default page

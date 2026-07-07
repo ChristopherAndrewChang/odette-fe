@@ -60,4 +60,8 @@ export const API_URL = {
     REPORTS: {
         SUMMARY: "/core/report/summary/"
     },
+    FEEDBACKS_STAFF: {
+        INDEX: "/feedback/",
+        READ: "/feedback/:id/read/"
+    }
 }

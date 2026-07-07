@@ -72,7 +72,12 @@ function KanbanCard({
         {!!onReject ? (
           <div
             onClick={onReject}
-            className='px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200'
+            className={classNames(
+              'px-4 py-2 w-full rounded-lg border bg-red-100 flex justify-center items-center cursor-pointer hover:bg-red-200',
+              {
+                '!bg-red-800 hover:!bg-red-900': mode === 'dark'
+              }
+            )}
           >
             <p>Reject</p>
           </div>
@@ -81,7 +86,12 @@ function KanbanCard({
         {!!onAccept ? (
           <div
             onClick={onAccept}
-            className='px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200'
+            className={classNames(
+              'px-4 py-2 w-full rounded-lg border bg-green-100 flex justify-center items-center cursor-pointer hover:bg-green-200',
+              {
+                '!bg-green-800 hover:!bg-green-900': mode === 'dark'
+              }
+            )}
           >
             <p>Accept</p>
           </div>
