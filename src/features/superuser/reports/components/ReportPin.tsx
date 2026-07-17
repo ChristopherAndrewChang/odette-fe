@@ -1,7 +1,7 @@
 'use client'
 
 import type { Dispatch, SetStateAction } from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { Button, Typography, useColorScheme } from '@mui/material'
 
@@ -12,7 +12,6 @@ import toast from 'react-hot-toast'
 import classNames from 'classnames'
 
 import OtpSlot from './OtpSlot'
-import { deriveKey, generateSalt } from '../utils/security'
 
 type TReportPinDialog = {
   setAllowShow: Dispatch<SetStateAction<boolean>>
@@ -29,12 +28,6 @@ function ReportPin({ setAllowShow }: TReportPinDialog) {
       toast.error('Invalid Pin')
     }
   }
-
-  useEffect(() => {
-    deriveKey('123456', generateSalt(32).toString()).then(value => {
-      console.log('cryptokey', value)
-    })
-  }, [])
 
   return (
     <div className='flex flex-col gap-4 items-start overflow-auto'>
