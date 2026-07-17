@@ -46,7 +46,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
       }
     })
 
-    return arr?.length + 1 // ini buat tambah game karena game selalu show
+    return arr?.length + 2 // ini buat tambah game karena game selalu show
     // kalau ada feedback ganti ini jadi + 2
   }
 
@@ -137,7 +137,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
                 ></i>
               </div>
 
-              {/* <div
+              <div
                 onClick={() => {
                   router.push('/user/feedback')
                   loader.start()
@@ -149,7 +149,7 @@ function UserContainer({ children, isDj }: TUserContainer) {
                     '!text-yellow-700': pathname.startsWith('/user/feedback')
                   })}
                 ></i>
-              </div> */}
+              </div>
 
               {/* {USERS_MENU.map((menu, i) => (
                                 <div

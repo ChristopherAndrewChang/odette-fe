@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 
-import { LuDices, LuMonitor, LuUtensilsCrossed } from 'react-icons/lu'
+import { LuDices, LuMessageSquare, LuMonitor, LuUtensilsCrossed } from 'react-icons/lu'
 
 import { PiMusicNotesPlus } from 'react-icons/pi'
 
@@ -115,7 +115,7 @@ function HomePage() {
           />
 
           {/* feedback */}
-          {/* <CardMenu
+          <CardMenu
             href='/user/feedback'
             icon={
               <LuMessageSquare className='text-5xl text-amber-300 mb-6 drop-shadow-[0_0_12px_rgba(252,211,77,0.4)]' />
@@ -123,7 +123,7 @@ function HomePage() {
             textHeading='Feedback'
             textSubtitle='Share your thoughts with us'
             bgAndBorderClassName='bg-gradient-to-r from-[#1D180A] to-[#2A220C] border-yellow-950/50 shadow-lg shadow-green-900/20'
-          /> */}
+          />
 
           {/* card now playing */}
           {/* <div className="flex flex-col gap-1 bg-gradient-to-r from-[#171723] to-[#161723] p-4 rounded-2xl border border-gray-800 col-span-2 shadow-lg shadow-black/50">
