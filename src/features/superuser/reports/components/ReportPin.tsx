@@ -22,7 +22,7 @@ function ReportPin({ setAllowShow }: TReportPinDialog) {
   const { mode } = useColorScheme()
 
   const onSubmit = () => {
-    if (pinOtp === 'ovip12') {
+    if (pinOtp === '192837') {
       setAllowShow(true)
     } else {
       toast.error('Invalid Pin')

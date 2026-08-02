@@ -60,7 +60,7 @@ export const SettingsProvider = (props: Props) => {
     navbarContentWidth: themeConfig.navbar.contentWidth,
     contentWidth: themeConfig.contentWidth,
     footerContentWidth: themeConfig.footer.contentWidth,
-    primaryColor: (themeConfig.mode === "dark") ? primaryColorConfig[0].dark : primaryColorConfig[0].main
+    primaryColor: themeConfig.mode === 'dark' ? primaryColorConfig[0].dark : primaryColorConfig[0].main
   }
 
   const updatedInitialSettings = {
@@ -123,10 +123,7 @@ export const SettingsProvider = (props: Props) => {
 
   // fzn: ini buat update warna primary ketika dark mode
   useEffect(() => {
-    const newPrimary =
-      _settingsState.mode === "dark"
-        ? primaryColorConfig[0].dark
-        : primaryColorConfig[0].main
+    const newPrimary = _settingsState.mode === 'dark' ? primaryColorConfig[0].dark : primaryColorConfig[0].main
 
     _updateSettingsState(prev => ({
       ...prev,
