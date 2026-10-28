@@ -29,7 +29,10 @@ export const patchMenuUpload = (id: string, data?: Record<any, any>) => {
     return api({
         method: "PATCH",
         data: data,
-        urlKey: `${API_URL.MENU.TOGGLE.replace(":id", id)}`
+        urlKey: `${API_URL.MENU.TOGGLE.replace(":id", id)}`,
+
+        // multipart only when a cover_image is sent, otherwise plain JSON
+        headers: data instanceof FormData ? { "Content-Type": "multipart/form-data" } : undefined
     });
 }
 

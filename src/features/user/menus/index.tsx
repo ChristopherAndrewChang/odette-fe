@@ -7,16 +7,17 @@ import { CircularProgress } from "@mui/material";
 import UserContainer from "../shared/components/UserContainer";
 import UserBackButton from "../shared/components/UserBackButton";
 import MenuDetailDialog from "./components/MenuDetailDialog";
+import MenuPdfCard from "./components/MenuPdfCard";
 import { useColor } from "@/hooks/color";
 import { useMenusQuery } from "@/features/superuser/menus/hooks/menus";
 import { usePromosQuery } from "@/features/superuser/menus/hooks/promos";
 
 function MenuPage() {
     const [open, setOpen] = useState(false);
-    const { DARKBLUE, GOLD, DARKGRAY } = useColor();
+    const { GOLD } = useColor();
 
-    const { data: menus, isFetching: fetchingMenus } = useMenusQuery({}, true);
-    const { data: promos, isFetching: fetchingPromos } = usePromosQuery({}, true);
+    const { data: menus, isFetching: fetchingMenus } = useMenusQuery({ page_size: 100 }, true);
+    const { data: promos, isFetching: fetchingPromos } = usePromosQuery({ page_size: 100 }, true);
 
     return (
         <>
@@ -43,14 +44,8 @@ function MenuPage() {
                             <CircularProgress size={18} className="text-white" />
                         ) : (
                             <>
-                                {promos?.data?.results?.map((promo, i) => (
-                                    <a href={promo.file_url} target="_blank" key={promo.id} className="block border rounded-xl cursor-pointer" style={{
-                                        backgroundColor: DARKBLUE,
-                                        borderColor: DARKGRAY
-                                    }}>
-                                        <p className="font-poppins text-white py-2 px-4">Promo {i + 1}<span className="text-xs italic">{" "}(click for full preview)</span></p>
-                                        <iframe src={promo?.file_url?.replace("http://", "https://")} frameBorder="0" className="w-full pointer-events-none"></iframe>
-                                    </a>
+                                {promos?.data?.results?.map(promo => (
+                                    <MenuPdfCard key={promo.id} menu={promo} />
                                 ))}
                             </>
                         )}
@@ -67,14 +62,8 @@ function MenuPage() {
                         <CircularProgress size={18} className="text-white" />
                     ) : (
                         <>
-                            {menus?.data?.results?.map((menu, i) => (
-                                <a href={menu.file_url} target="_blank" key={menu.id} className="block border rounded-xl cursor-pointer" style={{
-                                    backgroundColor: DARKBLUE,
-                                    borderColor: DARKGRAY
-                                }}>
-                                    <p className="font-poppins text-white py-2 px-4">Menu {i + 1} <span className="text-xs italic">(click for full preview)</span></p>
-                                    <iframe src={menu?.file_url?.replace("http://", "https://")} frameBorder="0" className="w-full pointer-events-none"></iframe>
-                                </a>
+                            {menus?.data?.results?.map(menu => (
+                                <MenuPdfCard key={menu.id} menu={menu} />
                             ))}
                         </>
                     )}

@@ -6,25 +6,37 @@ import { Tab, Tabs } from "@mui/material";
 
 import AppLayout from "@/components/internal/AppLayout";
 
-import AddMenuDialog from "./components/AddMenuDialog";
+import MenuFormDialog from "./components/MenuFormDialog";
 import MenuTable from "./components/table-data/MenuTable";
 import PromoTable from "./components/table-data/PromoTable";
+import type { TMenus } from "./types/menus";
 
 function MenusManagement() {
     const [tabValue, setTabValue] = useState<"menu" | "promo">("menu");
     const [openMenuDialog, setOpenMenuDialog] = useState(false);
 
-    const onAddHandler = () => { setOpenMenuDialog(true) };
+    const [editData, setEditData] = useState<TMenus | null>(null);
+
+    const onAddHandler = () => {
+        setEditData(null);
+        setOpenMenuDialog(true);
+    };
+
+    const onEditHandler = (menu: TMenus) => {
+        setEditData(menu);
+        setOpenMenuDialog(true);
+    };
 
     const TabComponent = {
-        menu: <MenuTable onAdd={onAddHandler} />,
-        promo: <PromoTable onAdd={onAddHandler} />
+        menu: <MenuTable onAdd={onAddHandler} onEdit={onEditHandler} />,
+        promo: <PromoTable onAdd={onAddHandler} onEdit={onEditHandler} />
     }
 
     return (
         <>
-            <AddMenuDialog
-                key={tabValue}
+            <MenuFormDialog
+                key={`${tabValue}-${editData?.id ?? "add"}`}
+                data={editData}
                 open={openMenuDialog}
                 onClose={() => {
                     setOpenMenuDialog(false);

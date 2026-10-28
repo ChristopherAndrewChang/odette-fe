@@ -12,14 +12,16 @@ import { useColorScheme } from "@mui/material";
 
 import { usePromosQuery } from "../../hooks/promos";
 import { columns } from "../../columns";
+import type { TMenus } from "../../types/menus";
 import { MenuMapper } from "../../mapper";
 import { useMenuMutation } from "../../hooks/menus";
 
 type TPromoTable = {
     onAdd: () => void;
+    onEdit: (menu: TMenus) => void;
 }
 
-function PromoTable({ onAdd }: TPromoTable) {
+function PromoTable({ onAdd, onEdit }: TPromoTable) {
     const { mode } = useColorScheme();
 
     const [pagination, setPagination] = useState<GridPaginationModel>({
@@ -29,7 +31,7 @@ function PromoTable({ onAdd }: TPromoTable) {
 
     const { data, isFetching, refetch } = usePromosQuery({
         page: pagination.page + 1,
-        pageSize: pagination.pageSize
+        page_size: pagination.pageSize
     });
 
     const { mutateAsync, isPending } = useMenuMutation({
@@ -61,7 +63,12 @@ function PromoTable({ onAdd }: TPromoTable) {
                 hide: true
             }}
             editProps={{
-                hide: true
+                // use the raw api row, the table row has a formatted uploaded_at
+                onEdit: (id) => {
+                    const menu = data?.data?.results?.find(item => String(item.id) === String(id));
+
+                    if (menu) onEdit(menu);
+                }
             }}
             deleteProps={{
                 isPending: isPending,
