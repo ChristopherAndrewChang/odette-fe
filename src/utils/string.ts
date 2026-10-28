@@ -2,3 +2,6 @@ export const ensurePrefix = (str: string, prefix: string) => (str.startsWith(pre
 export const withoutSuffix = (str: string, suffix: string) =>
   str.endsWith(suffix) ? str.slice(0, -suffix.length) : str
 export const withoutPrefix = (str: string, prefix: string) => (str.startsWith(prefix) ? str.slice(prefix.length) : str)
+
+// backend returns http:// urls behind the proxy, which get blocked as mixed content on https pages
+export const toPageProtocol = (url?: string | null) => (url ? url.replace(/^http:\/\//, 'https://') : '')
