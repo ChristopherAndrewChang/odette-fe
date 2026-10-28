@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Tab, Tabs } from "@mui/material";
 
 import UserContainer from "../shared/components/UserContainer";
 import UserBackButton from "../shared/components/UserBackButton";
@@ -15,9 +15,21 @@ import { usePromosQuery } from "@/features/superuser/menus/hooks/promos";
 function MenuPage() {
     const [open, setOpen] = useState(false);
     const { GOLD } = useColor();
+    const [tab, setTab] = useState<"promo" | "menu" | null>(null);
 
-    const { data: menus, isFetching: fetchingMenus } = useMenusQuery({ page_size: 100 }, true);
-    const { data: promos, isFetching: fetchingPromos } = usePromosQuery({ page_size: 100 }, true);
+    const { data: menus, isFetching: fetchingMenus, isLoading: loadingMenus } = useMenusQuery({ page_size: 100 }, true);
+    const { data: promos, isFetching: fetchingPromos, isLoading: loadingPromos } = usePromosQuery({ page_size: 100 }, true);
+
+    // promo tab only exists when there is an active promo, and opens first like before
+    const hasPromo = !!promos?.data?.results?.length;
+    const activeTab = (tab === "promo" && !hasPromo) ? "menu" : (tab ?? (hasPromo ? "promo" : "menu"));
+    const isPromoTab = activeTab === "promo";
+
+    const list = isPromoTab ? promos?.data?.results : menus?.data?.results;
+    const isFetching = isPromoTab ? fetchingPromos : fetchingMenus;
+
+    // hide the tabs until both lists are known, otherwise the tab jumps from menu to promo
+    const isInitialLoading = loadingMenus || loadingPromos;
 
     return (
         <>
@@ -33,42 +45,42 @@ function MenuPage() {
                     <p className="font-poppins text-4xl text-gray-300">Select our <span className="font-semibold text-white">best menu</span>, and <span className="font-semibold text-white">enjoy your night</span></p>
                 </header>
 
-                {(!!promos?.data?.results?.length) ? (
-                    <section className="flex flex-col gap-4 mb-8">
-                        <div>
-                            <p className="text-2xl font-semibold text-white">Promo</p>
-                            <p className="text-xs" style={{ color: GOLD }}>Click the promo list to show the promo</p>
-                        </div>
+                {isInitialLoading ? (
+                    <CircularProgress size={18} className="text-white" />
+                ) : (
+                    <>
+                        <Tabs
+                            value={activeTab}
+                            onChange={(_, val) => setTab(val)}
+                            variant="fullWidth"
+                            className="mb-6"
+                            sx={{
+                                "& .MuiTab-root": { color: "rgba(255,255,255,0.6)", fontWeight: 600 },
+                                "& .Mui-selected": { color: `${GOLD} !important` },
+                                "& .MuiTabs-indicator": { backgroundColor: GOLD }
+                            }}
+                        >
+                            {hasPromo ? <Tab label="Promo" value="promo" /> : null}
+                            <Tab label="Menu" value="menu" />
+                        </Tabs>
 
-                        {fetchingPromos ? (
-                            <CircularProgress size={18} className="text-white" />
-                        ) : (
-                            <>
-                                {promos?.data?.results?.map(promo => (
-                                    <MenuPdfCard key={promo.id} menu={promo} />
-                                ))}
-                            </>
-                        )}
-                    </section>
-                ) : null}
+                        <section className="flex flex-col gap-4">
+                            <p className="text-xs" style={{ color: GOLD }}>
+                                {isPromoTab ? "Click the promo list to show the promo" : "Click the menu list to show the menu"}
+                            </p>
 
-                <section className="flex flex-col gap-4">
-                    <div>
-                        <p className="text-2xl font-semibold text-white">Menu</p>
-                        <p className="text-xs" style={{ color: GOLD }}>Click the menu list to show the menu</p>
-                    </div>
-
-                    {fetchingMenus ? (
-                        <CircularProgress size={18} className="text-white" />
-                    ) : (
-                        <>
-                            {menus?.data?.results?.map(menu => (
-                                <MenuPdfCard key={menu.id} menu={menu} />
-                            ))}
-                        </>
-                    )}
-
-                </section>
+                            {isFetching ? (
+                                <CircularProgress size={18} className="text-white" />
+                            ) : (
+                                <>
+                                    {list?.map(item => (
+                                        <MenuPdfCard key={item.id} menu={item} />
+                                    ))}
+                                </>
+                            )}
+                        </section>
+                    </>
+                )}
 
                 {/* custom search for user */}
                 {/* <CustomTextField
